@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/lib/auth-context"
-import { supabase } from "@/lib/db"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -17,13 +17,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Loader2, Upload } from "lucide-react"
 
 export default function ProfilePage() {
-  const { user, isLoading: authLoading } = useAuth()
+  const { user, loading: authLoading } = useAuth()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState("profile")
+  const supabase = createClientComponentClient()
 
   // Profile data
   const [name, setName] = useState("")
@@ -40,35 +41,42 @@ export default function ProfilePage() {
   const [confirmPassword, setConfirmPassword] = useState("")
 
   useEffect(() => {
+    // If auth is still loading, wait
+    if (authLoading) return
+
+    // If auth is done loading and no user, redirect to login
     if (!authLoading && !user) {
       router.push("/login")
       return
     }
 
+    // Only load profile if we have a user
     if (user) {
       loadUserProfile()
     }
   }, [user, authLoading, router])
 
   const loadUserProfile = async () => {
+    if (!user) {
+      setError("Authentication required. Please log in.")
+      return
+    }
+
     setIsLoading(true)
     try {
-      // Get user metadata from Supabase Auth
-      const { data: userData, error: userError } = await supabase.auth.getUser()
-
-      if (userError) throw userError
-
       // Get additional profile data from the database
       const { data: profileData, error: profileError } = await supabase
         .from("users")
         .select("*")
-        .eq("id", userData.user.id)
+        .eq("id", user.id)
         .single()
 
-      if (profileError && profileError.code !== "PGRST116") throw profileError
+      if (profileError && profileError.code !== "PGRST116") {
+        throw profileError
+      }
 
       // Set user data
-      setEmail(userData.user.email || "")
+      setEmail(user.email || "")
 
       if (profileData) {
         setName(profileData.name || "")
@@ -78,14 +86,14 @@ export default function ProfilePage() {
         setSubjects(profileData.subjects || [])
       } else {
         // Use metadata from auth if profile doesn't exist yet
-        const metadata = userData.user.user_metadata
+        const metadata = user.user_metadata
         setName(metadata?.name || "")
         setRole(metadata?.role || "student")
         setGradeLevel(metadata?.gradeLevel || null)
       }
     } catch (err: any) {
       console.error("Error loading profile:", err)
-      setError("Failed to load profile data")
+      setError("Failed to load profile data: " + (err.message || "Unknown error"))
     } finally {
       setIsLoading(false)
     }
@@ -102,13 +110,16 @@ export default function ProfilePage() {
 
   const handleProfileUpdate = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!user) {
+      setError("Authentication required. Please log in.")
+      return
+    }
+
     setError(null)
     setSuccess(null)
     setIsSaving(true)
 
     try {
-      if (!user) throw new Error("User not authenticated")
-
       // Upload avatar if changed
       let uploadedAvatarUrl = avatarUrl
       if (avatarFile) {
@@ -162,6 +173,11 @@ export default function ProfilePage() {
 
   const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!user) {
+      setError("Authentication required. Please log in.")
+      return
+    }
+
     setError(null)
     setSuccess(null)
 
@@ -180,7 +196,7 @@ export default function ProfilePage() {
     try {
       // First verify current password
       const { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
+        email: email,
         password: currentPassword,
       })
 
@@ -205,10 +221,36 @@ export default function ProfilePage() {
     }
   }
 
-  if (authLoading || isLoading) {
+  if (authLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <span className="ml-2">Loading authentication...</span>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return (
+      <div className="container max-w-4xl py-8">
+        <Card>
+          <CardHeader>
+            <CardTitle>Authentication Required</CardTitle>
+            <CardDescription>Please log in to view your profile</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button onClick={() => router.push("/login")}>Go to Login</Button>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <span className="ml-2">Loading profile data...</span>
       </div>
     )
   }
