@@ -4,198 +4,227 @@ import type React from "react"
 
 import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { uploadFile, validateFile, MAX_FILE_SIZE } from "@/lib/storage"
-import { useAuth } from "@/lib/auth-context"
-import { Loader2, Upload, X, FileText, ImageIcon, Music } from "lucide-react"
+import { uploadFile, validateFile } from "@/lib/storage"
+import { Upload, X, FileText, ImageIcon, FileIcon, AlertCircle, CheckCircle } from "lucide-react"
 
-interface FileUploadProps {
+type FileUploadProps = {
+  userId?: string
   folder?: string
-  onUploadComplete?: (fileData: any) => void
-  onUploadError?: (error: string) => void
   allowedTypes?: string[]
-  maxFiles?: number
-  className?: string
+  maxSize?: number
+  onSuccess?: (fileData: any) => void
+  onError?: (error: string) => void
 }
 
 export function FileUpload({
+  userId,
   folder = "homework",
-  onUploadComplete,
-  onUploadError,
   allowedTypes,
-  maxFiles = 5,
-  className,
+  maxSize,
+  onSuccess,
+  onError,
 }: FileUploadProps) {
-  const { user } = useAuth()
-  const [files, setFiles] = useState<File[]>([])
-  const [uploading, setUploading] = useState(false)
+  const [file, setFile] = useState<File | null>(null)
+  const [preview, setPreview] = useState<string | null>(null)
   const [progress, setProgress] = useState(0)
+  const [isUploading, setIsUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      // Check if adding these files would exceed the max files limit
-      if (files.length + e.target.files.length > maxFiles) {
-        setError(`You can only upload a maximum of ${maxFiles} files`)
-        return
+    setError(null)
+    setSuccess(null)
+
+    if (!e.target.files || e.target.files.length === 0) {
+      setFile(null)
+      setPreview(null)
+      return
+    }
+
+    const selectedFile = e.target.files[0]
+
+    // Validate file
+    const validation = validateFile(selectedFile)
+    if (!validation.valid) {
+      setError(validation.error)
+      setFile(null)
+      setPreview(null)
+      if (onError) onError(validation.error!)
+      return
+    }
+
+    setFile(selectedFile)
+
+    // Create preview for images
+    if (selectedFile.type.startsWith("image/")) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setPreview(reader.result as string)
       }
-
-      // Validate each file
-      const newFiles = Array.from(e.target.files)
-      const invalidFiles = newFiles.filter((file) => {
-        const validation = validateFile(file)
-        if (!validation.valid) {
-          setError(validation.error)
-          return true
-        }
-
-        // Check if file type is allowed
-        if (allowedTypes && !allowedTypes.includes(file.type)) {
-          setError("File type not supported")
-          return true
-        }
-
-        return false
-      })
-
-      if (invalidFiles.length > 0) {
-        return
-      }
-
-      setFiles((prevFiles) => [...prevFiles, ...newFiles])
-      setError(null)
+      reader.readAsDataURL(selectedFile)
+    } else {
+      setPreview(null)
     }
   }
 
   const handleUpload = async () => {
-    if (!user) {
-      setError("You must be logged in to upload files")
-      return
-    }
+    if (!file || !userId) return
 
-    if (files.length === 0) {
-      setError("Please select at least one file to upload")
-      return
-    }
-
-    setUploading(true)
+    setIsUploading(true)
     setProgress(0)
     setError(null)
+    setSuccess(null)
 
     try {
-      const uploadedFiles = []
+      // Simulate progress
+      const progressInterval = setInterval(() => {
+        setProgress((prev) => {
+          if (prev >= 95) {
+            clearInterval(progressInterval)
+            return 95
+          }
+          return prev + 5
+        })
+      }, 100)
 
-      // Upload each file
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i]
-        const fileData = await uploadFile(file, user.id, folder)
-        uploadedFiles.push(fileData)
+      const fileData = await uploadFile(file, userId, folder)
 
-        // Update progress
-        setProgress(Math.round(((i + 1) / files.length) * 100))
-      }
+      clearInterval(progressInterval)
+      setProgress(100)
+      setSuccess("File uploaded successfully!")
 
-      // Call onUploadComplete callback with uploaded files data
-      if (onUploadComplete) {
-        onUploadComplete(uploadedFiles)
-      }
+      if (onSuccess) onSuccess(fileData)
 
-      // Reset state
-      setFiles([])
-      setProgress(0)
+      // Reset after success
+      setTimeout(() => {
+        setFile(null)
+        setPreview(null)
+        setProgress(0)
+        if (fileInputRef.current) fileInputRef.current.value = ""
+      }, 2000)
     } catch (err: any) {
-      console.error("Error uploading files:", err)
-      setError(err.message || "Failed to upload files")
-
-      if (onUploadError) {
-        onUploadError(err.message || "Failed to upload files")
-      }
+      setError(err.message || "Failed to upload file")
+      if (onError) onError(err.message || "Failed to upload file")
     } finally {
-      setUploading(false)
+      setIsUploading(false)
     }
   }
 
-  const removeFile = (index: number) => {
-    setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index))
+  const handleRemoveFile = () => {
+    setFile(null)
+    setPreview(null)
+    setProgress(0)
+    setError(null)
+    setSuccess(null)
+    if (fileInputRef.current) fileInputRef.current.value = ""
   }
 
-  const getFileIcon = (file: File) => {
+  const getFileIcon = () => {
+    if (!file) return null
+
     if (file.type.startsWith("image/")) {
-      return <ImageIcon className="h-5 w-5" />
-    } else if (file.type.startsWith("audio/")) {
-      return <Music className="h-5 w-5" />
+      return <ImageIcon className="h-8 w-8 text-blue-500" />
+    } else if (file.type.includes("pdf") || file.type.includes("document") || file.type.includes("text")) {
+      return <FileText className="h-8 w-8 text-amber-500" />
     } else {
-      return <FileText className="h-5 w-5" />
+      return <FileIcon className="h-8 w-8 text-gray-500" />
     }
   }
 
   return (
-    <div className={className}>
+    <div className="space-y-4">
       {error && (
-        <Alert variant="destructive" className="mb-4">
+        <Alert variant="destructive" className="border-red-200 bg-red-50 text-red-800">
+          <AlertCircle className="h-4 w-4" />
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
 
-      <div className="mb-4 flex flex-wrap gap-2">
-        {files.map((file, index) => (
-          <div key={index} className="flex items-center gap-2 rounded-md border bg-background p-2 text-sm">
-            {getFileIcon(file)}
-            <span className="max-w-[150px] truncate">{file.name}</span>
-            <button type="button" onClick={() => removeFile(index)} className="ml-1 rounded-full p-1 hover:bg-muted">
-              <X className="h-3 w-3" />
-              <span className="sr-only">Remove</span>
-            </button>
-          </div>
-        ))}
-      </div>
+      {success && (
+        <Alert className="border-green-200 bg-green-50 text-green-800">
+          <CheckCircle className="h-4 w-4" />
+          <AlertDescription>{success}</AlertDescription>
+        </Alert>
+      )}
 
-      <div className="flex flex-col gap-2">
-        <div className="flex gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={uploading || files.length >= maxFiles}
-          >
-            <Upload className="mr-2 h-4 w-4" />
-            Select Files
-          </Button>
-          <Button type="button" onClick={handleUpload} disabled={uploading || files.length === 0}>
-            {uploading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Uploading...
-              </>
-            ) : (
-              "Upload"
-            )}
-          </Button>
+      <div className="space-y-2">
+        <Label htmlFor="file" className="text-blue-900">
+          Select File
+        </Label>
+        <div className="flex items-center gap-2">
+          <Input
+            ref={fileInputRef}
+            id="file"
+            type="file"
+            onChange={handleFileChange}
+            className="border-blue-200 focus:border-blue-400 focus:ring-blue-400"
+            disabled={isUploading}
+          />
+          {file && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={handleRemoveFile}
+              disabled={isUploading}
+              className="h-10 w-10 text-red-500 hover:text-red-700"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          )}
         </div>
-
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          multiple
-          className="hidden"
-          accept={allowedTypes?.join(",")}
-        />
-
-        {uploading && (
-          <div className="mt-2 space-y-1">
-            <Progress value={progress} className="h-2" />
-            <p className="text-xs text-muted-foreground">Uploading... {progress}%</p>
-          </div>
-        )}
-
-        <p className="text-xs text-muted-foreground">
-          Max file size: {MAX_FILE_SIZE / (1024 * 1024)}MB. Allowed file types:{" "}
-          {allowedTypes ? allowedTypes.map((type) => type.split("/")[1]).join(", ") : "Images, Documents, Audio"}
+        <p className="text-xs text-gray-500">
+          Supported file types: Images, PDFs, Documents, Audio files. Max size: 5MB
         </p>
       </div>
+
+      {file && (
+        <div className="rounded-md border border-blue-100 p-4">
+          <div className="flex items-center gap-3">
+            {preview ? (
+              <img src={preview || "/placeholder.svg"} alt="Preview" className="h-16 w-16 rounded object-cover" />
+            ) : (
+              getFileIcon()
+            )}
+            <div className="flex-1 min-w-0">
+              <p className="truncate font-medium text-blue-900">{file.name}</p>
+              <p className="text-sm text-gray-600">
+                {(file.size / 1024 / 1024).toFixed(2)} MB • {file.type}
+              </p>
+            </div>
+          </div>
+
+          {isUploading && (
+            <div className="mt-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">Uploading...</span>
+                <span className="text-sm font-medium text-blue-900">{progress}%</span>
+              </div>
+              <Progress value={progress} className="h-2" />
+            </div>
+          )}
+        </div>
+      )}
+
+      <Button
+        type="button"
+        onClick={handleUpload}
+        disabled={!file || isUploading}
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+      >
+        {isUploading ? (
+          <>Uploading...</>
+        ) : (
+          <>
+            <Upload className="mr-2 h-4 w-4" /> Upload File
+          </>
+        )}
+      </Button>
     </div>
   )
 }

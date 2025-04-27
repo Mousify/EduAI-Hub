@@ -1,248 +1,221 @@
-"use server"
+"use client"
 
-import { cookies } from "next/headers"
-import { redirect } from "next/navigation"
-import { createClient } from "@supabase/supabase-js"
-import type { Database } from "./database.types"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
-// Initialize Supabase client with environment variables
-const supabaseUrl = process.env.SUPABASE_URL
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY
+export type UserRole = "student" | "teacher"
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error("Missing Supabase environment variables")
-}
+export const useAuth = () => {
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const supabase = createClientComponentClient()
 
-export async function createServerSupabaseClient() {
-  const cookieStore = cookies()
+  const signUp = async (email: string, password: string, role: UserRole) => {
+    try {
+      setLoading(true)
+      setError(null)
 
-  return createClient<Database>(supabaseUrl, supabaseAnonKey, {
-    cookies: {
-      get(name) {
-        return cookieStore.get(name)?.value
-      },
-      set(name, value, options) {
-        cookieStore.set(name, value, options)
-      },
-      remove(name, options) {
-        cookieStore.set(name, "", { ...options, maxAge: 0 })
-      },
-    },
-  })
-}
-
-export async function signUp(email: string, password: string, role: "student" | "teacher") {
-  const supabase = await createServerSupabaseClient()
-
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: {
-        role,
-      },
-    },
-  })
-
-  if (error) {
-    return { error: error.message }
-  }
-
-  return { success: true, user: data.user }
-}
-
-export async function signIn(email: string, password: string) {
-  const supabase = await createServerSupabaseClient()
-
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  })
-
-  if (error) {
-    return { error: error.message }
-  }
-
-  return { success: true, user: data.user }
-}
-
-export async function signOut() {
-  const supabase = await createServerSupabaseClient()
-  await supabase.auth.signOut()
-  redirect("/login")
-}
-
-export async function getSession() {
-  const supabase = await createServerSupabaseClient()
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  return session
-}
-
-export async function getUserProfile() {
-  const supabase = await createServerSupabaseClient()
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-
-  if (!session?.user) {
-    return null
-  }
-
-  const userId = session.user.id
-  const userRole = session.user.user_metadata.role || "student"
-
-  // First get the user record
-  const { data: userData, error: userError } = await supabase.from("users").select("*").eq("auth_id", userId).single()
-
-  if (userError) {
-    console.error("Error fetching user:", userError)
-    return null
-  }
-
-  // Then get the role-specific profile
-  if (userRole === "student") {
-    const { data: studentData, error: studentError } = await supabase
-      .from("students")
-      .select("*")
-      .eq("user_id", userData.id)
-      .single()
-
-    if (studentError && studentError.code !== "PGRST116") {
-      console.error("Error fetching student profile:", studentError)
-    }
-
-    return { ...userData, profile: studentData || {} }
-  } else {
-    const { data: teacherData, error: teacherError } = await supabase
-      .from("teachers")
-      .select("*")
-      .eq("user_id", userData.id)
-      .single()
-
-    if (teacherError && teacherError.code !== "PGRST116") {
-      console.error("Error fetching teacher profile:", teacherError)
-    }
-
-    return { ...userData, profile: teacherData || {} }
-  }
-}
-
-export async function updateUserProfile(profile: any) {
-  const supabase = await createServerSupabaseClient()
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-
-  if (!session?.user) {
-    return { error: "Not authenticated" }
-  }
-
-  const userId = session.user.id
-  const userRole = session.user.user_metadata.role || "student"
-
-  // First get the user record
-  const { data: userData, error: userError } = await supabase.from("users").select("id").eq("auth_id", userId).single()
-
-  if (userError) {
-    return { error: userError.message }
-  }
-
-  // Update the user record
-  if (profile.name || profile.email || profile.avatar_url) {
-    const { error: updateUserError } = await supabase
-      .from("users")
-      .update({
-        name: profile.name,
-        email: profile.email,
-        avatar_url: profile.avatar_url,
-        updated_at: new Date().toISOString(),
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            role: role,
+          },
+        },
       })
-      .eq("id", userData.id)
 
-    if (updateUserError) {
-      return { error: updateUserError.message }
+      if (error) {
+        throw error
+      }
+
+      // If sign up is successful, create a profile in the appropriate table
+      if (data.user) {
+        const profileData = {
+          user_id: data.user.id,
+          email: data.user.email,
+          created_at: new Date().toISOString(),
+        }
+
+        if (role === "student") {
+          await supabase.from("student_profiles").insert([profileData])
+        } else {
+          await supabase.from("teacher_profiles").insert([profileData])
+        }
+      }
+
+      // Redirect based on role
+      if (role === "student") {
+        router.push("/dashboard")
+      } else {
+        router.push("/teacher-dashboard")
+      }
+
+      return data
+    } catch (error: any) {
+      setError(error.message || "An error occurred during sign up")
+      console.error("Sign up error:", error)
+      return { error }
+    } finally {
+      setLoading(false)
     }
   }
 
-  // Update the role-specific profile
-  if (userRole === "student") {
-    const { error: updateStudentError } = await supabase
-      .from("students")
-      .update({
-        grade_level: profile.grade_level,
-        school: profile.school,
-        parent_email: profile.parent_email,
-        learning_goals: profile.learning_goals,
-        updated_at: new Date().toISOString(),
+  const signIn = async (email: string, password: string, role: UserRole) => {
+    try {
+      setLoading(true)
+      setError(null)
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       })
-      .eq("user_id", userData.id)
 
-    if (updateStudentError) {
-      return { error: updateStudentError.message }
+      if (error) {
+        throw error
+      }
+
+      // Check if the user has the correct role
+      if (data.user) {
+        const userRole = data.user.user_metadata.role
+
+        // If no role is set yet, update it
+        if (!userRole) {
+          await supabase.auth.updateUser({
+            data: { role },
+          })
+        } else if (userRole !== role) {
+          throw new Error(`You are registered as a ${userRole}, not a ${role}`)
+        }
+      }
+
+      // Redirect based on role
+      if (role === "student") {
+        router.push("/dashboard")
+      } else {
+        router.push("/teacher-dashboard")
+      }
+
+      return data
+    } catch (error: any) {
+      setError(error.message || "An error occurred during sign in")
+      console.error("Sign in error:", error)
+      return { error }
+    } finally {
+      setLoading(false)
     }
-  } else {
-    const { error: updateTeacherError } = await supabase
-      .from("teachers")
-      .update({
-        subjects: profile.subjects,
-        bio: profile.bio,
-        education: profile.education,
-        years_experience: profile.years_experience,
-        updated_at: new Date().toISOString(),
+  }
+
+  const signInWithGoogle = async (role: UserRole) => {
+    try {
+      setLoading(true)
+      setError(null)
+
+      // Store the role in localStorage to retrieve it after OAuth callback
+      localStorage.setItem("authRole", role)
+
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+          queryParams: {
+            access_type: "offline",
+            prompt: "consent",
+          },
+        },
       })
-      .eq("user_id", userData.id)
 
-    if (updateTeacherError) {
-      return { error: updateTeacherError.message }
+      if (error) {
+        throw error
+      }
+
+      return data
+    } catch (error: any) {
+      setError(error.message || "An error occurred during Google sign in")
+      console.error("Google sign in error:", error)
+      return { error }
+    } finally {
+      setLoading(false)
     }
   }
 
-  return { success: true }
-}
+  const signOut = async () => {
+    try {
+      setLoading(true)
+      setError(null)
 
-export async function forgotPassword(email: string) {
-  const supabase = await createServerSupabaseClient()
+      const { error } = await supabase.auth.signOut()
 
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset-password`,
-  })
+      if (error) {
+        throw error
+      }
 
-  if (error) {
-    return { error: error.message }
+      router.push("/")
+    } catch (error: any) {
+      setError(error.message || "An error occurred during sign out")
+      console.error("Sign out error:", error)
+    } finally {
+      setLoading(false)
+    }
   }
 
-  return { success: true }
-}
+  const resetPassword = async (email: string) => {
+    try {
+      setLoading(true)
+      setError(null)
 
-export async function resetPassword(password: string) {
-  const supabase = await createServerSupabaseClient()
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/reset-password`,
+      })
 
-  const { error } = await supabase.auth.updateUser({
-    password,
-  })
+      if (error) {
+        throw error
+      }
 
-  if (error) {
-    return { error: error.message }
+      return { success: true }
+    } catch (error: any) {
+      setError(error.message || "An error occurred during password reset")
+      console.error("Password reset error:", error)
+      return { error }
+    } finally {
+      setLoading(false)
+    }
   }
 
-  return { success: true }
-}
+  const updatePassword = async (password: string) => {
+    try {
+      setLoading(true)
+      setError(null)
 
-export async function signInWithGoogle() {
-  const supabase = await createServerSupabaseClient()
+      const { error } = await supabase.auth.updateUser({
+        password,
+      })
 
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
-    },
-  })
+      if (error) {
+        throw error
+      }
 
-  if (error) {
-    return { error: error.message }
+      router.push("/login")
+      return { success: true }
+    } catch (error: any) {
+      setError(error.message || "An error occurred during password update")
+      console.error("Password update error:", error)
+      return { error }
+    } finally {
+      setLoading(false)
+    }
   }
 
-  return { url: data.url }
+  return {
+    signUp,
+    signIn,
+    signInWithGoogle,
+    signOut,
+    resetPassword,
+    updatePassword,
+    loading,
+    error,
+  }
 }

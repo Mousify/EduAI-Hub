@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -6,17 +7,14 @@ import { Users, Plus, Search, MoreHorizontal } from "lucide-react"
 
 export default function ClassesPage() {
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex justify-between">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">Classes</h2>
-          <p className="text-muted-foreground">Manage your classes and student rosters</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button>
-            <Plus className="mr-2 h-4 w-4" /> Create Class
-          </Button>
-        </div>
+    <div className="container py-8">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Classes</h1>
+        <Button asChild>
+          <Link href="/teacher-dashboard/classes/new">
+            <Plus className="mr-2 h-4 w-4" /> Create New Class
+          </Link>
+        </Button>
       </div>
 
       <div className="flex items-center gap-4">

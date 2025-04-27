@@ -1,220 +1,324 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { FileUpload } from "@/components/file-upload"
-import { listFiles, deleteFile } from "@/lib/storage"
 import { useAuth } from "@/lib/auth-context"
-import { Loader2, FileText, ImageIcon, Music, Trash2, Download, Eye } from "lucide-react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { listFiles, deleteFile } from "@/lib/storage"
+import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Loader2, FileText, ImageIcon, File, MoreHorizontal, Download, Trash, Search, Filter } from "lucide-react"
 
-interface FileBrowserProps {
-  folder?: string
-  title?: string
-  onFileSelect?: (file: any) => void
-  showUpload?: boolean
-  className?: string
+type FileItem = {
+  name: string
+  url: string
+  size: number
+  type: string
+  category: string
+  created_at: string
+}
+
+type FileBrowserProps = {
+  files: FileItem[]
+  emptyMessage?: string
+  isLoading?: boolean
+  onDelete?: (file: FileItem) => void
+  onDownload?: (file: FileItem) => void
+  onView?: (file: FileItem) => void
 }
 
 export function FileBrowser({
-  folder = "homework",
-  title = "My Files",
-  onFileSelect,
-  showUpload = true,
-  className,
+  files = [],
+  emptyMessage = "No files found",
+  isLoading = false,
+  onDelete,
+  onDownload,
+  onView,
 }: FileBrowserProps) {
   const { user } = useAuth()
-  const [files, setFiles] = useState<any[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [previewFile, setPreviewFile] = useState<any | null>(null)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [fileType, setFileType] = useState("all")
+  const [sortBy, setSortBy] = useState("newest")
+  const [viewMode, setViewMode] = useState("grid")
+  const [selectedFile, setSelectedFile] = useState<FileItem | null>(null)
+  const [previewOpen, setPreviewOpen] = useState(false)
+  const [userFiles, setUserFiles] = useState<FileItem[]>([])
 
   useEffect(() => {
-    if (user) {
-      loadFiles()
-    }
-  }, [user, folder])
-
-  const loadFiles = async () => {
     if (!user) return
 
-    setIsLoading(true)
-    setError(null)
-
-    try {
-      const filesList = await listFiles(user.id, folder)
-      setFiles(filesList)
-    } catch (err: any) {
-      console.error("Error loading files:", err)
-      setError(err.message || "Failed to load files")
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const handleFileDelete = async (filePath: string) => {
-    if (!confirm("Are you sure you want to delete this file?")) {
-      return
+    const fetchFiles = async () => {
+      try {
+        const files = await listFiles(user.id)
+        setUserFiles(files)
+      } catch (error) {
+        console.error("Error fetching files:", error)
+      }
     }
 
-    try {
-      await deleteFile(filePath, folder)
-      // Refresh file list
-      loadFiles()
-    } catch (err: any) {
-      console.error("Error deleting file:", err)
-      setError(err.message || "Failed to delete file")
+    fetchFiles()
+  }, [user])
+
+  const displayFiles = userFiles.length > 0 ? userFiles : files
+
+  const filteredFiles = displayFiles.filter((file) => {
+    const matchesSearch = file.name.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesType = fileType === "all" || file.category === fileType
+    return matchesSearch && matchesType
+  })
+
+  const sortedFiles = [...filteredFiles].sort((a, b) => {
+    if (sortBy === "newest") {
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    } else if (sortBy === "oldest") {
+      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    } else if (sortBy === "name") {
+      return a.name.localeCompare(b.name)
+    } else if (sortBy === "size") {
+      return b.size - a.size
     }
-  }
+    return 0
+  })
 
-  const handleFileUploadComplete = () => {
-    // Refresh file list
-    loadFiles()
-  }
-
-  const getFileIcon = (file: any) => {
-    const category = file.category || "unknown"
-
-    if (category === "image") {
-      return <ImageIcon className="h-5 w-5" />
-    } else if (category === "audio") {
-      return <Music className="h-5 w-5" />
+  const handleDelete = async (file: FileItem) => {
+    if (onDelete) {
+      onDelete(file)
     } else {
-      return <FileText className="h-5 w-5" />
+      try {
+        await deleteFile(file.name)
+        setUserFiles(userFiles.filter((f) => f.name !== file.name))
+      } catch (error) {
+        console.error("Error deleting file:", error)
+      }
+    }
+  }
+
+  const handleDownload = (file: FileItem) => {
+    if (onDownload) {
+      onDownload(file)
+    } else {
+      window.open(file.url, "_blank")
+    }
+  }
+
+  const handleView = (file: FileItem) => {
+    if (onView) {
+      onView(file)
+    } else {
+      setSelectedFile(file)
+      setPreviewOpen(true)
+    }
+  }
+
+  const getFileIcon = (file: FileItem) => {
+    if (file.category === "image") {
+      return <ImageIcon className="h-6 w-6 text-blue-500" />
+    } else if (file.category === "document") {
+      return <FileText className="h-6 w-6 text-amber-500" />
+    } else {
+      return <File className="h-6 w-6 text-gray-500" />
     }
   }
 
   const formatFileSize = (bytes: number) => {
-    if (bytes < 1024) return bytes + " B"
-    else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + " KB"
-    else return (bytes / 1048576).toFixed(1) + " MB"
+    if (bytes === 0) return "0 Bytes"
+    const k = 1024
+    const sizes = ["Bytes", "KB", "MB", "GB"]
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
   }
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString() + " " + date.toLocaleTimeString()
+  if (isLoading) {
+    return (
+      <div className="flex h-40 items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+      </div>
+    )
   }
 
-  const handlePreview = (file: any) => {
-    setPreviewFile(file)
-  }
-
-  const handleFileClick = (file: any) => {
-    if (onFileSelect) {
-      onFileSelect(file)
-    } else {
-      handlePreview(file)
-    }
+  if (sortedFiles.length === 0) {
+    return (
+      <div className="flex h-40 flex-col items-center justify-center gap-2 rounded-lg border border-dashed p-8 text-center">
+        <File className="h-10 w-10 text-gray-400" />
+        <h3 className="font-medium text-gray-900">No files found</h3>
+        <p className="text-sm text-gray-600">{emptyMessage}</p>
+      </div>
+    )
   }
 
   return (
-    <div className={className}>
-      {error && (
-        <Alert variant="destructive" className="mb-4">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-
-      {showUpload && (
-        <Card className="mb-4">
-          <CardContent className="p-4">
-            <FileUpload
-              folder={folder}
-              onUploadComplete={handleFileUploadComplete}
-              onUploadError={(err) => setError(err)}
-            />
-          </CardContent>
-        </Card>
-      )}
-
-      <div className="rounded-md border">
-        <div className="flex items-center justify-between bg-muted/50 p-2">
-          <h3 className="font-medium">{title}</h3>
-          <Button variant="ghost" size="sm" onClick={loadFiles} disabled={isLoading}>
-            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Refresh"}
-          </Button>
+    <div className="space-y-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+          <Input
+            placeholder="Search files..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10"
+          />
         </div>
-
-        {isLoading ? (
-          <div className="flex h-40 items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-          </div>
-        ) : files.length === 0 ? (
-          <div className="flex h-40 flex-col items-center justify-center gap-2 p-4 text-center text-muted-foreground">
-            <FileText className="h-8 w-8" />
-            <p>No files found</p>
-            {showUpload && <p className="text-sm">Upload files to see them here</p>}
-          </div>
-        ) : (
-          <div className="divide-y">
-            {files.map((file, index) => (
-              <div key={index} className="flex items-center justify-between p-2 hover:bg-muted/50">
-                <div className="flex flex-1 cursor-pointer items-center gap-2" onClick={() => handleFileClick(file)}>
-                  {getFileIcon(file)}
-                  <div className="flex-1 truncate">
-                    <p className="truncate font-medium">{file.name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {formatFileSize(file.metadata?.size || 0)} • {formatDate(file.created_at)}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-1">
-                  <Button variant="ghost" size="icon" onClick={() => handlePreview(file)} className="h-8 w-8">
-                    <Eye className="h-4 w-4" />
-                    <span className="sr-only">Preview</span>
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => window.open(file.url, "_blank")}
-                    className="h-8 w-8"
-                  >
-                    <Download className="h-4 w-4" />
-                    <span className="sr-only">Download</span>
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleFileDelete(file.name)}
-                    className="h-8 w-8 text-destructive hover:bg-destructive/10 hover:text-destructive"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                    <span className="sr-only">Delete</span>
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        <div className="flex gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="flex items-center gap-2">
+                <Filter className="h-4 w-4" />
+                <span>Filter</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => setFileType("all")}>All Files</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setFileType("image")}>Images</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setFileType("document")}>Documents</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setFileType("audio")}>Audio</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">Sort By</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => setSortBy("newest")}>Newest</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortBy("oldest")}>Oldest</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortBy("name")}>Name</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortBy("size")}>Size</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <Tabs value={viewMode} onValueChange={setViewMode}>
+            <TabsList>
+              <TabsTrigger value="grid">Grid</TabsTrigger>
+              <TabsTrigger value="list">List</TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
       </div>
 
-      {/* File Preview Dialog */}
-      <Dialog open={!!previewFile} onOpenChange={(open) => !open && setPreviewFile(null)}>
+      <Tabs value={viewMode} className="w-full">
+        <TabsContent value="grid" className="mt-0">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {sortedFiles.map((file) => (
+              <Card key={file.name} className="overflow-hidden hover:shadow-md transition-shadow">
+                <div className="aspect-square cursor-pointer bg-gray-100 relative" onClick={() => handleView(file)}>
+                  {file.category === "image" ? (
+                    <img src={file.url || "/placeholder.svg"} alt={file.name} className="h-full w-full object-cover" />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center">{getFileIcon(file)}</div>
+                  )}
+                </div>
+                <CardContent className="p-3">
+                  <div className="flex items-center justify-between">
+                    <div className="truncate">
+                      <p className="truncate text-sm font-medium">{file.name}</p>
+                      <p className="text-xs text-gray-500">{formatFileSize(file.size)}</p>
+                    </div>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => handleView(file)}>
+                          <FileText className="mr-2 h-4 w-4" />
+                          View
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDownload(file)}>
+                          <Download className="mr-2 h-4 w-4" />
+                          Download
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDelete(file)}>
+                          <Trash className="mr-2 h-4 w-4" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+        <TabsContent value="list" className="mt-0">
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Size</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead className="w-[100px]">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {sortedFiles.map((file) => (
+                  <TableRow key={file.name}>
+                    <TableCell className="flex items-center gap-2">
+                      {getFileIcon(file)}
+                      <span className="font-medium">{file.name}</span>
+                    </TableCell>
+                    <TableCell>{file.type}</TableCell>
+                    <TableCell>{formatFileSize(file.size)}</TableCell>
+                    <TableCell>{new Date(file.created_at).toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handleView(file)}>
+                          <FileText className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handleDownload(file)}>
+                          <Download className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-red-500 hover:text-red-700"
+                          onClick={() => handleDelete(file)}
+                        >
+                          <Trash className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </TabsContent>
+      </Tabs>
+
+      <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>
-            <DialogTitle>{previewFile?.name}</DialogTitle>
+            <DialogTitle>{selectedFile?.name}</DialogTitle>
+            <DialogDescription>
+              {selectedFile?.type} • {selectedFile && formatFileSize(selectedFile.size)}
+            </DialogDescription>
           </DialogHeader>
-          <div className="mt-2">
-            {previewFile?.category === "image" ? (
+          <div className="mt-4">
+            {selectedFile?.category === "image" ? (
               <img
-                src={previewFile.url || "/placeholder.svg"}
-                alt={previewFile.name}
-                className="mx-auto max-h-[60vh] rounded-md object-contain"
+                src={selectedFile.url || "/placeholder.svg"}
+                alt={selectedFile.name}
+                className="mx-auto max-h-[500px] rounded-md"
               />
-            ) : previewFile?.category === "audio" ? (
-              <audio controls className="w-full">
-                <source src={previewFile.url} type={previewFile.metadata?.mimetype} />
-                Your browser does not support the audio element.
-              </audio>
             ) : (
-              <div className="flex flex-col items-center justify-center gap-2 rounded-md border p-8 text-center">
-                <FileText className="h-16 w-16 text-muted-foreground" />
-                <p>Preview not available</p>
-                <Button onClick={() => window.open(previewFile?.url, "_blank")}>Open File</Button>
+              <div className="flex h-[300px] items-center justify-center rounded-md bg-gray-100">
+                {getFileIcon(selectedFile!)}
+                <p className="ml-2">{selectedFile?.name}</p>
               </div>
             )}
+          </div>
+          <div className="mt-4 flex justify-end gap-2">
+            <Button variant="outline" onClick={() => setPreviewOpen(false)}>
+              Close
+            </Button>
+            <Button onClick={() => handleDownload(selectedFile!)}>
+              <Download className="mr-2 h-4 w-4" />
+              Download
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
