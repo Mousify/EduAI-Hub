@@ -140,7 +140,7 @@ export function DocumentAnalyzer() {
     {
       id: "improve",
       title: "Improve",
-      icon: Image,
+      icon: ImageIcon,
       description: "Get suggestions to improve your educational materials",
     },
   ]

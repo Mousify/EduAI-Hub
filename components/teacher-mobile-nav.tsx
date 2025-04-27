@@ -1,31 +1,32 @@
 "use client"
 
 import { useState } from "react"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button"
+import { Menu } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
   BookOpen,
-  Home,
   BarChart,
-  Settings,
-  MessageSquare,
   Users,
   FileText,
-  FolderOpen,
-  GraduationCap,
-  Calendar,
-  BookMarked,
+  MessageSquare,
+  Settings,
   Sparkles,
-  Menu,
-  Wand2,
+  Home,
+  GraduationCap,
+  FolderOpen,
+  Calendar,
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { cn } from "@/lib/utils"
 
 export function TeacherMobileNav() {
-  const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const pathname = usePathname()
+
+  const isActive = (path: string) => {
+    return pathname === path || pathname.startsWith(`${path}/`)
+  }
 
   const navItems = [
     {
@@ -64,32 +65,20 @@ export function TeacherMobileNav() {
       icon: Calendar,
     },
     {
-      title: "Courses",
-      href: "/teacher-dashboard/courses",
-      icon: BookMarked,
-    },
-    {
       title: "Analytics",
       href: "/teacher-dashboard/analytics",
       icon: BarChart,
     },
-  ]
-
-  const aiTools = [
+    {
+      title: "AI Tools",
+      href: "/teacher-dashboard/tools",
+      icon: Sparkles,
+    },
     {
       title: "AI Assistant",
       href: "/teacher-dashboard/ai-assistant",
-      icon: Sparkles,
-      highlight: true,
+      icon: GraduationCap,
     },
-    {
-      title: "AI Tools Hub",
-      href: "/teacher-dashboard/tools",
-      icon: Wand2,
-    },
-  ]
-
-  const bottomNavItems = [
     {
       title: "Settings",
       href: "/teacher-dashboard/settings",
@@ -105,89 +94,49 @@ export function TeacherMobileNav() {
           <span className="sr-only">Toggle menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-[300px] sm:w-[400px] p-0">
-        <SheetHeader className="p-6 border-b">
-          <SheetTitle className="flex items-center gap-2">
-            <GraduationCap className="h-6 w-6 text-blue-600" />
-            <span className="font-semibold text-xl text-blue-600">EduAI Hub</span>
-          </SheetTitle>
-        </SheetHeader>
-        <div className="py-6 px-4 space-y-6">
-          <div className="space-y-1">
-            <h2 className="px-2 text-xs font-semibold tracking-tight text-gray-500 uppercase">Main Navigation</h2>
-            <div className="space-y-1 mt-2">
+      <SheetContent side="left" className="w-64 p-0">
+        <div className="flex flex-col h-full">
+          <div className="p-4 border-b">
+            <Link
+              href="/teacher-dashboard"
+              className="flex items-center gap-2 text-lg font-semibold text-blue-600"
+              onClick={() => setOpen(false)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-6 w-6"
+              >
+                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+                <line x1="4" x2="4" y1="22" y2="15" />
+              </svg>
+              <span>EduAI Hub</span>
+            </Link>
+          </div>
+          <nav className="flex-1 overflow-auto py-4">
+            <div className="px-3 space-y-1">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
+                  className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
+                    isActive(item.href) ? "bg-blue-100 text-blue-900 font-medium" : "text-gray-600 hover:bg-gray-100"
+                  }`}
                   onClick={() => setOpen(false)}
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
-                    pathname === item.href
-                      ? "bg-blue-100 text-blue-600"
-                      : "text-gray-600 hover:bg-gray-100 hover:text-blue-600",
-                  )}
                 >
-                  <item.icon className={cn("h-5 w-5", pathname === item.href ? "text-blue-600" : "text-gray-500")} />
-                  <span>{item.title}</span>
+                  <item.icon className="h-4 w-4" />
+                  {item.title}
                 </Link>
               ))}
             </div>
-          </div>
-
-          <div className="space-y-1">
-            <h2 className="px-2 text-xs font-semibold tracking-tight text-gray-500 uppercase">AI Tools</h2>
-            <div className="space-y-1 mt-2">
-              {aiTools.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
-                    pathname === item.href
-                      ? "bg-blue-100 text-blue-600"
-                      : item.highlight
-                        ? "text-blue-600 hover:bg-blue-50"
-                        : "text-gray-600 hover:bg-gray-100 hover:text-blue-600",
-                  )}
-                >
-                  <item.icon
-                    className={cn(
-                      "h-5 w-5",
-                      pathname === item.href ? "text-blue-600" : item.highlight ? "text-blue-600" : "text-gray-500",
-                    )}
-                  />
-                  <span>{item.title}</span>
-                  {item.highlight && (
-                    <span className="ml-auto flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 text-xs font-medium text-blue-600">
-                      New
-                    </span>
-                  )}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-1">
-            <div className="space-y-1">
-              {bottomNavItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
-                    pathname === item.href
-                      ? "bg-blue-100 text-blue-600"
-                      : "text-gray-600 hover:bg-gray-100 hover:text-blue-600",
-                  )}
-                >
-                  <item.icon className={cn("h-5 w-5", pathname === item.href ? "text-blue-600" : "text-gray-500")} />
-                  <span>{item.title}</span>
-                </Link>
-              ))}
-            </div>
+          </nav>
+          <div className="border-t p-4">
+            <p className="text-xs text-gray-500">© 2025 EduAI Hub</p>
           </div>
         </div>
       </SheetContent>

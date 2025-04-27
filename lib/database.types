@@ -498,8 +498,8 @@ export interface Database {
           answer: string
           is_correct?: boolean | null
           points?: number | null
-          created_at?: string
-          updated_at?: string
+          created_at: string
+          updated_at: string
         }
         Update: {
           id?: string
