@@ -62,10 +62,10 @@
     "stripe": "latest",
     "ai": "latest",
     "@ai-sdk/openai": "latest",
-    "@supabase/auth-helpers-nextjs": "latest",
     "fs": "latest",
     "path": "latest",
     "dotenv": "latest",
+    "@supabase/auth-helpers-nextjs": "latest",
     "react-icons": "latest"
   },
   "devDependencies": {

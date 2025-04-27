@@ -39,13 +39,14 @@ export async function middleware(req: NextRequest) {
   return res
 }
 
+// Update the matcher to be more specific and avoid potential redirect loops
 export const config = {
   matcher: [
     // Protected routes
     "/dashboard/:path*",
     "/teacher-dashboard/:path*",
     "/profile/:path*",
-    // Auth routes
+    // Auth routes - be specific to avoid loops
     "/login",
     "/signup",
     "/forgot-password",

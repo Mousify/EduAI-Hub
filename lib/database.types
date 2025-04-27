@@ -45,6 +45,8 @@ export interface Database {
           school: string | null
           parent_email: string | null
           learning_goals: string | null
+          preferred_subjects: string[] | null
+          learning_style: string | null
           created_at: string
           updated_at: string
         }
@@ -54,6 +56,8 @@ export interface Database {
           school?: string | null
           parent_email?: string | null
           learning_goals?: string | null
+          preferred_subjects?: string[] | null
+          learning_style?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -63,6 +67,8 @@ export interface Database {
           school?: string | null
           parent_email?: string | null
           learning_goals?: string | null
+          preferred_subjects?: string[] | null
+          learning_style?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -74,6 +80,8 @@ export interface Database {
           bio: string | null
           education: string | null
           years_experience: number | null
+          certifications: string[] | null
+          teaching_philosophy: string | null
           created_at: string
           updated_at: string
         }
@@ -83,6 +91,8 @@ export interface Database {
           bio?: string | null
           education?: string | null
           years_experience?: number | null
+          certifications?: string[] | null
+          teaching_philosophy?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -92,6 +102,8 @@ export interface Database {
           bio?: string | null
           education?: string | null
           years_experience?: number | null
+          certifications?: string[] | null
+          teaching_philosophy?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -207,6 +219,8 @@ export interface Database {
           name: string
           description: string | null
           grade_level: number[]
+          icon: string | null
+          color: string | null
           created_at: string
           updated_at: string
         }
@@ -215,6 +229,8 @@ export interface Database {
           name: string
           description?: string | null
           grade_level: number[]
+          icon?: string | null
+          color?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -223,6 +239,8 @@ export interface Database {
           name?: string
           description?: string | null
           grade_level?: number[]
+          icon?: string | null
+          color?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -233,6 +251,8 @@ export interface Database {
           subject_id: string
           name: string
           description: string | null
+          difficulty_level: string | null
+          estimated_duration: number | null
           created_at: string
           updated_at: string
         }
@@ -241,6 +261,8 @@ export interface Database {
           subject_id: string
           name: string
           description?: string | null
+          difficulty_level?: string | null
+          estimated_duration?: number | null
           created_at?: string
           updated_at?: string
         }
@@ -249,6 +271,8 @@ export interface Database {
           subject_id?: string
           name?: string
           description?: string | null
+          difficulty_level?: string | null
+          estimated_duration?: number | null
           created_at?: string
           updated_at?: string
         }
@@ -263,6 +287,8 @@ export interface Database {
           type: "text" | "image" | "voice" | "file"
           status: "active" | "completed" | "saved"
           tokens_used: number
+          rating: number | null
+          feedback: string | null
           created_at: string
           updated_at: string
         }
@@ -275,6 +301,8 @@ export interface Database {
           type: "text" | "image" | "voice" | "file"
           status: "active" | "completed" | "saved"
           tokens_used?: number
+          rating?: number | null
+          feedback?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -287,6 +315,8 @@ export interface Database {
           type?: "text" | "image" | "voice" | "file"
           status?: "active" | "completed" | "saved"
           tokens_used?: number
+          rating?: number | null
+          feedback?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -295,28 +325,31 @@ export interface Database {
         Row: {
           id: string
           session_id: string
-          role: "user" | "system"
+          role: "user" | "system" | "assistant"
           content: string
           media_url: string | null
           media_type: string | null
+          tokens: number | null
           created_at: string
         }
         Insert: {
           id?: string
           session_id: string
-          role: "user" | "system"
+          role: "user" | "system" | "assistant"
           content: string
           media_url?: string | null
           media_type?: string | null
+          tokens?: number | null
           created_at?: string
         }
         Update: {
           id?: string
           session_id?: string
-          role?: "user" | "system"
+          role?: "user" | "system" | "assistant"
           content?: string
           media_url?: string | null
           media_type?: string | null
+          tokens?: number | null
           created_at?: string
         }
       }
@@ -356,6 +389,7 @@ export interface Database {
           options: Json | null
           answer: string
           explanation: string | null
+          tags: string[] | null
           created_at: string
           updated_at: string
         }
@@ -368,6 +402,7 @@ export interface Database {
           options?: Json | null
           answer: string
           explanation?: string | null
+          tags?: string[] | null
           created_at?: string
           updated_at?: string
         }
@@ -380,6 +415,7 @@ export interface Database {
           options?: Json | null
           answer?: string
           explanation?: string | null
+          tags?: string[] | null
           created_at?: string
           updated_at?: string
         }
@@ -393,6 +429,8 @@ export interface Database {
           subject_id: string
           topic_ids: string[]
           due_date: string | null
+          time_limit: number | null
+          passing_score: number | null
           is_published: boolean
           created_at: string
           updated_at: string
@@ -405,6 +443,8 @@ export interface Database {
           subject_id: string
           topic_ids: string[]
           due_date?: string | null
+          time_limit?: number | null
+          passing_score?: number | null
           is_published?: boolean
           created_at?: string
           updated_at?: string
@@ -417,6 +457,8 @@ export interface Database {
           subject_id?: string
           topic_ids?: string[]
           due_date?: string | null
+          time_limit?: number | null
+          passing_score?: number | null
           is_published?: boolean
           created_at?: string
           updated_at?: string
@@ -434,7 +476,7 @@ export interface Database {
           id?: string
           assessment_id: string
           question_id: string
-          points?: number
+          points: number
           order: number
         }
         Update: {
@@ -452,8 +494,10 @@ export interface Database {
           student_id: string
           status: "assigned" | "in_progress" | "completed" | "graded"
           score: number | null
+          feedback: string | null
           started_at: string | null
           submitted_at: string | null
+          graded_at: string | null
           created_at: string
           updated_at: string
         }
@@ -463,8 +507,10 @@ export interface Database {
           student_id: string
           status: "assigned" | "in_progress" | "completed" | "graded"
           score?: number | null
+          feedback?: string | null
           started_at?: string | null
           submitted_at?: string | null
+          graded_at?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -474,8 +520,10 @@ export interface Database {
           student_id?: string
           status?: "assigned" | "in_progress" | "completed" | "graded"
           score?: number | null
+          feedback?: string | null
           started_at?: string | null
           submitted_at?: string | null
+          graded_at?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -488,6 +536,7 @@ export interface Database {
           answer: string
           is_correct: boolean | null
           points: number | null
+          feedback: string | null
           created_at: string
           updated_at: string
         }
@@ -498,6 +547,7 @@ export interface Database {
           answer: string
           is_correct?: boolean | null
           points?: number | null
+          feedback?: string | null
           created_at: string
           updated_at: string
         }
@@ -508,6 +558,7 @@ export interface Database {
           answer?: string
           is_correct?: boolean | null
           points?: number | null
+          feedback?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -522,6 +573,9 @@ export interface Database {
           subject: string
           room_number: string | null
           schedule: string | null
+          start_date: string | null
+          end_date: string | null
+          class_code: string | null
           created_at: string
           updated_at: string
         }
@@ -534,6 +588,9 @@ export interface Database {
           subject: string
           room_number?: string | null
           schedule?: string | null
+          start_date?: string | null
+          end_date?: string | null
+          class_code?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -546,6 +603,9 @@ export interface Database {
           subject?: string
           room_number?: string | null
           schedule?: string | null
+          start_date?: string | null
+          end_date?: string | null
+          class_code?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -589,6 +649,7 @@ export interface Database {
           sessions_completed: number
           questions_answered: number
           correct_answers: number
+          time_spent: number
           last_activity_at: string
           created_at: string
           updated_at: string
@@ -602,6 +663,7 @@ export interface Database {
           sessions_completed?: number
           questions_answered?: number
           correct_answers?: number
+          time_spent?: number
           last_activity_at: string
           created_at?: string
           updated_at?: string
@@ -615,6 +677,7 @@ export interface Database {
           sessions_completed?: number
           questions_answered?: number
           correct_answers?: number
+          time_spent?: number
           last_activity_at?: string
           created_at?: string
           updated_at?: string
@@ -654,6 +717,7 @@ export interface Database {
           path: string
           size: number
           type: string
+          metadata: Json | null
           created_at: string
           updated_at: string
         }
@@ -664,6 +728,7 @@ export interface Database {
           path: string
           size: number
           type: string
+          metadata?: Json | null
           created_at?: string
           updated_at?: string
         }
@@ -674,6 +739,7 @@ export interface Database {
           path?: string
           size?: number
           type?: string
+          metadata?: Json | null
           created_at?: string
           updated_at?: string
         }
