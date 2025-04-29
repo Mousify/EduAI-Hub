@@ -2,30 +2,42 @@ import type React from "react"
 import { DashboardNav } from "@/components/dashboard-nav"
 import { UserNav } from "@/components/user-nav"
 import { ModeToggle } from "@/components/mode-toggle"
+import { MobileNav } from "@/components/mobile-nav"
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-40 border-b bg-background">
-        <div className="container flex h-16 items-center justify-between py-4">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold">AI Tutoring Hub</h1>
-          </div>
-          <div className="flex items-center gap-2">
-            <ModeToggle />
-            <UserNav />
-          </div>
+      <header className="sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+        <div className="flex items-center gap-2 md:hidden">
+          <MobileNav />
+          <span className="text-lg font-semibold">EduAI Hub</span>
+        </div>
+        <div className="hidden md:flex md:items-center md:gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-6 w-6 text-primary"
+          >
+            <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+            <line x1="4" x2="4" y1="22" y2="15" />
+          </svg>
+          <span className="text-lg font-semibold">EduAI Hub</span>
+        </div>
+        <div className="ml-auto flex items-center gap-4">
+          <ModeToggle />
+          <UserNav />
         </div>
       </header>
-      <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
-        <aside className="hidden w-[200px] flex-col md:flex">
-          <DashboardNav />
+      <div className="flex flex-1">
+        <aside className="hidden w-64 md:block">
+          <DashboardNav className="h-full" />
         </aside>
-        <main className="flex w-full flex-1 flex-col overflow-hidden py-6">{children}</main>
+        <main className="flex-1 overflow-auto p-4 md:p-6">{children}</main>
       </div>
     </div>
   )

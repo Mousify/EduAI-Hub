@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
-import { useAuth, type UserRole } from "@/lib/auth-service"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -13,17 +13,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FaGoogle } from "react-icons/fa"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loader2 } from "lucide-react"
+import { useAuth } from "@/lib/auth-context"
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
-  const [role, setRole] = useState<UserRole>("student")
+  const [role, setRole] = useState<"student" | "teacher">("student")
   const [passwordError, setPasswordError] = useState("")
+  const [formError, setFormError] = useState<string | null>(null)
   const { signUp, signInWithGoogle, loading, error } = useAuth()
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setFormError(null)
 
     if (password !== confirmPassword) {
       setPasswordError("Passwords don't match")
@@ -31,11 +35,32 @@ export default function SignUpPage() {
     }
 
     setPasswordError("")
-    await signUp(email, password, role)
+
+    try {
+      const result = await signUp(email, password, role)
+
+      if (result.error) {
+        setFormError(result.error)
+      } else {
+        // Redirect to the appropriate dashboard based on role
+        if (role === "teacher") {
+          router.push("/teacher-dashboard")
+        } else {
+          router.push("/dashboard")
+        }
+      }
+    } catch (err: any) {
+      setFormError(err.message || "An error occurred during sign up")
+    }
   }
 
   const handleGoogleSignIn = async () => {
-    await signInWithGoogle(role)
+    try {
+      await signInWithGoogle(role)
+      // The redirect will be handled by the OAuth callback
+    } catch (err: any) {
+      setFormError(err.message || "An error occurred during Google sign in")
+    }
   }
 
   return (
@@ -48,7 +73,11 @@ export default function SignUpPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Tabs defaultValue="student" className="w-full" onValueChange={(value) => setRole(value as UserRole)}>
+          <Tabs
+            defaultValue="student"
+            className="w-full"
+            onValueChange={(value) => setRole(value as "student" | "teacher")}
+          >
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="student">Student</TabsTrigger>
               <TabsTrigger value="teacher">Teacher</TabsTrigger>
@@ -65,9 +94,9 @@ export default function SignUpPage() {
             </TabsContent>
           </Tabs>
 
-          {error && (
+          {(error || formError) && (
             <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
+              <AlertDescription>{error || formError}</AlertDescription>
             </Alert>
           )}
 

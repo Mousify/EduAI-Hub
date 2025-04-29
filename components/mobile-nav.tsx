@@ -10,80 +10,67 @@ import {
   BookOpen,
   BarChart,
   Settings,
-  Users,
-  Calendar,
-  FileText,
   MessageSquare,
-  Sparkles,
+  Dumbbell,
+  BookmarkIcon,
+  CreditCard,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
 
-export function TeacherMobileNav() {
+export function MobileNav() {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
 
   const routes = [
     {
-      href: "/teacher-dashboard",
+      href: "/dashboard",
       label: "Dashboard",
       icon: Home,
-      active: pathname === "/teacher-dashboard",
+      active: pathname === "/dashboard",
     },
     {
-      href: "/teacher-dashboard/classes",
-      label: "Classes",
-      icon: Users,
-      active: pathname === "/teacher-dashboard/classes",
-    },
-    {
-      href: "/teacher-dashboard/assessments",
-      label: "Assessments",
-      icon: FileText,
-      active: pathname === "/teacher-dashboard/assessments",
-    },
-    {
-      href: "/teacher-dashboard/students",
-      label: "Students",
-      icon: Users,
-      active: pathname === "/teacher-dashboard/students",
-    },
-    {
-      href: "/teacher-dashboard/resources",
-      label: "Resources",
-      icon: BookOpen,
-      active: pathname === "/teacher-dashboard/resources",
-    },
-    {
-      href: "/teacher-dashboard/messages",
-      label: "Messages",
+      href: "/dashboard/sessions",
+      label: "Tutoring Sessions",
       icon: MessageSquare,
-      active: pathname === "/teacher-dashboard/messages",
+      active: pathname === "/dashboard/sessions",
     },
     {
-      href: "/teacher-dashboard/calendar",
-      label: "Calendar",
-      icon: Calendar,
-      active: pathname === "/teacher-dashboard/calendar",
+      href: "/dashboard/practice",
+      label: "Practice",
+      icon: Dumbbell,
+      active: pathname === "/dashboard/practice",
     },
     {
-      href: "/teacher-dashboard/tools",
-      label: "AI Tools",
-      icon: Sparkles,
-      active: pathname.startsWith("/teacher-dashboard/tools"),
+      href: "/dashboard/resources",
+      label: "Resources",
+      icon: BookmarkIcon,
+      active: pathname === "/dashboard/resources",
     },
     {
-      href: "/teacher-dashboard/analytics",
+      href: "/dashboard/courses",
+      label: "Courses",
+      icon: BookOpen,
+      active: pathname === "/dashboard/courses",
+    },
+    {
+      href: "/dashboard/analytics",
       label: "Analytics",
       icon: BarChart,
-      active: pathname === "/teacher-dashboard/analytics",
+      active: pathname === "/dashboard/analytics",
     },
     {
-      href: "/teacher-dashboard/settings",
+      href: "/dashboard/billing",
+      label: "Billing",
+      icon: CreditCard,
+      active: pathname === "/dashboard/billing",
+    },
+    {
+      href: "/dashboard/settings",
       label: "Settings",
       icon: Settings,
-      active: pathname === "/teacher-dashboard/settings",
+      active: pathname === "/dashboard/settings",
     },
   ]
 
