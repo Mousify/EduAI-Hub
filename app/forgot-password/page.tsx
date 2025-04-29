@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -16,6 +17,7 @@ export default function ForgotPasswordPage() {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const supabase = createClientComponentClient()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -24,25 +26,20 @@ export default function ForgotPasswordPage() {
     setSuccess(false)
 
     try {
-      const response = await fetch("/api/auth/forgot-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/reset-password`,
       })
 
-      const data = await response.json()
-
-      if (!response.ok) {
-        setError(data.error || "An error occurred. Please try again.")
+      if (error) {
+        console.error("Reset password error:", error)
+        setError(error.message || "An error occurred. Please try again.")
         return
       }
 
       setSuccess(true)
     } catch (err) {
+      console.error("Reset password exception:", err)
       setError("An unexpected error occurred. Please try again.")
-      console.error(err)
     } finally {
       setIsLoading(false)
     }

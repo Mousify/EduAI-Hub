@@ -14,7 +14,7 @@ import { FaGoogle } from "react-icons/fa"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loader2 } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
-import { useSupabaseClient } from "@supabase/auth-helpers-react"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { HomeButton } from "@/components/home-button"
 
 export default function LoginPage() {
@@ -27,7 +27,7 @@ export default function LoginPage() {
   const [formError, setFormError] = useState<string | null>(null)
   const { signIn, signInWithGoogle, loading, error } = useAuth()
   const router = useRouter()
-  const supabase = useSupabaseClient()
+  const supabase = createClientComponentClient()
   const [isLoading, setIsLoading] = useState(false)
   const [errorMsg, setError] = useState("")
 
