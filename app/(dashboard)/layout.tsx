@@ -1,19 +1,17 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import "./test.css"
-import "../globals.css"
-import { ThemeProviderMain } from "@/components/theme-provider-main"
+import "../../globals.css"
+import { ThemeProvider } from "@/components/theme-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "EduAI Hub - AI-Powered Learning Platform",
+  title: "EduAI Hub - Dashboard",
   description: "AI-powered learning platform for students and teachers",
-    generator: 'v0.dev'
 }
 
-export default function RootLayout({
+export default function DashboardRootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
@@ -21,9 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProviderMain attribute="class" defaultTheme="light" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           {children}
-        </ThemeProviderMain>
+        </ThemeProvider>
       </body>
     </html>
   )
