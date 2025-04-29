@@ -1,5 +1,34 @@
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { MainNavigation } from "@/components/main-navigation"
+import { MobileNavigation } from "@/components/mobile-navigation"
+import { SiteFooter } from "@/components/site-footer"
+import { HomeButton } from "@/components/home-button"
+import { CheckCircle, HelpCircle, Building, Users, Sparkles, X } from "lucide-react"
+import Link from "next/link"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+
 export default function PrivacyPolicyPage() {
   return (
+  <div className="flex min-h-screen flex-col">
+    <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b bg-background/95 backdrop-blur px-4 md:px-6 lg:px-8">
+        <div className="flex items-center gap-2">
+          <MobileNavigation />
+          <HomeButton />
+        </div>
+
+        <MainNavigation />
+
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" asChild className="hidden md:inline-flex">
+            <Link href="/login">Log In</Link>
+          </Button>
+          <Button asChild>
+            <Link href="/signup">Sign Up</Link>
+          </Button>
+        </div>
+      </header>
+      
     <div className="container mx-auto py-12 px-4 md:px-6">
       <div className="space-y-4 text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight">Privacy Policy</h1>
@@ -108,5 +137,7 @@ export default function PrivacyPolicyPage() {
         </p>
       </div>
     </div>
-  )
+    <SiteFooter />
+  </div>
+ )
 }
