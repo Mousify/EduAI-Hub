@@ -1,11 +1,10 @@
-import { NextResponse } from "next/server";
-import { generateText } from "ai";
-import { openai } from "@ai-sdk/openai";
+import { NextResponse } from "next/server"
+import { generateText } from "ai"
+import { openai } from "@ai-sdk/openai"
 
 export async function POST(request: Request) {
   try {
-    const { topic, gradeLevel, subject, questionCount, questionTypes } =
-      await request.json();
+    const { topic, gradeLevel, subject, questionCount, questionTypes } = await request.json()
 
     const systemPrompt = `
       You are an expert educational assessment creator for grade ${gradeLevel} ${subject} classes.
@@ -26,32 +25,24 @@ export async function POST(request: Request) {
       - gradeLevel (string)
       - description (string)
       - questions (array of objects with keys: question, type, options (for multiple-choice), correctAnswer, explanation)
-    `;
+    `
 
     const { text } = await generateText({
       model: openai("gpt-4o"),
       system: systemPrompt,
-      prompt: `Create a ${questionCount}-question quiz on ${topic} for grade ${gradeLevel} ${subject} students, including these question types: ${questionTypes.join(
-        ", "
-      )}.`,
-    });
+      prompt: `Create a ${questionCount}-question quiz on ${topic} for grade ${gradeLevel} ${subject} students, including these question types: ${questionTypes.join(", ")}.`,
+    })
 
     // Parse the JSON response
     try {
-      const quiz = JSON.parse(text);
-      return NextResponse.json({ quiz });
+      const quiz = JSON.parse(text)
+      return NextResponse.json({ quiz })
     } catch (parseError) {
-      console.error("Error parsing quiz JSON:", parseError);
-      return NextResponse.json(
-        { error: "Failed to parse quiz" },
-        { status: 500 }
-      );
+      console.error("Error parsing quiz JSON:", parseError)
+      return NextResponse.json({ error: "Failed to parse quiz" }, { status: 500 })
     }
   } catch (error) {
-    console.error("Error generating quiz:", error);
-    return NextResponse.json(
-      { error: "Failed to generate quiz" },
-      { status: 500 }
-    );
+    console.error("Error generating quiz:", error)
+    return NextResponse.json({ error: "Failed to generate quiz" }, { status: 500 })
   }
 }

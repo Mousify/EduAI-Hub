@@ -1,99 +1,95 @@
-"use client";
+"use client"
 
-import type React from "react";
+import type React from "react"
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FaGoogle } from "react-icons/fa";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2 } from "lucide-react";
-import { useAuth } from "@/lib/auth-context";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { HomeButton } from "@/components/home-button";
+import { useState, useEffect } from "react"
+import Link from "next/link"
+import { useRouter, useSearchParams } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { FaGoogle } from "react-icons/fa"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Loader2 } from "lucide-react"
+import { useAuth } from "@/lib/auth-context"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { HomeButton } from "@/components/home-button"
 
 export default function LoginPage() {
-  const searchParams = useSearchParams();
-  const initialRole = searchParams.get("role") as "student" | "teacher" | null;
+  const searchParams = useSearchParams()
+  const initialRole = searchParams.get("role") as "student" | "teacher" | null
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState<"student" | "teacher">(
-    initialRole || "student"
-  );
-  const [formError, setFormError] = useState<string | null>(null);
-  const { signIn, signInWithGoogle, loading, error } = useAuth();
-  const router = useRouter();
-  const supabase = createClientComponentClient();
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMsg, setError] = useState("");
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [role, setRole] = useState<"student" | "teacher">(initialRole || "student")
+  const [formError, setFormError] = useState<string | null>(null)
+  const { signIn, signInWithGoogle, loading, error } = useAuth()
+  const router = useRouter()
+  const supabase = createClientComponentClient()
+  const [isLoading, setIsLoading] = useState(false)
+  const [errorMsg, setError] = useState("")
 
   // Update role when URL parameter changes
   useEffect(() => {
     if (initialRole === "teacher" || initialRole === "student") {
-      setRole(initialRole);
+      setRole(initialRole)
     }
-  }, [initialRole]);
+  }, [initialRole])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError("");
+    e.preventDefault()
+    setIsLoading(true)
+    setError("")
 
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
-      });
+      })
 
       if (error) {
-        setError(error.message);
-        setIsLoading(false);
-        return;
+        setError(error.message)
+        setIsLoading(false)
+        return
       }
 
       if (data?.user) {
-        // Check user role and redirect accordingly
-        const { data: userData } = await supabase
-          .from("profiles")
-          .select("role")
-          .eq("id", data.user.id)
-          .single();
+        // Check user role from user metadata first
+        const userRole = data.user.user_metadata?.role
 
-        if (userData?.role === "teacher") {
-          router.push("/teacher-dashboard");
+        if (userRole === "teacher") {
+          router.push("/teacher-dashboard")
+        } else if (userRole === "student") {
+          router.push("/dashboard")
         } else {
-          router.push("/dashboard");
+          // Fallback to database check if metadata doesn't have role
+          const { data: userData } = await supabase.from("users").select("role").eq("id", data.user.id).single()
+
+          if (userData?.role === "teacher") {
+            router.push("/teacher-dashboard")
+          } else {
+            router.push("/dashboard")
+          }
         }
       }
     } catch (error) {
-      console.error("Error during login:", error);
-      setError("An unexpected error occurred. Please try again.");
+      console.error("Error during login:", error)
+      setError("An unexpected error occurred. Please try again.")
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithGoogle(role);
+      await signInWithGoogle(role)
       // The redirect will be handled by the OAuth callback
     } catch (err: any) {
-      setFormError(err.message || "An error occurred during Google sign in");
+      setFormError(err.message || "An error occurred during Google sign in")
     }
-  };
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-b from-blue-50 to-white">
@@ -103,9 +99,7 @@ export default function LoginPage() {
       <div className="flex flex-1 items-center justify-center p-4">
         <Card className="w-full max-w-md shadow-lg">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-center">
-              Login
-            </CardTitle>
+            <CardTitle className="text-2xl font-bold text-center">Login</CardTitle>
             <CardDescription className="text-center">
               Enter your email and password to login to your account
             </CardDescription>
@@ -125,9 +119,7 @@ export default function LoginPage() {
 
             {(error || formError || errorMsg) && (
               <Alert variant="destructive">
-                <AlertDescription>
-                  {error || formError || errorMsg}
-                </AlertDescription>
+                <AlertDescription>{error || formError || errorMsg}</AlertDescription>
               </Alert>
             )}
 
@@ -146,10 +138,7 @@ export default function LoginPage() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Password</Label>
-                  <Link
-                    href="/forgot-password"
-                    className="text-sm text-blue-600 hover:underline"
-                  >
+                  <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
                     Forgot password?
                   </Link>
                 </div>
@@ -162,11 +151,7 @@ export default function LoginPage() {
                   required
                 />
               </div>
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={loading || isLoading}
-              >
+              <Button type="submit" className="w-full" disabled={loading || isLoading}>
                 {loading || isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -183,19 +168,11 @@ export default function LoginPage() {
                 <span className="w-full border-t" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-muted-foreground">
-                  Or continue with
-                </span>
+                <span className="bg-white px-2 text-muted-foreground">Or continue with</span>
               </div>
             </div>
 
-            <Button
-              variant="outline"
-              type="button"
-              className="w-full"
-              onClick={handleGoogleSignIn}
-              disabled={loading}
-            >
+            <Button variant="outline" type="button" className="w-full" onClick={handleGoogleSignIn} disabled={loading}>
               <FaGoogle className="mr-2 h-4 w-4" />
               Google
             </Button>
@@ -203,10 +180,7 @@ export default function LoginPage() {
           <CardFooter className="flex justify-center">
             <p className="text-sm text-muted-foreground">
               Don't have an account?{" "}
-              <Link
-                href={`/signup${role ? `?role=${role}` : ""}`}
-                className="text-blue-600 hover:underline"
-              >
+              <Link href={`/signup${role ? `?role=${role}` : ""}`} className="text-blue-600 hover:underline">
                 Sign up
               </Link>
             </p>
@@ -214,5 +188,5 @@ export default function LoginPage() {
         </Card>
       </div>
     </div>
-  );
+  )
 }

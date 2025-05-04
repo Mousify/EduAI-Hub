@@ -1,54 +1,41 @@
-import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs"
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
+import { locales, defaultLocale } from "@/lib/i18n/config"
 
-export async function middleware(req: NextRequest) {
-  const res = NextResponse.next()
-  const supabase = createMiddlewareClient({ req, res })
+// This function can be marked `async` if using `await` inside
+export function middleware(request: NextRequest) {
+  // Check if there is any supported locale in the pathname
+  const pathname = request.nextUrl.pathname
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+  // Check if the pathname should be excluded from locale detection
+  const excludedPaths = ["/api", "/_next", "/images", "/favicon.ico", "/robots.txt"]
+  const shouldExclude = excludedPaths.some((path) => pathname.startsWith(path))
 
-  // Check if the user is authenticated
-  if (!session) {
-    // If the user is not authenticated and trying to access a protected route, redirect to login
-    const protectedRoutes = ["/dashboard", "/teacher-dashboard", "/profile"]
-    const isProtectedRoute = protectedRoutes.some((route) => req.nextUrl.pathname.startsWith(route))
-
-    if (isProtectedRoute) {
-      const redirectUrl = new URL("/login", req.url)
-      redirectUrl.searchParams.set("redirect", req.nextUrl.pathname)
-      return NextResponse.redirect(redirectUrl)
-    }
+  if (shouldExclude) {
+    return NextResponse.next()
   }
 
-  // If the user is authenticated and trying to access auth pages, redirect to dashboard
-  if (session) {
-    const authRoutes = ["/login", "/signup", "/forgot-password"]
-    if (authRoutes.includes(req.nextUrl.pathname)) {
-      // Check user role to determine which dashboard to redirect to
-      const { data: userData } = await supabase.auth.getUser()
-      const role = userData.user?.user_metadata?.role || "student"
+  // Check if the pathname already has a locale
+  const pathnameHasLocale = locales.some((locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`)
 
-      const redirectUrl = role === "teacher" ? "/teacher-dashboard" : "/dashboard"
-      return NextResponse.redirect(new URL(redirectUrl, req.url))
-    }
+  if (pathnameHasLocale) return NextResponse.next()
+
+  // Get the preferred locale from the cookie or header
+  const cookieLocale = request.cookies.get("locale")?.value
+  const headerLocale = request.headers.get("accept-language")?.split(",")[0].split("-")[0]
+
+  // Determine the locale to use
+  let locale = defaultLocale
+  if (cookieLocale && locales.includes(cookieLocale as any)) {
+    locale = cookieLocale
+  } else if (headerLocale && locales.includes(headerLocale as any)) {
+    locale = headerLocale
   }
 
-  return res
+  // Redirect to the locale-prefixed URL
+  return NextResponse.redirect(new URL(`/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}`, request.url))
 }
 
-// Update the matcher to be more specific and avoid potential redirect loops
 export const config = {
-  matcher: [
-    // Protected routes
-    "/dashboard/:path*",
-    "/teacher-dashboard/:path*",
-    "/profile/:path*",
-    // Auth routes - be specific to avoid loops
-    "/login",
-    "/signup",
-    "/forgot-password",
-  ],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 }

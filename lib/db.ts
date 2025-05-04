@@ -238,3 +238,29 @@ export async function updateLearningStreak(userId: string) {
     return data
   }
 }
+
+// Changelog functions
+export async function getLatestChangelog(limit = 1) {
+  const { data, error } = await supabase
+    .from("changelog")
+    .select("*")
+    .order("release_date", { ascending: false })
+    .limit(limit)
+
+  if (error) throw error
+  return data
+}
+
+export async function getAllChangelogs(page = 1, pageSize = 10) {
+  const start = (page - 1) * pageSize
+  const end = start + pageSize - 1
+
+  const { data, error, count } = await supabase
+    .from("changelog")
+    .select("*", { count: "exact" })
+    .order("release_date", { ascending: false })
+    .range(start, end)
+
+  if (error) throw error
+  return { data, count }
+}

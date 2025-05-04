@@ -1,9 +1,16 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Facebook, Twitter, Instagram, Youtube, Mail } from "lucide-react"
+import { useLanguage } from "@/components/language-provider"
+import { LanguageSwitcher } from "@/components/language-switcher"
 
 export function SiteFooter() {
+  const { t } = useLanguage()
+  const currentYear = new Date().getFullYear()
+
   return (
     <footer className="bg-muted/40">
       <div className="container px-4 py-12 md:py-16 md:px-6">
@@ -23,7 +30,7 @@ export function SiteFooter() {
                 <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
                 <line x1="4" x2="4" y1="22" y2="15" />
               </svg>
-              <span className="text-lg font-semibold">EduAI Hub</span>
+              <span className="text-lg font-semibold">{t("common.appName")}</span>
             </div>
             <p className="text-sm text-muted-foreground">
               AI-powered learning platform for students and teachers, making education more accessible and personalized.
@@ -48,51 +55,51 @@ export function SiteFooter() {
             </div>
           </div>
           <div>
-            <h3 className="mb-3 text-sm font-medium">Main Navigation</h3>
+            <h3 className="mb-3 text-sm font-medium">{t("navigation.home")}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/" className="text-muted-foreground hover:text-foreground">
-                  Home
+                  {t("navigation.home")}
                 </Link>
               </li>
               <li>
                 <Link href="/schools" className="text-muted-foreground hover:text-foreground">
-                  For Schools & Districts
+                  {t("navigation.schools")}
                 </Link>
               </li>
               <li>
                 <Link href="/pricing" className="text-muted-foreground hover:text-foreground">
-                  Pricing
+                  {t("navigation.pricing")}
                 </Link>
               </li>
               <li>
                 <Link href="/blog" className="text-muted-foreground hover:text-foreground">
-                  Blog
+                  {t("navigation.blog")}
                 </Link>
               </li>
               <li>
                 <Link href="/events" className="text-muted-foreground hover:text-foreground">
-                  Events
+                  {t("navigation.events")}
                 </Link>
               </li>
               <li>
                 <Link href="/about" className="text-muted-foreground hover:text-foreground">
-                  About Us
+                  {t("navigation.about")}
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-muted-foreground hover:text-foreground">
-                  Contact
+                  {t("navigation.contact")}
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h3 className="mb-3 text-sm font-medium">Resources</h3>
+            <h3 className="mb-3 text-sm font-medium">{t("resources.title")}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/resources" className="text-muted-foreground hover:text-foreground">
-                  Help Center
+                  {t("resources.title")}
                 </Link>
               </li>
               <li>
@@ -118,21 +125,21 @@ export function SiteFooter() {
             </ul>
           </div>
           <div>
-            <h3 className="mb-3 text-sm font-medium">Legal</h3>
+            <h3 className="mb-3 text-sm font-medium">{t("footer.privacy")}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/privacy" className="text-muted-foreground hover:text-foreground">
-                  Privacy Policy
+                  {t("footer.privacy")}
                 </Link>
               </li>
               <li>
                 <Link href="/terms" className="text-muted-foreground hover:text-foreground">
-                  Terms of Service
+                  {t("footer.terms")}
                 </Link>
               </li>
               <li>
                 <Link href="/cookies" className="text-muted-foreground hover:text-foreground">
-                  Cookie Policy
+                  {t("cookies.cookiePolicy")}
                 </Link>
               </li>
               <li>
@@ -146,16 +153,20 @@ export function SiteFooter() {
         <div className="mt-12 border-t pt-8">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <p className="text-center text-xs text-muted-foreground">
-              © {new Date().getFullYear()} EduAI Hub. All rights reserved.
+              {t("footer.copyright", { year: currentYear.toString() })}
             </p>
             <div className="flex items-center space-x-4">
               <div className="flex space-x-2">
-                <Input type="email" placeholder="Subscribe to our newsletter" className="max-w-[240px]" />
+                <Input type="email" placeholder={t("footer.emailPlaceholder")} className="max-w-[240px]" />
                 <Button type="submit" size="sm">
                   <Mail className="mr-2 h-4 w-4" />
-                  <span>Subscribe</span>
+                  <span>{t("footer.subscribe")}</span>
                 </Button>
               </div>
+              <LanguageSwitcher />
+              <a href="mailto:info@mano10.lt" className="text-primary hover:underline">
+                info@mano10.lt
+              </a>
             </div>
           </div>
         </div>

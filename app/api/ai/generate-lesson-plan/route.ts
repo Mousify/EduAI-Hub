@@ -1,10 +1,10 @@
-import { NextResponse } from "next/server";
-import { generateText } from "ai";
-import { openai } from "@ai-sdk/openai";
+import { NextResponse } from "next/server"
+import { generateText } from "ai"
+import { openai } from "@ai-sdk/openai"
 
 export async function POST(request: Request) {
   try {
-    const { topic, gradeLevel, subject, duration } = await request.json();
+    const { topic, gradeLevel, subject, duration } = await request.json()
 
     const systemPrompt = `
       You are an expert educational content creator specializing in lesson plans for grade ${gradeLevel} ${subject} classes.
@@ -32,30 +32,24 @@ export async function POST(request: Request) {
       - assessment (string)
       - homework (string)
       - differentiation (object with keys: advanced, struggling)
-    `;
+    `
 
     const { text } = await generateText({
       model: openai("gpt-4o"),
       system: systemPrompt,
       prompt: `Create a ${duration}-minute lesson plan for grade ${gradeLevel} students on the topic of "${topic}" in the subject of ${subject}.`,
-    });
+    })
 
     // Parse the JSON response
     try {
-      const lessonPlan = JSON.parse(text);
-      return NextResponse.json({ lessonPlan });
+      const lessonPlan = JSON.parse(text)
+      return NextResponse.json({ lessonPlan })
     } catch (parseError) {
-      console.error("Error parsing lesson plan JSON:", parseError);
-      return NextResponse.json(
-        { error: "Failed to parse lesson plan" },
-        { status: 500 }
-      );
+      console.error("Error parsing lesson plan JSON:", parseError)
+      return NextResponse.json({ error: "Failed to parse lesson plan" }, { status: 500 })
     }
   } catch (error) {
-    console.error("Error generating lesson plan:", error);
-    return NextResponse.json(
-      { error: "Failed to generate lesson plan" },
-      { status: 500 }
-    );
+    console.error("Error generating lesson plan:", error)
+    return NextResponse.json({ error: "Failed to generate lesson plan" }, { status: 500 })
   }
 }
