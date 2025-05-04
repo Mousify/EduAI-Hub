@@ -7,6 +7,7 @@ import { AssistantProvider } from "@/components/ai-assistant/assistant-context"
 import { AssistantWidget } from "@/components/ai-assistant/assistant-widget"
 import { LanguageProvider } from "@/components/language-provider"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { ErrorBoundary } from "@/components/error-boundary"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -22,6 +23,25 @@ export const metadata: Metadata = {
     generator: 'v0.dev'
 }
 
+// Default translations to avoid fetch during initial load
+const defaultMessages = {
+  common: {
+    appName: "EduAI Hub",
+    loading: "Loading...",
+    error: "An error occurred",
+  },
+  navigation: {
+    home: "Home",
+    dashboard: "Dashboard",
+    login: "Log In",
+    signup: "Sign Up",
+    news: "News",
+    about: "About",
+    pricing: "Pricing",
+    blog: "Blog",
+  },
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -31,9 +51,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <LanguageProvider>
+          <LanguageProvider initialLocale="en" messages={defaultMessages}>
             <AssistantProvider>
-              {children}
+              <ErrorBoundary>{children}</ErrorBoundary>
               <AssistantWidget />
               <SpeedInsights />
             </AssistantProvider>

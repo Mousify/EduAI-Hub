@@ -5,62 +5,42 @@ import { useFrame } from "@react-three/fiber"
 import * as THREE from "three"
 import { useAnimationStore } from "@/lib/stores/animation-store"
 
-export function Particles({ count = 100, color = "#4f86f7" }) {
+export function Particles({ count = 15 }) {
+  const { enabled, reducedMotion } = useAnimationStore()
   const mesh = useRef()
-  const { enabled, quality, reducedMotion } = useAnimationStore()
 
-  // Adjust particle count based on quality setting
-  const particleCount = useMemo(() => {
-    if (!enabled) return 0
-    switch (quality) {
-      case "low":
-        return Math.floor(count / 3)
-      case "medium":
-        return count
-      case "high":
-        return count * 2
-      default:
-        return count
-    }
-  }, [count, quality, enabled])
-
-  // Create particles
-  const dummy = useMemo(() => new THREE.Object3D(), [])
+  // Generate particles with reduced count
   const particles = useMemo(() => {
     const temp = []
-    for (let i = 0; i < particleCount; i++) {
-      const position = new THREE.Vector3(
-        (Math.random() - 0.5) * 10,
-        (Math.random() - 0.5) * 10,
-        (Math.random() - 0.5) * 10,
-      )
-      const speed = 0.01 + Math.random() / 200
-      const rotation = Math.random()
-      temp.push({ position, speed, rotation })
+    for (let i = 0; i < count; i++) {
+      const size = Math.random() * 0.1 + 0.05
+      const factor = size * 0.2
+      const speed = Math.random() * 0.01 + 0.002
+      const x = Math.random() * 10 - 5
+      const y = Math.random() * 10 - 5
+      const z = Math.random() * 10 - 5
+
+      temp.push({ size, factor, speed, x, y, z, mx: 0, my: 0 })
     }
     return temp
-  }, [particleCount])
+  }, [count])
 
+  // Create geometry
+  const dummy = useMemo(() => new THREE.Object3D(), [])
+  const geo = useMemo(() => new THREE.SphereGeometry(1, 8, 8), [])
+
+  // Animation
   useFrame(() => {
     if (!enabled || reducedMotion || !mesh.current) return
 
     particles.forEach((particle, i) => {
-      const { position, speed, rotation } = particle
+      const { x, y, z, factor, speed } = particle
+      const t = Date.now() * speed
 
-      // Move in a circular pattern
-      position.y += Math.sin(rotation) * speed
-      position.x += Math.cos(rotation) * speed
+      dummy.position.set(x + Math.sin(t / 10) * factor, y + Math.cos(t / 10) * factor, z + Math.sin(t / 10) * factor)
 
-      // Reset position if out of bounds
-      if (position.y > 5) position.y = -5
-      if (position.y < -5) position.y = 5
-      if (position.x > 5) position.x = -5
-      if (position.x < -5) position.x = 5
-
-      // Apply position and rotation to instance
-      dummy.position.copy(position)
-      dummy.rotation.x = rotation * 2
-      dummy.rotation.y = rotation * 2
+      const s = particle.size
+      dummy.scale.set(s, s, s)
       dummy.updateMatrix()
 
       mesh.current.setMatrixAt(i, dummy.matrix)
@@ -70,9 +50,8 @@ export function Particles({ count = 100, color = "#4f86f7" }) {
   })
 
   return (
-    <instancedMesh ref={mesh} args={[null, null, particleCount]}>
-      <sphereGeometry args={[0.05, 8, 8]} />
-      <meshBasicMaterial color={color} />
+    <instancedMesh ref={mesh} args={[geo, null, count]}>
+      <meshStandardMaterial color="#61dafb" transparent opacity={0.6} />
     </instancedMesh>
   )
 }

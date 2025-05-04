@@ -2,19 +2,19 @@
 
 import { useRef, useState } from "react"
 import { useFrame } from "@react-three/fiber"
-import { useGLTF } from "@react-three/drei"
+import { Box } from "@react-three/drei"
 import { useAnimationStore } from "@/lib/stores/animation-store"
 
 export function FloatingBook(props) {
-  const { nodes, materials } = useGLTF("/models/book.glb")
   const ref = useRef()
   const [hovered, setHovered] = useState(false)
   const [clicked, setClicked] = useState(false)
   const { enabled, reducedMotion } = useAnimationStore()
 
-  // Animate the book floating and rotating
+  // Use a simple box instead of trying to load a model
+  // This avoids the 404 error for the missing model file
   useFrame((state) => {
-    if (!enabled || reducedMotion) return
+    if (!enabled || reducedMotion || !ref.current) return
 
     const t = state.clock.getElapsedTime()
     ref.current.rotation.x = Math.sin(t / 4) / 8
@@ -23,20 +23,16 @@ export function FloatingBook(props) {
   })
 
   return (
-    <group {...props} dispose={null}>
-      <mesh
-        ref={ref}
-        geometry={nodes.Book.geometry}
-        material={materials.BookMaterial}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
-        onClick={() => setClicked(!clicked)}
-        scale={clicked ? 1.2 : 1}
-      >
-        <meshStandardMaterial color={hovered ? "#4f86f7" : "#3366cc"} roughness={0.7} metalness={0.1} />
-      </mesh>
-    </group>
+    <Box
+      ref={ref}
+      args={[1, 1.5, 0.2]}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+      onClick={() => setClicked(!clicked)}
+      scale={clicked ? 1.2 : 1}
+      {...props}
+    >
+      <meshStandardMaterial color={hovered ? "#4f86f7" : "#3366cc"} roughness={0.7} metalness={0.1} />
+    </Box>
   )
 }
-
-useGLTF.preload("/models/book.glb")

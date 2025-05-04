@@ -1,7 +1,6 @@
 "use client"
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
-import { useRouter, usePathname } from "next/navigation"
 import { type Locale, defaultLocale, locales } from "@/lib/i18n/config"
 import { useLocalStorage } from "@/hooks/use-local-storage"
 
@@ -22,6 +21,25 @@ export function useLanguage() {
   return context
 }
 
+// Default translations as fallback
+const defaultTranslations = {
+  common: {
+    appName: "EduAI Hub",
+    loading: "Loading...",
+    error: "An error occurred",
+  },
+  navigation: {
+    home: "Home",
+    dashboard: "Dashboard",
+    login: "Log In",
+    signup: "Sign Up",
+    news: "News",
+    about: "About",
+    pricing: "Pricing",
+    blog: "Blog",
+  },
+}
+
 type LanguageProviderProps = {
   children: ReactNode
   initialLocale?: Locale
@@ -31,33 +49,68 @@ type LanguageProviderProps = {
 export function LanguageProvider({ children, initialLocale = defaultLocale, messages = {} }: LanguageProviderProps) {
   const [storedLocale, setStoredLocale] = useLocalStorage<Locale>("locale", initialLocale)
   const [locale, setLocale] = useState<Locale>(storedLocale || initialLocale)
-  const [translations, setTranslations] = useState<Record<string, any>>(messages)
+  const [translations, setTranslations] = useState<Record<string, any>>(messages || defaultTranslations)
   const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
-  const pathname = usePathname()
+  const [loadError, setLoadError] = useState(false)
 
   useEffect(() => {
     setStoredLocale(locale)
   }, [locale, setStoredLocale])
 
   useEffect(() => {
+    let isMounted = true
+
     async function loadTranslations() {
-      if (Object.keys(translations).length === 0) {
-        setIsLoading(true)
-        try {
-          const response = await fetch(`/messages/${locale}.json`)
-          const data = await response.json()
+      if (Object.keys(messages).length > 0) {
+        if (isMounted) {
+          setTranslations(messages)
+        }
+        return
+      }
+
+      setIsLoading(true)
+      try {
+        // Use public directory for translations with a timeout
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), 3000)
+
+        const response = await fetch(`/messages/${locale}.json`, {
+          signal: controller.signal,
+          cache: "force-cache",
+        })
+
+        clearTimeout(timeoutId)
+
+        if (!response.ok) {
+          throw new Error(`Failed to load translations: ${response.status}`)
+        }
+
+        const data = await response.json()
+
+        if (isMounted) {
           setTranslations(data)
-        } catch (error) {
-          console.error("Failed to load translations:", error)
-        } finally {
+          setLoadError(false)
+        }
+      } catch (error) {
+        console.error("Failed to load translations:", error)
+        if (isMounted) {
+          setLoadError(true)
+          // Use default translations as fallback
+          setTranslations(defaultTranslations)
+        }
+      } finally {
+        if (isMounted) {
           setIsLoading(false)
         }
       }
     }
 
     loadTranslations()
-  }, [locale, translations])
+
+    return () => {
+      isMounted = false
+    }
+  }, [locale, messages])
 
   const t = (key: string, params?: Record<string, string>): string => {
     const keys = key.split(".")
