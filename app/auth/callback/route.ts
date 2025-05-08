@@ -5,10 +5,24 @@ import { type NextRequest, NextResponse } from "next/server"
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get("code")
+  const state = requestUrl.searchParams.get("state")
+  const roleParam = requestUrl.searchParams.get("role")
+
+  console.log("Auth callback received:", { code: !!code, state: !!state, roleParam })
 
   if (code) {
     const cookieStore = cookies()
-    const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
+    const supabase = createRouteHandlerClient({
+      cookies: () => cookieStore,
+      options: {
+        cookieOptions: {
+          name: "sb-auth-token",
+          lifetime: 60 * 60 * 8,
+          sameSite: "lax",
+          secure: true,
+        },
+      },
+    })
 
     // Exchange the code for a session
     await supabase.auth.exchangeCodeForSession(code)
@@ -24,7 +38,9 @@ export async function GET(request: NextRequest) {
 
       if (!role) {
         // If no role is set, check if there's a stored role preference from the query params
-        const storedRole = requestUrl.searchParams.get("role") || "student"
+        const storedRole = roleParam || "student"
+
+        console.log("Setting user role:", storedRole)
 
         // Update the user with the role
         await supabase.auth.updateUser({

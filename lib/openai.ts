@@ -1,5 +1,17 @@
+import { createOpenAI } from "@ai-sdk/openai"
 import { generateText } from "ai"
-import { openai } from "@ai-sdk/openai"
+
+// Create OpenAI provider with API key
+// Using the same approach as Supabase which works
+const openaiApiKey = process.env.OPENAI_API_KEY
+if (!openaiApiKey) {
+  console.warn("OPENAI_API_KEY is not set in environment variables")
+}
+
+// Create the OpenAI provider instance
+const openaiProvider = createOpenAI({
+  apiKey: openaiApiKey || "",
+})
 
 // Function to generate a tutoring response
 export async function generateTutoringResponse(question: string, subject?: string, grade?: number) {
@@ -13,12 +25,12 @@ export async function generateTutoringResponse(question: string, subject?: strin
   Ask guiding questions to help the student think through the problem.`
 
   try {
+    console.log("OpenAI API Key available:", !!openaiApiKey)
+
     const { text } = await generateText({
-      model: openai("gpt-4o"),
+      model: openaiProvider("gpt-4o"),
       system: systemPrompt,
       prompt: question,
-      // Explicitly pass the API key from environment variable
-      apiKey: process.env.OPENAI_API_KEY,
     })
 
     return text
@@ -43,11 +55,9 @@ export async function generatePracticeProblems(topic: string, difficulty: string
 
   try {
     const { text } = await generateText({
-      model: openai("gpt-4o"),
+      model: openaiProvider("gpt-4o"),
       system: systemPrompt,
       prompt: `Generate ${count} ${difficulty} practice problems about ${topic}.`,
-      // Explicitly pass the API key from environment variable
-      apiKey: process.env.OPENAI_API_KEY,
     })
 
     // Parse the JSON response
@@ -79,11 +89,9 @@ export async function generateAssessment(subject: string, topics: string[], ques
 
   try {
     const { text } = await generateText({
-      model: openai("gpt-4o"),
+      model: openaiProvider("gpt-4o"),
       system: systemPrompt,
       prompt: `Generate a ${questionCount}-question assessment on ${subject} for grade ${grade} students, covering: ${topics.join(", ")}.`,
-      // Explicitly pass the API key from environment variable
-      apiKey: process.env.OPENAI_API_KEY,
     })
 
     // Parse the JSON response
@@ -97,4 +105,23 @@ export async function generateAssessment(subject: string, topics: string[], ques
     console.error("Error generating assessment:", error)
     throw new Error("Failed to generate assessment")
   }
+}
+
+// Add a diagnostic function to check environment variables
+export function checkEnvironmentVariables() {
+  const variables = {
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    SUPABASE_URL: process.env.SUPABASE_URL,
+    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
+  }
+
+  // Log which variables are defined (without revealing their values)
+  const definedVariables = Object.entries(variables).reduce((acc, [key, value]) => {
+    acc[key] = !!value
+    return acc
+  }, {})
+
+  console.log("Environment variables defined:", definedVariables)
+
+  return definedVariables
 }

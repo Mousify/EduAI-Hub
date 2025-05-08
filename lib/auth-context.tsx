@@ -30,7 +30,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
-  const supabase = createClientComponentClient()
+  const supabase = createClientComponentClient({
+    cookieOptions: {
+      name: "sb-auth-token",
+      lifetime: 60 * 60 * 8,
+      sameSite: "lax",
+      secure: true,
+    },
+  })
 
   useEffect(() => {
     const getSession = async () => {
@@ -216,19 +223,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(true)
     setError(null)
     try {
-      // Store the role in localStorage before redirecting
-      if (role) {
-        localStorage.setItem("pendingAuthRole", role)
+      // Generate a random state value for OAuth security
+      const state = Math.random().toString(36).substring(2, 15)
+
+      // Store the state and role in localStorage
+      if (typeof window !== "undefined") {
+        localStorage.setItem("oauthState", state)
+        if (role) {
+          localStorage.setItem("pendingAuthRole", role)
+        }
       }
+
+      const redirectUrl = `${window.location.origin}/auth/callback`
+      console.log("Redirect URL:", redirectUrl)
 
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback${role ? `?role=${role}` : ""}`,
+          redirectTo: redirectUrl,
           queryParams: {
             // Pass additional parameters to preserve the role through the OAuth flow
             access_type: "offline",
             prompt: "consent",
+            state: state,
+            role: role || "student", // Pass role as a query param
+          },
+          // Set cookie options for better security
+          cookieOptions: {
+            name: "sb-google-auth",
+            lifetime: 60 * 60 * 8,
+            sameSite: "lax",
+            secure: true,
           },
         },
       })
