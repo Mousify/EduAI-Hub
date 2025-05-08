@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { SubjectSelect } from "@/components/subject-select"
 import { HelpCircle, Mail, MessageSquare, Phone } from "lucide-react"
 import Link from "next/link"
 
@@ -75,21 +75,7 @@ export default function SupportPage() {
                 <Input id="email" type="email" placeholder="Your email address" />
               </div>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="subject">Subject</Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a subject" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="technical">Technical Issue</SelectItem>
-                  <SelectItem value="billing">Billing Question</SelectItem>
-                  <SelectItem value="account">Account Management</SelectItem>
-                  <SelectItem value="feature">Feature Request</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <SubjectSelect />
             <div className="space-y-2">
               <Label htmlFor="message">Message</Label>
               <Textarea id="message" placeholder="Describe your issue or question in detail" rows={5} />
