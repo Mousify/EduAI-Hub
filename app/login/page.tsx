@@ -56,22 +56,13 @@ export default function LoginPage() {
       }
 
       if (data?.user) {
-        // Check user role from user metadata first
-        const userRole = data.user.user_metadata?.role
+        // Check user role and redirect accordingly
+        const { data: userData } = await supabase.from("profiles").select("role").eq("id", data.user.id).single()
 
-        if (userRole === "teacher") {
+        if (userData?.role === "teacher") {
           router.push("/teacher-dashboard")
-        } else if (userRole === "student") {
-          router.push("/dashboard")
         } else {
-          // Fallback to database check if metadata doesn't have role
-          const { data: userData } = await supabase.from("users").select("role").eq("id", data.user.id).single()
-
-          if (userData?.role === "teacher") {
-            router.push("/teacher-dashboard")
-          } else {
-            router.push("/dashboard")
-          }
+          router.push("/dashboard")
         }
       }
     } catch (error) {

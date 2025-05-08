@@ -1,16 +1,8 @@
 import { generateText } from "ai"
 import { openai } from "@ai-sdk/openai"
 
-// Ensure we're using the environment variable correctly
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY
-
 // Function to generate a tutoring response
 export async function generateTutoringResponse(question: string, subject?: string, grade?: number) {
-  if (!OPENAI_API_KEY) {
-    console.error("OpenAI API key is missing")
-    throw new Error("OpenAI API key is missing. Please check your environment variables.")
-  }
-
   const systemPrompt = `You are an expert AI tutor for students in grades 5-12. 
   ${subject ? `The subject is ${subject}.` : ""} 
   ${grade ? `The student is in grade ${grade}.` : ""}
@@ -22,9 +14,11 @@ export async function generateTutoringResponse(question: string, subject?: strin
 
   try {
     const { text } = await generateText({
-      model: openai("gpt-4o", { apiKey: OPENAI_API_KEY }),
+      model: openai("gpt-4o"),
       system: systemPrompt,
       prompt: question,
+      // Explicitly pass the API key from environment variable
+      apiKey: process.env.OPENAI_API_KEY,
     })
 
     return text
@@ -34,13 +28,8 @@ export async function generateTutoringResponse(question: string, subject?: strin
   }
 }
 
-// Update the other functions similarly
+// Function to generate practice problems
 export async function generatePracticeProblems(topic: string, difficulty: string, count: number, grade?: number) {
-  if (!OPENAI_API_KEY) {
-    console.error("OpenAI API key is missing")
-    throw new Error("OpenAI API key is missing. Please check your environment variables.")
-  }
-
   const systemPrompt = `You are an expert educational content creator for students in grades 5-12.
   ${grade ? `The student is in grade ${grade}.` : ""}
   Create ${count} practice problems on the topic of "${topic}" at a ${difficulty} difficulty level.
@@ -54,9 +43,11 @@ export async function generatePracticeProblems(topic: string, difficulty: string
 
   try {
     const { text } = await generateText({
-      model: openai("gpt-4o", { apiKey: OPENAI_API_KEY }),
+      model: openai("gpt-4o"),
       system: systemPrompt,
       prompt: `Generate ${count} ${difficulty} practice problems about ${topic}.`,
+      // Explicitly pass the API key from environment variable
+      apiKey: process.env.OPENAI_API_KEY,
     })
 
     // Parse the JSON response
@@ -72,12 +63,8 @@ export async function generatePracticeProblems(topic: string, difficulty: string
   }
 }
 
+// Function to generate an assessment
 export async function generateAssessment(subject: string, topics: string[], questionCount: number, grade: number) {
-  if (!OPENAI_API_KEY) {
-    console.error("OpenAI API key is missing")
-    throw new Error("OpenAI API key is missing. Please check your environment variables.")
-  }
-
   const systemPrompt = `You are an expert educational assessment creator for grade ${grade} students.
   Create a comprehensive assessment for the subject "${subject}" covering the following topics: ${topics.join(", ")}.
   Include ${questionCount} questions of varying types (multiple choice, short answer, etc.) and difficulty levels.
@@ -92,9 +79,11 @@ export async function generateAssessment(subject: string, topics: string[], ques
 
   try {
     const { text } = await generateText({
-      model: openai("gpt-4o", { apiKey: OPENAI_API_KEY }),
+      model: openai("gpt-4o"),
       system: systemPrompt,
       prompt: `Generate a ${questionCount}-question assessment on ${subject} for grade ${grade} students, covering: ${topics.join(", ")}.`,
+      // Explicitly pass the API key from environment variable
+      apiKey: process.env.OPENAI_API_KEY,
     })
 
     // Parse the JSON response

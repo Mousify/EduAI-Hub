@@ -216,11 +216,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(true)
     setError(null)
     try {
+      // Store the role in localStorage before redirecting
+      if (role) {
+        localStorage.setItem("pendingAuthRole", role)
+      }
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-          queryParams: role ? { role } : undefined,
+          redirectTo: `${window.location.origin}/auth/callback${role ? `?role=${role}` : ""}`,
+          queryParams: {
+            // Pass additional parameters to preserve the role through the OAuth flow
+            access_type: "offline",
+            prompt: "consent",
+          },
         },
       })
 

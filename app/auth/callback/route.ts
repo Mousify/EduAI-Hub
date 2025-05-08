@@ -20,20 +20,15 @@ export async function GET(request: NextRequest) {
 
     if (user) {
       // Check if the user already has a role
-      const role = user.user_metadata.role
+      const role = user.user_metadata?.role
 
       if (!role) {
-        // If no role is set, check if there's a stored role preference
-        // This would be set during the OAuth initiation
-        // For server-side, we'd need to use a different mechanism like a temporary database record
-        // or a signed JWT in a cookie
-
-        // For now, default to student if no role is found
-        const defaultRole = "student"
+        // If no role is set, check if there's a stored role preference from the query params
+        const storedRole = requestUrl.searchParams.get("role") || "student"
 
         // Update the user with the role
         await supabase.auth.updateUser({
-          data: { role: defaultRole },
+          data: { role: storedRole },
         })
 
         // Create a profile in the appropriate table
@@ -43,19 +38,22 @@ export async function GET(request: NextRequest) {
           created_at: new Date().toISOString(),
         }
 
-        if (defaultRole === "student") {
-          await supabase.from("student_profiles").insert([profileData])
+        if (storedRole === "student") {
+          await supabase.from("student_profiles").upsert([profileData], { onConflict: "user_id" })
           return NextResponse.redirect(new URL("/dashboard", request.url))
         } else {
-          await supabase.from("teacher_profiles").insert([profileData])
+          await supabase.from("teacher_profiles").upsert([profileData], { onConflict: "user_id" })
           return NextResponse.redirect(new URL("/teacher-dashboard", request.url))
         }
       } else {
         // Redirect based on the existing role
         if (role === "student") {
           return NextResponse.redirect(new URL("/dashboard", request.url))
-        } else {
+        } else if (role === "teacher") {
           return NextResponse.redirect(new URL("/teacher-dashboard", request.url))
+        } else {
+          // Default fallback if role is invalid
+          return NextResponse.redirect(new URL("/", request.url))
         }
       }
     }

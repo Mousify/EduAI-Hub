@@ -13,11 +13,9 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { cn } from "@/lib/utils"
-import { useLanguage } from "@/components/language-provider"
 
 export function MainNavigation() {
   const pathname = usePathname()
-  const { t } = useLanguage()
 
   const isActive = (path: string) => pathname === path
 
@@ -26,12 +24,12 @@ export function MainNavigation() {
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link href="/" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>{t("navigation.home")}</NavigationMenuLink>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>Home</NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuTrigger>{t("navigation.dashboard")}</NavigationMenuTrigger>
+          <NavigationMenuTrigger>For Students</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 w-[400px] md:w-[500px] lg:w-[600px] grid-cols-2">
               <li className="row-span-3">
@@ -40,28 +38,28 @@ export function MainNavigation() {
                     className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-blue-500 to-blue-700 p-6 no-underline outline-none focus:shadow-md"
                     href="/dashboard"
                   >
-                    <div className="mt-4 mb-2 text-lg font-medium text-white">
-                      {t("dashboard.welcome", { name: "" })}
-                    </div>
-                    <p className="text-sm leading-tight text-white/90">{t("dashboard.recentActivity")}</p>
+                    <div className="mt-4 mb-2 text-lg font-medium text-white">My Dashboard</div>
+                    <p className="text-sm leading-tight text-white/90">
+                      Overview of personal progress, active assignments, upcoming tasks, and token balance.
+                    </p>
                   </a>
                 </NavigationMenuLink>
               </li>
-              <ListItem href="/dashboard/homework-helper" title={t("tutoring.sessions")}>
-                {t("tutoring.askQuestion")}
+              <ListItem href="/dashboard/homework-helper" title="AI Tutoring">
+                Upload assignments or type questions to receive personalized AI-powered tutoring help.
               </ListItem>
-              <ListItem href="/dashboard/practice" title={t("practice.title")}>
-                {t("practice.generateQuestions")}
+              <ListItem href="/dashboard/practice" title="Practice & Quizzes">
+                Generate custom exercises and quizzes for different subjects and difficulty levels.
               </ListItem>
-              <ListItem href="/dashboard/analytics" title={t("navigation.analytics")}>
-                {t("dashboard.progress")}
+              <ListItem href="/dashboard/analytics" title="Progress Reports">
+                View performance analytics, growth trends, and areas that need improvement.
               </ListItem>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuTrigger>{t("navigation.schools")}</NavigationMenuTrigger>
+          <NavigationMenuTrigger>For Teachers</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 w-[400px] md:w-[500px] lg:w-[600px] grid-cols-2">
               <li className="row-span-3">
@@ -70,57 +68,59 @@ export function MainNavigation() {
                     className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-green-500 to-green-700 p-6 no-underline outline-none focus:shadow-md"
                     href="/teacher-dashboard"
                   >
-                    <div className="mt-4 mb-2 text-lg font-medium text-white">{t("navigation.dashboard")}</div>
-                    <p className="text-sm leading-tight text-white/90">{t("dashboard.recentActivity")}</p>
+                    <div className="mt-4 mb-2 text-lg font-medium text-white">Teacher Dashboard</div>
+                    <p className="text-sm leading-tight text-white/90">
+                      High-level overview of class activities, student performance summaries, and recent alerts.
+                    </p>
                   </a>
                 </NavigationMenuLink>
               </li>
-              <ListItem href="/teacher-dashboard/classes" title={t("tutoring.sessions")}>
-                {t("tutoring.askQuestion")}
+              <ListItem href="/teacher-dashboard/classes" title="Class Management">
+                Tools to create, manage, and edit classes, add students, and assign lessons.
               </ListItem>
-              <ListItem href="/teacher-dashboard/tools" title={t("resources.title")}>
-                {t("resources.createResource")}
+              <ListItem href="/teacher-dashboard/tools" title="Content Generator">
+                Upload curricula or documents to auto-generate worksheets, quizzes, and class materials.
               </ListItem>
-              <ListItem href="/teacher-dashboard/students" title={t("navigation.analytics")}>
-                {t("dashboard.progress")}
+              <ListItem href="/teacher-dashboard/students" title="Live Monitoring">
+                Real-time observation of student AI sessions with feedback and intervention options.
               </ListItem>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <Link href="/news" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>{t("navigation.news")}</NavigationMenuLink>
+          <Link href="/schools" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>For Schools & Districts</NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
           <Link href="/pricing" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>{t("navigation.pricing")}</NavigationMenuLink>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>Pricing</NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
           <Link href="/blog" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>{t("navigation.blog")}</NavigationMenuLink>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>Blog</NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuTrigger>{t("navigation.about")}</NavigationMenuTrigger>
+          <NavigationMenuTrigger>About</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4">
-              <ListItem href="/about" title={t("navigation.about")}>
-                {t("footer.about")}
+              <ListItem href="/about" title="About Us">
+                Description of the project's mission, the founding team, and its vision for AI in education.
               </ListItem>
-              <ListItem href="/events" title={t("navigation.events")}>
-                {t("navigation.events")}
+              <ListItem href="/events" title="Events">
+                Calendar of upcoming events, such as webinars, platform demos, and educational workshops.
               </ListItem>
-              <ListItem href="/contact" title={t("navigation.contact")}>
-                {t("navigation.contact")}
+              <ListItem href="/contact" title="Contact">
+                Contact form, customer service email, and links to social media or support.
               </ListItem>
-              <ListItem href="/privacy" title={t("footer.privacy")}>
-                {t("footer.privacy")}
+              <ListItem href="/privacy" title="Privacy Policy">
+                Full legal documentation covering user data, GDPR/COPPA compliance, and user rights.
               </ListItem>
             </ul>
           </NavigationMenuContent>

@@ -79,8 +79,8 @@ export default function ContactPage() {
             </div>
             <h3 className="text-xl font-medium mb-2">Email Us</h3>
             <p className="text-muted-foreground mb-4">For general inquiries and support</p>
-            <a href="mailto:info@mano10.lt" className="text-primary hover:underline">
-              info@mano10.lt
+            <a href="mailto:support@eduaihub.com" className="text-primary hover:underline">
+              support@eduaihub.com
             </a>
           </CardContent>
         </Card>
