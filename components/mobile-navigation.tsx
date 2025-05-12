@@ -21,11 +21,11 @@ export function MobileNavigation() {
   // Define routes for each context
   const mainRoutes = [
     { href: "/", label: "Home" },
-    { href: "/pricing", label: "Pricing" },
+    { href: "/#features", label: "Features" },
+    { href: "/#pricing", label: "Pricing" },
+    { href: "/#testimonials", label: "Testimonials" },
     { href: "/about", label: "About" },
-    { href: "/blog", label: "Blog" },
     { href: "/contact", label: "Contact" },
-    { href: "/schools", label: "For Schools" },
   ]
 
   const studentRoutes = [
@@ -75,7 +75,7 @@ export function MobileNavigation() {
               <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
               <line x1="4" x2="4" y1="22" y2="15" />
             </svg>
-            <span className="text-lg font-semibold">EduAI Hub</span>
+            <span className="text-lg font-semibold">mano10</span>
           </div>
         </div>
         <nav className="flex-1 overflow-auto py-4">

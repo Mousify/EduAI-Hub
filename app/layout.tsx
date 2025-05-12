@@ -10,8 +10,8 @@ const inter = Inter({ subsets: ["latin"] })
 
 // Update the metadata to include the new domain
 export const metadata: Metadata = {
-  title: "EduAI Hub - AI-Powered Learning Platform",
-  description: "AI-powered learning platform for students and teachers",
+  title: "mano10 - AI-Powered Tools",
+  description: "AI-powered tools for enhancing productivity and creativity",
   metadataBase: new URL("https://mano10.lt"),
     generator: 'v0.dev'
 }
