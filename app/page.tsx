@@ -46,7 +46,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-white dark:bg-gray-950">
       <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b bg-background/95 backdrop-blur px-4 md:px-6 lg:px-8">
         <div className="flex items-center gap-2">
           <MobileNavigation />
@@ -67,7 +67,7 @@ export default function Home() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative overflow-hidden bg-background py-20 md:py-32">
+        <section className="relative overflow-hidden py-20 md:py-32">
           <div className="container relative z-10 mx-auto px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12">
               <div className="flex flex-col justify-center space-y-4">
@@ -108,7 +108,7 @@ export default function Home() {
         </section>
 
         {/* Student/Teacher Section */}
-        <section className="py-20 bg-gradient-to-b from-white to-muted/30 dark:from-gray-900 dark:to-gray-800">
+        <section className="py-20">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
               <div className="space-y-2">
@@ -226,7 +226,7 @@ export default function Home() {
         </section>
 
         {/* Value Propositions */}
-        <section id="features" className="py-20 bg-white dark:bg-gray-900">
+        <section id="features" className="py-20">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -239,37 +239,52 @@ export default function Home() {
             </div>
 
             <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 py-12 md:grid-cols-3">
-              <div className="flex flex-col items-center space-y-4 rounded-lg border p-6 text-center dark:border-gray-700">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20">
-                  <BookOpen className="h-8 w-8 text-primary" />
+              <div className="group relative overflow-hidden rounded-lg border p-6 text-center shadow-sm transition-all hover:shadow-md dark:border-gray-800">
+                <div className="absolute -right-10 -top-10 h-24 w-24 rounded-full bg-blue-100/50 dark:bg-blue-900/20"></div>
+                <div className="relative z-10 flex flex-col items-center space-y-4">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20">
+                    <BookOpen className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-bold">Content Generation</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Generate high-quality content for various purposes with our advanced AI tools.
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold">Content Generation</h3>
-                <p className="text-sm text-muted-foreground">
-                  Generate high-quality content for various purposes with our advanced AI tools.
-                </p>
               </div>
-              <div className="flex flex-col items-center space-y-4 rounded-lg border p-6 text-center dark:border-gray-700">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20">
-                  <Brain className="h-8 w-8 text-primary" />
+
+              <div className="group relative overflow-hidden rounded-lg border p-6 text-center shadow-sm transition-all hover:shadow-md dark:border-gray-800">
+                <div className="absolute -right-10 -top-10 h-24 w-24 rounded-full bg-blue-100/50 dark:bg-blue-900/20"></div>
+                <div className="relative z-10 flex flex-col items-center space-y-4">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20">
+                    <Brain className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-bold">Smart Analysis</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Analyze data and extract valuable insights with our AI-powered analytics tools.
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold">Smart Analysis</h3>
-                <p className="text-sm text-muted-foreground">
-                  Analyze data and extract valuable insights with our AI-powered analytics tools.
-                </p>
               </div>
-              <div className="flex flex-col items-center space-y-4 rounded-lg border p-6 text-center dark:border-gray-700">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20">
-                  <Sparkles className="h-8 w-8 text-primary" />
+
+              <div className="group relative overflow-hidden rounded-lg border p-6 text-center shadow-sm transition-all hover:shadow-md dark:border-gray-800">
+                <div className="absolute -right-10 -top-10 h-24 w-24 rounded-full bg-blue-100/50 dark:bg-blue-900/20"></div>
+                <div className="relative z-10 flex flex-col items-center space-y-4">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20">
+                    <Sparkles className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-bold">Creative Assistant</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Enhance your creativity with AI-powered suggestions and ideas for your projects.
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold">Creative Assistant</h3>
-                <p className="text-sm text-muted-foreground">
-                  Enhance your creativity with AI-powered suggestions and ideas for your projects.
-                </p>
               </div>
             </div>
 
             <div className="flex justify-center">
-              <Button size="lg" asChild>
+              <Button
+                size="lg"
+                asChild
+                className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600"
+              >
                 <Link href="/signup">
                   Try It Now
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -280,7 +295,7 @@ export default function Home() {
         </section>
 
         {/* Pricing Section */}
-        <section id="pricing" className="bg-muted/50 py-20 dark:bg-gray-800">
+        <section id="pricing" className="py-20">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center text-center space-y-4 mb-12">
               <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary">Pricing</div>
@@ -293,9 +308,10 @@ export default function Home() {
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:gap-8">
               {/* Free Plan */}
               <Card
-                className="flex flex-col border-primary/10 transition-all duration-300 dark:border-gray-700"
+                className="group relative overflow-hidden flex flex-col border-primary/10 transition-all duration-300 dark:border-gray-800"
                 ref={studentPricingRef}
               >
+                <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-blue-100/30 opacity-50 group-hover:opacity-70 transition-opacity dark:bg-blue-900/20"></div>
                 <CardHeader>
                   <CardTitle>Free</CardTitle>
                   <div className="mt-4 flex items-baseline text-5xl font-bold">
@@ -328,9 +344,10 @@ export default function Home() {
 
               {/* Pro Plan */}
               <Card
-                className="flex flex-col border-primary/20 shadow-lg transition-all duration-300 dark:border-gray-700"
+                className="group relative overflow-hidden flex flex-col border-primary/20 shadow-lg transition-all duration-300 dark:border-gray-800"
                 ref={teacherPricingRef}
               >
+                <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-blue-100/30 opacity-50 group-hover:opacity-70 transition-opacity dark:bg-blue-900/20"></div>
                 <CardHeader className="bg-primary/5 dark:bg-primary/10">
                   <div className="rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold w-fit dark:bg-primary/20">
                     MOST POPULAR
@@ -356,14 +373,18 @@ export default function Home() {
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  <Button asChild className="w-full bg-primary hover:bg-primary/90">
+                  <Button
+                    asChild
+                    className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600"
+                  >
                     <Link href="/signup?plan=pro">Subscribe Now</Link>
                   </Button>
                 </CardFooter>
               </Card>
 
               {/* Enterprise Plan */}
-              <Card className="flex flex-col border-primary/10 transition-all duration-300 dark:border-gray-700">
+              <Card className="group relative overflow-hidden flex flex-col border-primary/10 transition-all duration-300 dark:border-gray-800">
+                <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-blue-100/30 opacity-50 group-hover:opacity-70 transition-opacity dark:bg-blue-900/20"></div>
                 <CardHeader>
                   <CardTitle>Enterprise</CardTitle>
                   <div className="mt-4 flex items-baseline text-5xl font-bold">
@@ -386,7 +407,10 @@ export default function Home() {
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  <Button asChild className="w-full">
+                  <Button
+                    asChild
+                    className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600"
+                  >
                     <Link href="/signup?plan=enterprise">Subscribe Now</Link>
                   </Button>
                 </CardFooter>
@@ -396,7 +420,7 @@ export default function Home() {
             {/* Token Packages */}
             <div className="mt-16">
               <div className="flex flex-col items-center text-center space-y-4 mb-12">
-                <div className="inline-block rounded-lg bg-purple-100 px-3 py-1 text-sm text-purple-700 dark:bg-purple-900 dark:text-purple-300">
+                <div className="inline-block rounded-lg bg-blue-100 px-3 py-1 text-sm text-blue-700 dark:bg-blue-900 dark:text-blue-300">
                   Tokens
                 </div>
                 <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl">Additional AI Tokens</h2>
@@ -406,7 +430,8 @@ export default function Home() {
               </div>
 
               <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:gap-8">
-                <Card className="flex flex-col dark:border-gray-700">
+                <Card className="group relative overflow-hidden flex flex-col dark:border-gray-800">
+                  <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-blue-100/30 opacity-30 group-hover:opacity-50 transition-opacity dark:bg-blue-900/20"></div>
                   <CardHeader>
                     <CardTitle>Basic Pack</CardTitle>
                     <div className="mt-4 flex items-baseline text-3xl font-bold">$4.99</div>
@@ -419,9 +444,10 @@ export default function Home() {
                   </CardFooter>
                 </Card>
 
-                <Card className="flex flex-col border-purple-100 shadow-lg dark:border-purple-900">
-                  <CardHeader className="bg-purple-50 dark:bg-purple-900/30">
-                    <div className="rounded-full bg-purple-100 text-purple-700 px-3 py-1 text-xs font-semibold w-fit dark:bg-purple-800 dark:text-purple-200">
+                <Card className="group relative overflow-hidden flex flex-col border-blue-100 shadow-lg dark:border-blue-900">
+                  <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-blue-100/30 opacity-30 group-hover:opacity-50 transition-opacity dark:bg-blue-900/20"></div>
+                  <CardHeader className="bg-blue-50 dark:bg-blue-900/30">
+                    <div className="rounded-full bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold w-fit dark:bg-blue-800 dark:text-blue-200">
                       BEST VALUE
                     </div>
                     <CardTitle className="mt-2">Standard Pack</CardTitle>
@@ -431,14 +457,15 @@ export default function Home() {
                   <CardFooter>
                     <Button
                       asChild
-                      className="w-full bg-purple-600 hover:bg-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600"
+                      className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600"
                     >
                       <Link href="/dashboard/billing">Purchase</Link>
                     </Button>
                   </CardFooter>
                 </Card>
 
-                <Card className="flex flex-col dark:border-gray-700">
+                <Card className="group relative overflow-hidden flex flex-col dark:border-gray-800">
+                  <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-blue-100/30 opacity-30 group-hover:opacity-50 transition-opacity dark:bg-blue-900/20"></div>
                   <CardHeader>
                     <CardTitle>Premium Pack</CardTitle>
                     <div className="mt-4 flex items-baseline text-3xl font-bold">$19.99</div>
@@ -456,7 +483,7 @@ export default function Home() {
         </section>
 
         {/* Testimonials Section */}
-        <section id="testimonials" className="py-20 bg-white dark:bg-gray-900">
+        <section id="testimonials" className="py-20">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -504,7 +531,7 @@ export default function Home() {
         </section>
 
         {/* Free Tools Highlight */}
-        <section className="py-20 bg-muted/30 dark:bg-gray-800">
+        <section className="py-20">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -517,87 +544,100 @@ export default function Home() {
             </div>
 
             <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 py-12 md:grid-cols-2">
-              <div className="rounded-xl border bg-card p-6 shadow-sm dark:border-gray-700">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20">
-                  <Sparkles className="h-6 w-6 text-primary" />
+              <div className="group relative overflow-hidden rounded-xl border bg-card p-6 shadow-sm transition-all hover:shadow-md dark:border-gray-800">
+                <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-blue-100/30 opacity-30 group-hover:opacity-50 transition-opacity dark:bg-blue-900/20"></div>
+                <div className="relative z-10">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20">
+                    <Sparkles className="h-6 w-6 text-primary" />
+                  </div>
+                  <h3 className="mb-2 text-2xl font-bold">Basic Content Generator</h3>
+                  <p className="mb-4 text-muted-foreground">
+                    Create simple content pieces with our AI-powered generator. Perfect for getting started with AI
+                    content creation.
+                  </p>
+                  <ul className="mb-6 space-y-2">
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-primary" />
+                      <span>Generate short-form content</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-primary" />
+                      <span>Basic formatting options</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-primary" />
+                      <span>Export in multiple formats</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-primary" />
+                      <span>Up to 5 generations per day</span>
+                    </li>
+                  </ul>
+                  <Button
+                    asChild
+                    className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600"
+                  >
+                    <Link href="/signup">Try It Free</Link>
+                  </Button>
                 </div>
-                <h3 className="mb-2 text-2xl font-bold">Basic Content Generator</h3>
-                <p className="mb-4 text-muted-foreground">
-                  Create simple content pieces with our AI-powered generator. Perfect for getting started with AI
-                  content creation.
-                </p>
-                <ul className="mb-6 space-y-2">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-primary" />
-                    <span>Generate short-form content</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-primary" />
-                    <span>Basic formatting options</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-primary" />
-                    <span>Export in multiple formats</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-primary" />
-                    <span>Up to 5 generations per day</span>
-                  </li>
-                </ul>
-                <Button asChild>
-                  <Link href="/signup">Try It Free</Link>
-                </Button>
               </div>
-              <div className="rounded-xl border bg-card p-6 shadow-sm dark:border-gray-700">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20">
-                  <Brain className="h-6 w-6 text-primary" />
+
+              <div className="group relative overflow-hidden rounded-xl border bg-card p-6 shadow-sm transition-all hover:shadow-md dark:border-gray-800">
+                <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-blue-100/30 opacity-30 group-hover:opacity-50 transition-opacity dark:bg-blue-900/20"></div>
+                <div className="relative z-10">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20">
+                    <Brain className="h-6 w-6 text-primary" />
+                  </div>
+                  <h3 className="mb-2 text-2xl font-bold">Simple Data Analysis</h3>
+                  <p className="mb-4 text-muted-foreground">
+                    Analyze basic data sets and extract insights with our entry-level AI analytics tool.
+                  </p>
+                  <ul className="mb-6 space-y-2">
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-primary" />
+                      <span>Upload CSV and Excel files</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-primary" />
+                      <span>Basic data visualization</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-primary" />
+                      <span>Simple trend identification</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-primary" />
+                      <span>Up to 3 analyses per day</span>
+                    </li>
+                  </ul>
+                  <Button
+                    asChild
+                    className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600"
+                  >
+                    <Link href="/signup">Try It Free</Link>
+                  </Button>
                 </div>
-                <h3 className="mb-2 text-2xl font-bold">Simple Data Analysis</h3>
-                <p className="mb-4 text-muted-foreground">
-                  Analyze basic data sets and extract insights with our entry-level AI analytics tool.
-                </p>
-                <ul className="mb-6 space-y-2">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-primary" />
-                    <span>Upload CSV and Excel files</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-primary" />
-                    <span>Basic data visualization</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-primary" />
-                    <span>Simple trend identification</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-primary" />
-                    <span>Up to 3 analyses per day</span>
-                  </li>
-                </ul>
-                <Button asChild>
-                  <Link href="/signup">Try It Free</Link>
-                </Button>
               </div>
             </div>
           </div>
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-primary/5 dark:bg-gray-800/50">
+        <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-500 text-white">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center text-center space-y-4">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Ready to Get Started?</h2>
-              <p className="max-w-[600px] text-muted-foreground md:text-xl">
+              <p className="max-w-[600px] text-white/90 md:text-xl">
                 Join thousands of users already leveraging mano10's AI tools to enhance their productivity.
               </p>
               <div className="flex flex-col gap-2 min-[400px]:flex-row pt-4">
-                <Button size="lg" asChild>
+                <Button size="lg" asChild className="bg-white text-blue-600 hover:bg-gray-100">
                   <Link href="/signup">
                     Sign Up for Free
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" asChild>
+                <Button size="lg" variant="outline" asChild className="border-white text-white hover:bg-white/10">
                   <Link href="/login">Log In</Link>
                 </Button>
               </div>
@@ -626,22 +666,25 @@ function PricingItem({ children, included = false }) {
 
 function TestimonialCard({ name, role, quote }) {
   return (
-    <div className="flex flex-col items-start rounded-lg border bg-card p-6 shadow-sm dark:border-gray-700">
-      <div className="mb-4 flex">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <Star key={star} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-        ))}
-      </div>
-      <blockquote className="mb-4 flex-1 text-left">
-        <p className="text-muted-foreground">"{quote}"</p>
-      </blockquote>
-      <div className="flex items-center">
-        <div className="mr-3 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center dark:bg-primary/20">
-          <span className="text-primary font-semibold">{name.charAt(0)}</span>
+    <div className="group relative overflow-hidden flex flex-col items-start rounded-lg border bg-card p-6 shadow-sm transition-all hover:shadow-md dark:border-gray-800">
+      <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-blue-100/30 opacity-0 group-hover:opacity-30 transition-opacity dark:bg-blue-900/20"></div>
+      <div className="relative z-10 w-full">
+        <div className="mb-4 flex">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <Star key={star} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+          ))}
         </div>
-        <div>
-          <p className="font-medium">{name}</p>
-          <p className="text-sm text-muted-foreground">{role}</p>
+        <blockquote className="mb-4 flex-1 text-left">
+          <p className="text-muted-foreground">"{quote}"</p>
+        </blockquote>
+        <div className="flex items-center">
+          <div className="mr-3 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center dark:bg-primary/20">
+            <span className="text-primary font-semibold">{name.charAt(0)}</span>
+          </div>
+          <div>
+            <p className="font-medium">{name}</p>
+            <p className="text-sm text-muted-foreground">{role}</p>
+          </div>
         </div>
       </div>
     </div>
