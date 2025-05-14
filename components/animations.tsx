@@ -1,6 +1,8 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useEffect } from "react"
+import { motion, useAnimation } from "framer-motion"
+import { useInView } from "react-intersection-observer"
 import type { ReactNode } from "react"
 
 export function FadeIn({
@@ -8,24 +10,58 @@ export function FadeIn({
   direction = "up",
   delay = 0,
   className = "",
+  distance = 20,
+  once = true,
 }: {
   children: ReactNode
-  direction?: "up" | "down" | "left" | "right"
+  direction?: "up" | "down" | "left" | "right" | "none"
   delay?: number
   className?: string
+  distance?: number
+  once?: boolean
 }) {
-  const directionMap = {
-    up: { y: 20 },
-    down: { y: -20 },
-    left: { x: 20 },
-    right: { x: -20 },
+  const controls = useAnimation()
+  const [ref, inView] = useInView({
+    triggerOnce: once,
+    threshold: 0.1,
+  })
+
+  const getDirectionVariants = () => {
+    const variants = {
+      hidden: { opacity: 0 },
+      visible: { opacity: 1 },
+    }
+
+    if (direction === "up") {
+      variants.hidden = { ...variants.hidden, y: distance }
+      variants.visible = { ...variants.visible, y: 0 }
+    } else if (direction === "down") {
+      variants.hidden = { ...variants.hidden, y: -distance }
+      variants.visible = { ...variants.visible, y: 0 }
+    } else if (direction === "left") {
+      variants.hidden = { ...variants.hidden, x: distance }
+      variants.visible = { ...variants.visible, x: 0 }
+    } else if (direction === "right") {
+      variants.hidden = { ...variants.hidden, x: -distance }
+      variants.visible = { ...variants.visible, x: 0 }
+    }
+
+    return variants
   }
+
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible")
+    }
+  }, [controls, inView])
 
   return (
     <motion.div
-      initial={{ opacity: 0, ...directionMap[direction] }}
-      animate={{ opacity: 1, x: 0, y: 0 }}
-      transition={{ duration: 0.5, delay }}
+      ref={ref}
+      initial="hidden"
+      animate={controls}
+      variants={getDirectionVariants()}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
       className={className}
     >
       {children}

@@ -72,21 +72,21 @@ export default function Home() {
 
         <main className="flex-1">
           {/* Hero Section */}
-          <section className="relative overflow-hidden py-12 md:py-20 lg:py-32">
+          <section className="relative overflow-hidden py-16 md:py-24 lg:py-36">
             <div className="container relative z-10 mx-auto px-4 md:px-6">
-              <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 xl:grid-cols-2 items-center">
+              <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 xl:grid-cols-2 items-center">
                 <FadeIn direction="left" delay={0.2}>
-                  <div className="flex flex-col justify-center space-y-4">
-                    <div className="space-y-2">
+                  <div className="flex flex-col justify-center space-y-8">
+                    <div className="space-y-4">
                       <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
                         Dirbtinio intelekto įrankiai kiekvienam
                       </h1>
-                      <p className="max-w-[600px] text-muted-foreground md:text-xl">
+                      <p className="max-w-[600px] text-muted-foreground md:text-xl mt-4">
                         mano10 siūlo galingus dirbtinio intelekto įrankius, kurie padidina jūsų produktyvumą ir
                         kūrybiškumą.
                       </p>
                     </div>
-                    <div className="flex flex-col gap-2 sm:flex-row">
+                    <div className="flex flex-col gap-4 sm:flex-row pt-4">
                       <AnimateOnHover>
                         <Link
                           href="/signup"
@@ -122,18 +122,18 @@ export default function Home() {
           </section>
 
           {/* Student/Teacher Section */}
-          <section className="py-16 md:py-20">
+          <section className="py-16 md:py-24">
             <div className="container px-4 md:px-6">
               <FadeIn direction="up" delay={0.2}>
-                <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
-                  <div className="space-y-2">
+                <div className="flex flex-col items-center justify-center space-y-6 text-center mb-16">
+                  <div className="space-y-3">
                     <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary">
                       Pasirinkite savo kelią
                     </div>
                     <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
                       Pritaikyta jūsų poreikiams
                     </h2>
-                    <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                    <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mt-2">
                       Nesvarbu, ar esate mokinys, norintis mokytis, ar mokytojas, norintis pagerinti savo klasę, mes
                       turime jums tinkamus įrankius.
                     </p>
@@ -141,7 +141,7 @@ export default function Home() {
                 </div>
               </FadeIn>
 
-              <div className="grid gap-8 md:grid-cols-2">
+              <div className="grid gap-10 md:grid-cols-2">
                 {/* Student Option */}
                 <FadeIn direction="left" delay={0.3}>
                   <div className="group relative overflow-hidden rounded-2xl border border-blue-100 bg-gradient-to-b from-blue-50 to-white p-6 md:p-8 shadow-md transition-all hover:shadow-lg dark:border-blue-900 dark:from-blue-950 dark:to-gray-900">
@@ -159,7 +159,7 @@ export default function Home() {
                         asmeninėmis užduotimis.
                       </p>
 
-                      <ul className="mb-8 space-y-2">
+                      <ul className="mb-8 space-y-3">
                         <li className="flex items-start gap-2">
                           <CheckCircle className="h-5 w-5 text-blue-500 dark:text-blue-400 mt-0.5 shrink-0" />
                           <span>24/7 dirbtinio intelekto pagalba namų darbams</span>
@@ -180,7 +180,7 @@ export default function Home() {
 
                       <div className="mb-6">
                         <span className="text-3xl font-bold text-blue-600 dark:text-blue-300">Nemokamai</span>
-                        <span className="ml-1 text-muted-foreground">pradžiai</span>
+                        <span className="ml-2 text-muted-foreground">pradžiai</span>
                       </div>
 
                       <AnimateOnHover>
@@ -213,7 +213,7 @@ export default function Home() {
                         įrankius.
                       </p>
 
-                      <ul className="mb-8 space-y-2">
+                      <ul className="mb-8 space-y-3">
                         <li className="flex items-start gap-2">
                           <CheckCircle className="h-5 w-5 text-green-500 dark:text-green-400 mt-0.5 shrink-0" />
                           <span>Automatizuotas turinio kūrimas</span>
@@ -234,7 +234,7 @@ export default function Home() {
 
                       <div className="mb-6">
                         <span className="text-3xl font-bold text-green-600 dark:text-green-300">Nemokamai</span>
-                        <span className="ml-1 text-muted-foreground">pradžiai</span>
+                        <span className="ml-2 text-muted-foreground">pradžiai</span>
                       </div>
 
                       <AnimateOnHover>
@@ -254,7 +254,7 @@ export default function Home() {
           </section>
 
           {/* Testimonials Section (Coming Soon) */}
-          <section id="testimonials" className="py-16 md:py-20 bg-gray-50 dark:bg-gray-900" ref={testimonialsRef}>
+          <section id="testimonials" className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900" ref={testimonialsRef}>
             <div className="container px-4 md:px-6">
               <FadeIn direction="up" delay={0.2}>
                 <div className="flex flex-col items-center text-center space-y-4 mb-12">
@@ -313,19 +313,19 @@ export default function Home() {
           </section>
 
           {/* Pricing Section */}
-          <section id="pricing" className="py-16 md:py-20">
+          <section id="pricing" className="py-16 md:py-24">
             <div className="container px-4 md:px-6">
               <FadeIn direction="up" delay={0.2}>
-                <div className="flex flex-col items-center text-center space-y-4 mb-12">
+                <div className="flex flex-col items-center text-center space-y-4 mb-16">
                   <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary">Kainos</div>
                   <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Paprastos, skaidrios kainos</h2>
-                  <p className="max-w-[700px] text-muted-foreground md:text-xl">
+                  <p className="max-w-[700px] text-muted-foreground md:text-xl mt-2">
                     Pasirinkite jums tinkamą planą su lanksčiomis galimybėmis asmenims ir komandoms.
                   </p>
                 </div>
               </FadeIn>
 
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:gap-8">
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-3 lg:gap-10">
                 {/* Free Plan */}
                 <FadeIn direction="up" delay={0.3}>
                   <Card
@@ -337,7 +337,7 @@ export default function Home() {
                       <CardTitle>Nemokamas</CardTitle>
                       <div className="mt-4 flex items-baseline text-5xl font-bold">
                         0€
-                        <span className="ml-1 text-lg font-medium text-muted-foreground">/mėn.</span>
+                        <span className="ml-2 text-lg font-medium text-muted-foreground">/mėn.</span>
                       </div>
                       <CardDescription className="mt-4">
                         Puikiai tinka išbandyti platformą ir retkarčiais naudotis.
@@ -380,7 +380,7 @@ export default function Home() {
                       <CardTitle className="mt-2">Pro</CardTitle>
                       <div className="mt-4 flex items-baseline text-5xl font-bold">
                         19.99€
-                        <span className="ml-1 text-lg font-medium text-muted-foreground">/mėn.</span>
+                        <span className="ml-2 text-lg font-medium text-muted-foreground">/mėn.</span>
                       </div>
                       <CardDescription className="mt-4">Viskas, ko reikia profesionaliam naudojimui.</CardDescription>
                     </CardHeader>
@@ -418,7 +418,7 @@ export default function Home() {
                       <CardTitle>Įmonėms</CardTitle>
                       <div className="mt-4 flex items-baseline text-5xl font-bold">
                         49.99€
-                        <span className="ml-1 text-lg font-medium text-muted-foreground">/mėn.</span>
+                        <span className="ml-2 text-lg font-medium text-muted-foreground">/mėn.</span>
                       </div>
                       <CardDescription className="mt-4">Pažangūs įrankiai komandoms ir verslui.</CardDescription>
                     </CardHeader>
@@ -453,15 +453,15 @@ export default function Home() {
 
           {/* CTA Section */}
           <FadeIn direction="up" delay={0.2}>
-            <section className="py-16 md:py-20 bg-gradient-to-r from-blue-600 to-blue-500 text-white">
+            <section className="py-16 md:py-24 bg-gradient-to-r from-blue-600 to-blue-500 text-white">
               <div className="container px-4 md:px-6">
-                <div className="flex flex-col items-center text-center space-y-4">
+                <div className="flex flex-col items-center text-center space-y-6">
                   <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Pasiruošę pradėti?</h2>
                   <p className="max-w-[600px] text-white/90 md:text-xl">
                     Prisijunkite prie tūkstančių vartotojų, kurie jau naudojasi mano10 dirbtinio intelekto įrankiais,
                     kad padidintų savo produktyvumą.
                   </p>
-                  <div className="flex flex-col gap-2 sm:flex-row pt-4">
+                  <div className="flex flex-col gap-4 sm:flex-row pt-4">
                     <AnimateOnHover>
                       <Button size="lg" asChild className="bg-white text-blue-600 hover:bg-gray-100 w-full sm:w-auto">
                         <Link href="/signup">
