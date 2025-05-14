@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ArrowLeft, Loader2 } from "lucide-react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { Mano10Logo } from "@/components/mano10-logo"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -47,7 +48,7 @@ export default function LoginPage() {
       }
     } catch (error) {
       console.error("Error during login:", error)
-      setError("An unexpected error occurred. Please try again.")
+      setError("Įvyko netikėta klaida. Bandykite dar kartą.")
     } finally {
       setIsLoading(false)
     }
@@ -62,7 +63,7 @@ export default function LoginPage() {
         },
       })
     } catch (err: any) {
-      setError(err.message || "An error occurred during Google sign in")
+      setError(err.message || "Įvyko klaida prisijungiant per Google")
     }
   }
 
@@ -73,10 +74,10 @@ export default function LoginPage() {
         <div className="h-full w-full overflow-hidden rounded-[40px] bg-gradient-to-b from-blue-400 via-blue-600 to-blue-900 dark:from-blue-600 dark:via-blue-800 dark:to-blue-950">
           <div className="flex h-full flex-col items-center justify-center px-8 text-center text-white">
             <div className="mb-8">
-              <h1 className="text-2xl font-semibold">mano10</h1>
+              <Mano10Logo className="text-white" width={150} height={50} />
             </div>
-            <h2 className="mb-6 text-4xl font-bold">Welcome Back</h2>
-            <p className="mb-12 text-lg">Log in to access your account and continue your journey.</p>
+            <h2 className="mb-6 text-4xl font-bold">Sveiki sugrįžę</h2>
+            <p className="mb-12 text-lg">Prisijunkite prie savo paskyros ir tęskite savo kelionę.</p>
 
             <div className="w-full max-w-sm space-y-4">
               <div className="rounded-lg bg-white/10 p-4 backdrop-blur-sm">
@@ -84,7 +85,7 @@ export default function LoginPage() {
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-blue-700">
                     1
                   </span>
-                  <span className="text-lg">Log in to your account</span>
+                  <span className="text-lg">Prisijunkite prie savo paskyros</span>
                 </div>
               </div>
               <div className="rounded-lg bg-white/5 p-4 backdrop-blur-sm">
@@ -92,7 +93,7 @@ export default function LoginPage() {
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white">
                     2
                   </span>
-                  <span className="text-lg">Access your workspace</span>
+                  <span className="text-lg">Pasiekite savo darbo erdvę</span>
                 </div>
               </div>
               <div className="rounded-lg bg-white/5 p-4 backdrop-blur-sm">
@@ -100,7 +101,7 @@ export default function LoginPage() {
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white">
                     3
                   </span>
-                  <span className="text-lg">Continue your work</span>
+                  <span className="text-lg">Tęskite savo darbą</span>
                 </div>
               </div>
             </div>
@@ -118,12 +119,14 @@ export default function LoginPage() {
                 className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to home
+                Grįžti į pradžią
               </Link>
             </div>
 
-            <h2 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Log In</h2>
-            <p className="mb-8 text-gray-500 dark:text-gray-400">Enter your credentials to access your account.</p>
+            <h2 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Prisijungimas</h2>
+            <p className="mb-8 text-gray-500 dark:text-gray-400">
+              Įveskite savo prisijungimo duomenis, kad patektumėte į savo paskyrą.
+            </p>
 
             {error && (
               <div className="mb-4 rounded-lg bg-red-100 p-3 text-sm text-red-700 dark:bg-red-900/50 dark:text-red-200">
@@ -135,7 +138,7 @@ export default function LoginPage() {
               <div className="space-y-2">
                 <Input
                   className="h-12 border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400"
-                  placeholder="your@email.com"
+                  placeholder="jusu@pastas.lt"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -146,7 +149,7 @@ export default function LoginPage() {
               <div className="space-y-2">
                 <Input
                   className="h-12 border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400"
-                  placeholder="Password"
+                  placeholder="Slaptažodis"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -157,7 +160,7 @@ export default function LoginPage() {
                     href="/forgot-password"
                     className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
                   >
-                    Forgot password?
+                    Pamiršote slaptažodį?
                   </Link>
                 </div>
               </div>
@@ -170,10 +173,10 @@ export default function LoginPage() {
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Logging in...
+                    Jungiamasi...
                   </>
                 ) : (
-                  "Log In"
+                  "Prisijungti"
                 )}
               </Button>
             </form>
@@ -183,7 +186,7 @@ export default function LoginPage() {
                 <div className="w-full border-t border-gray-300 dark:border-gray-700"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="bg-white px-2 text-gray-500 dark:bg-gray-950 dark:text-gray-400">Or</span>
+                <span className="bg-white px-2 text-gray-500 dark:bg-gray-950 dark:text-gray-400">Arba</span>
               </div>
             </div>
 
@@ -210,16 +213,16 @@ export default function LoginPage() {
                   fill="#EA4335"
                 />
               </svg>
-              Sign in with Google
+              Prisijungti su Google
             </Button>
 
             <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
-              Don't have an account?{" "}
+              Neturite paskyros?{" "}
               <Link
                 href="/signup"
                 className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
               >
-                Sign up
+                Registruotis
               </Link>
             </p>
           </div>

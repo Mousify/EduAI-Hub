@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ArrowLeft, Loader2 } from "lucide-react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { Mano10Logo } from "@/components/mano10-logo"
 
 export default function SignUpPage() {
   const searchParams = useSearchParams()
@@ -32,13 +33,13 @@ export default function SignUpPage() {
     setPasswordError("")
 
     if (password !== confirmPassword) {
-      setPasswordError("Passwords do not match")
+      setPasswordError("Slaptažodžiai nesutampa")
       setIsLoading(false)
       return
     }
 
     if (password.length < 8) {
-      setPasswordError("Password must be at least 8 characters")
+      setPasswordError("Slaptažodis turi būti bent 8 simbolių ilgio")
       setIsLoading(false)
       return
     }
@@ -68,7 +69,7 @@ export default function SignUpPage() {
         }
       }
     } catch (err: any) {
-      setError(err.message || "An error occurred during sign up")
+      setError(err.message || "Registracijos metu įvyko klaida")
     } finally {
       setIsLoading(false)
     }
@@ -86,7 +87,7 @@ export default function SignUpPage() {
         },
       })
     } catch (err: any) {
-      setError(err.message || "An error occurred during Google sign in")
+      setError(err.message || "Įvyko klaida prisijungiant per Google")
     }
   }
 
@@ -97,10 +98,10 @@ export default function SignUpPage() {
         <div className="h-full w-full overflow-hidden rounded-[40px] bg-gradient-to-b from-blue-400 via-blue-600 to-blue-900 dark:from-blue-600 dark:via-blue-800 dark:to-blue-950">
           <div className="flex h-full flex-col items-center justify-center px-8 text-center text-white">
             <div className="mb-8">
-              <h1 className="text-2xl font-semibold">mano10</h1>
+              <Mano10Logo className="text-white" width={150} height={50} />
             </div>
-            <h2 className="mb-6 text-4xl font-bold">Get Started with Us</h2>
-            <p className="mb-12 text-lg">Complete these easy steps to register your account.</p>
+            <h2 className="mb-6 text-4xl font-bold">Pradėkite su mumis</h2>
+            <p className="mb-12 text-lg">Atlikite šiuos paprastus žingsnius, kad užregistruotumėte savo paskyrą.</p>
 
             <div className="w-full max-w-sm space-y-4">
               <div className="rounded-lg bg-white/10 p-4 backdrop-blur-sm">
@@ -108,7 +109,7 @@ export default function SignUpPage() {
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-blue-700">
                     1
                   </span>
-                  <span className="text-lg">Sign up your account</span>
+                  <span className="text-lg">Užregistruokite savo paskyrą</span>
                 </div>
               </div>
               <div className="rounded-lg bg-white/5 p-4 backdrop-blur-sm">
@@ -116,7 +117,7 @@ export default function SignUpPage() {
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white">
                     2
                   </span>
-                  <span className="text-lg">Set up your workspace</span>
+                  <span className="text-lg">Nustatykite savo darbo erdvę</span>
                 </div>
               </div>
               <div className="rounded-lg bg-white/5 p-4 backdrop-blur-sm">
@@ -124,7 +125,7 @@ export default function SignUpPage() {
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white">
                     3
                   </span>
-                  <span className="text-lg">Set up your profile</span>
+                  <span className="text-lg">Sukurkite savo profilį</span>
                 </div>
               </div>
             </div>
@@ -142,16 +143,18 @@ export default function SignUpPage() {
                 className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to home
+                Grįžti į pradžią
               </Link>
             </div>
 
-            <h2 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Sign Up Account</h2>
-            <p className="mb-8 text-gray-500 dark:text-gray-400">Enter your personal data to create your account.</p>
+            <h2 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Registracija</h2>
+            <p className="mb-8 text-gray-500 dark:text-gray-400">
+              Įveskite savo asmeninius duomenis, kad sukurtumėte paskyrą.
+            </p>
 
             {/* Role selection */}
             <div className="space-y-4 mb-6">
-              <Label className="text-gray-900 dark:text-white">I am a:</Label>
+              <Label className="text-gray-900 dark:text-white">Aš esu:</Label>
               <div className="grid grid-cols-2 gap-4">
                 <Button
                   type="button"
@@ -163,7 +166,7 @@ export default function SignUpPage() {
                   }
                   onClick={() => setRole("student")}
                 >
-                  Student
+                  Mokinys
                 </Button>
                 <Button
                   type="button"
@@ -175,13 +178,13 @@ export default function SignUpPage() {
                   }
                   onClick={() => setRole("teacher")}
                 >
-                  Teacher
+                  Mokytojas
                 </Button>
               </div>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 {role === "student"
-                  ? "Create a student account to access tutoring, practice exercises, and track your progress."
-                  : "Create a teacher account to access classroom management tools, content generation, and student analytics."}
+                  ? "Sukurkite mokinio paskyrą, kad gautumėte korepetavimo paslaugas, praktikos užduotis ir galėtumėte sekti savo pažangą."
+                  : "Sukurkite mokytojo paskyrą, kad gautumėte prieigą prie klasės valdymo įrankių, turinio kūrimo ir mokinių analitikos."}
               </p>
             </div>
 
@@ -194,12 +197,12 @@ export default function SignUpPage() {
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-gray-900 dark:text-white">
-                  Email
+                  El. paštas
                 </Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="name@example.com"
+                  placeholder="vardas@pavyzdys.lt"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -208,7 +211,7 @@ export default function SignUpPage() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-gray-900 dark:text-white">
-                  Password
+                  Slaptažodis
                 </Label>
                 <Input
                   id="password"
@@ -222,7 +225,7 @@ export default function SignUpPage() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword" className="text-gray-900 dark:text-white">
-                  Confirm Password
+                  Patvirtinti slaptažodį
                 </Label>
                 <Input
                   id="confirmPassword"
@@ -234,7 +237,7 @@ export default function SignUpPage() {
                   className="h-12 border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400"
                 />
                 {passwordError && <p className="text-sm text-red-600 dark:text-red-400">{passwordError}</p>}
-                <p className="text-sm text-gray-500 dark:text-gray-400">Must be at least 8 characters.</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Turi būti bent 8 simbolių ilgio.</p>
               </div>
 
               <Button
@@ -245,10 +248,10 @@ export default function SignUpPage() {
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Creating account...
+                    Kuriama paskyra...
                   </>
                 ) : (
-                  "Sign Up"
+                  "Registruotis"
                 )}
               </Button>
             </form>
@@ -258,7 +261,7 @@ export default function SignUpPage() {
                 <div className="w-full border-t border-gray-300 dark:border-gray-700"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="bg-white px-2 text-gray-500 dark:bg-gray-950 dark:text-gray-400">Or</span>
+                <span className="bg-white px-2 text-gray-500 dark:bg-gray-950 dark:text-gray-400">Arba</span>
               </div>
             </div>
 
@@ -285,16 +288,16 @@ export default function SignUpPage() {
                   fill="#EA4335"
                 />
               </svg>
-              Sign in with Google
+              Prisijungti su Google
             </Button>
 
             <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
-              Already have an account?{" "}
+              Jau turite paskyrą?{" "}
               <Link
                 href="/login"
                 className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
               >
-                Log in
+                Prisijungti
               </Link>
             </p>
           </div>

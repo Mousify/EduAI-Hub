@@ -20,32 +20,31 @@ export function MobileNavigation() {
 
   // Define routes for each context
   const mainRoutes = [
-    { href: "/", label: "Home" },
-    { href: "/#features", label: "Features" },
-    { href: "/#pricing", label: "Pricing" },
-    { href: "/#testimonials", label: "Testimonials" },
-    { href: "/about", label: "About" },
-    { href: "/contact", label: "Contact" },
+    { href: "/", label: "Pradžia" },
+    { href: "/#pricing", label: "Kainos" },
+    { href: "/#testimonials", label: "Atsiliepimai" },
+    { href: "/about", label: "Apie mus" },
+    { href: "/contact", label: "Kontaktai" },
   ]
 
   const studentRoutes = [
-    { href: "/dashboard", label: "Dashboard" },
-    { href: "/dashboard/homework-helper", label: "Homework Helper" },
-    { href: "/dashboard/practice", label: "Practice" },
-    { href: "/dashboard/tutoring", label: "Tutoring" },
-    { href: "/dashboard/study-guides", label: "Study Guides" },
-    { href: "/dashboard/resources", label: "Resources" },
-    { href: "/dashboard/settings", label: "Settings" },
+    { href: "/dashboard", label: "Skydelis" },
+    { href: "/dashboard/homework-helper", label: "Namų darbų pagalba" },
+    { href: "/dashboard/practice", label: "Praktika" },
+    { href: "/dashboard/tutoring", label: "Korepetavimas" },
+    { href: "/dashboard/study-guides", label: "Mokymosi gidai" },
+    { href: "/dashboard/resources", label: "Ištekliai" },
+    { href: "/dashboard/settings", label: "Nustatymai" },
   ]
 
   const teacherRoutes = [
-    { href: "/teacher-dashboard", label: "Dashboard" },
-    { href: "/teacher-dashboard/classes", label: "Classes" },
-    { href: "/teacher-dashboard/students", label: "Students" },
-    { href: "/teacher-dashboard/assessments", label: "Assessments" },
-    { href: "/teacher-dashboard/tools", label: "AI Tools" },
-    { href: "/teacher-dashboard/resources", label: "Resources" },
-    { href: "/teacher-dashboard/settings", label: "Settings" },
+    { href: "/teacher-dashboard", label: "Skydelis" },
+    { href: "/teacher-dashboard/classes", label: "Klasės" },
+    { href: "/teacher-dashboard/students", label: "Mokiniai" },
+    { href: "/teacher-dashboard/assessments", label: "Vertinimai" },
+    { href: "/teacher-dashboard/tools", label: "DI įrankiai" },
+    { href: "/teacher-dashboard/resources", label: "Ištekliai" },
+    { href: "/teacher-dashboard/settings", label: "Nustatymai" },
   ]
 
   // Select the appropriate routes based on context
@@ -109,14 +108,14 @@ export function MobileNavigation() {
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all bg-primary text-primary-foreground"
                 >
-                  Sign In
+                  Prisijungti
                 </Link>
                 <Link
                   href="/signup"
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all border border-input"
                 >
-                  Sign Up
+                  Registruotis
                 </Link>
               </>
             )}
@@ -127,7 +126,7 @@ export function MobileNavigation() {
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all border border-input"
               >
-                Back to Home
+                Grįžti į pradžią
               </Link>
             )}
 
@@ -140,7 +139,7 @@ export function MobileNavigation() {
                   // You would typically call your signOut function here
                 }}
               >
-                Sign Out
+                Atsijungti
               </Button>
             )}
           </div>
