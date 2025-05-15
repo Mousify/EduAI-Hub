@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ArrowLeft, Loader2 } from "lucide-react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { Mano10Logo } from "@/components/mano10-logo"
 
 export default function SignUpPage() {
   const searchParams = useSearchParams()
@@ -97,7 +98,7 @@ export default function SignUpPage() {
         <div className="h-full w-full overflow-hidden rounded-[40px] bg-gradient-to-b from-blue-400 via-blue-600 to-blue-900 dark:from-blue-600 dark:via-blue-800 dark:to-blue-950">
           <div className="flex h-full flex-col items-center justify-center px-8 text-center text-white">
             <div className="mb-8">
-              <h1 className="text-2xl font-semibold">mano10</h1>
+              <Mano10Logo width={150} height={50} className="text-white" />
             </div>
             <h2 className="mb-6 text-4xl font-bold">Pradėkite su mumis</h2>
             <p className="mb-12 text-lg">Atlikite šiuos paprastus žingsnius, kad užregistruotumėte savo paskyrą.</p>

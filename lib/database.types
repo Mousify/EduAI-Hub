@@ -9,41 +9,7 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      users: {
-        Row: {
-          id: string
-          auth_id: string
-          email: string
-          name: string
-          role: "student" | "teacher" | "admin"
-          avatar_url: string | null
-          grade_level: number | null
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          auth_id: string
-          email: string
-          name: string
-          role: "student" | "teacher" | "admin"
-          avatar_url?: string | null
-          grade_level?: number | null
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          auth_id?: string
-          email?: string
-          name?: string
-          role?: "student" | "teacher" | "admin"
-          avatar_url?: string | null
-          grade_level?: number | null
-          created_at?: string
-          updated_at?: string
-        }
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never

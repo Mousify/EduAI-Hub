@@ -1,9 +1,10 @@
 import Link from "next/link"
+import { Mano10Logo } from "@/components/mano10-logo"
 
 export function HomeButton() {
   return (
-    <Link href="/" className="flex items-center gap-2">
-      <span className="text-lg font-semibold">mano10</span>
+    <Link href="/" className="flex items-center">
+      <Mano10Logo width={120} height={40} className="text-white" />
     </Link>
   )
 }

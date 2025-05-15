@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Facebook, Twitter, Instagram, Youtube, Mail } from "lucide-react"
+import { Mano10Logo } from "@/components/mano10-logo"
 
 export function SiteFooter() {
   return (
@@ -10,7 +11,7 @@ export function SiteFooter() {
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <span className="text-lg font-semibold">mano10</span>
+              <Mano10Logo width={120} height={40} className="text-white" />
             </div>
             <p className="text-sm text-muted-foreground">
               AI-powered tools for enhancing productivity and creativity, making advanced technology accessible to
