@@ -18,8 +18,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
-import { ModeToggle } from "@/components/mode-toggle"
-import { Mano10Logo } from "@/components/mano10-logo"
 
 export function MobileNav() {
   const [open, setOpen] = useState(false)
@@ -87,7 +85,20 @@ export function MobileNav() {
       <SheetContent side="left" className="flex flex-col p-0">
         <div className="flex items-center justify-between border-b px-4 py-2">
           <div className="flex items-center gap-2">
-            <Mano10Logo width={100} height={32} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-6 w-6 text-primary"
+            >
+              <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+              <line x1="4" x2="4" y1="22" y2="15" />
+            </svg>
+            <span className="text-lg font-semibold">EduAI Hub</span>
           </div>
           <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
             <X className="h-5 w-5" />
@@ -114,17 +125,6 @@ export function MobileNav() {
             ))}
           </div>
         </nav>
-        <div className="border-t p-4 flex flex-col gap-2">
-          <ModeToggle />
-          <div className="grid grid-cols-2 gap-2 mt-2">
-            <Button variant="outline" asChild className="w-full">
-              <Link href="/login">Prisijungti</Link>
-            </Button>
-            <Button asChild className="w-full">
-              <Link href="/signup">Registruotis</Link>
-            </Button>
-          </div>
-        </div>
       </SheetContent>
     </Sheet>
   )

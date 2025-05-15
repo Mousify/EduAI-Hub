@@ -9,10 +9,10 @@ import { SiteFooter } from "@/components/site-footer"
 import { CheckCircle, ArrowRight, GraduationCap, School, Check, X, Star, Clock } from "lucide-react"
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { HomeButton } from "@/components/home-button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { HeroImage } from "@/components/hero-image"
 import { FadeIn, AnimateOnHover, AnimatePresence } from "@/components/animations"
-import { Mano10Logo } from "@/components/mano10-logo"
 
 export default function Home() {
   const studentPricingRef = useRef<HTMLDivElement>(null)
@@ -53,9 +53,7 @@ export default function Home() {
         <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b bg-background/95 backdrop-blur px-4 md:px-6 lg:px-8">
           <div className="flex items-center gap-2">
             <MobileNavigation />
-            <Link href="/" className="flex items-center">
-              <Mano10Logo width={120} height={40} className="text-white" />
-            </Link>
+            <HomeButton />
           </div>
 
           <MainNavigation />
@@ -124,7 +122,7 @@ export default function Home() {
           </section>
 
           {/* Student/Teacher Section */}
-          <section id="path" className="py-16 md:py-24">
+          <section className="py-16 md:py-24">
             <div className="container px-4 md:px-6">
               <FadeIn direction="up" delay={0.2}>
                 <div className="flex flex-col items-center justify-center space-y-6 text-center mb-16">
@@ -251,6 +249,65 @@ export default function Home() {
                     </div>
                   </div>
                 </FadeIn>
+              </div>
+            </div>
+          </section>
+
+          {/* Testimonials Section (Coming Soon) */}
+          <section id="testimonials" className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900" ref={testimonialsRef}>
+            <div className="container px-4 md:px-6">
+              <FadeIn direction="up" delay={0.2}>
+                <div className="flex flex-col items-center text-center space-y-4 mb-12">
+                  <div className="inline-block rounded-lg bg-blue-100 px-3 py-1 text-sm text-blue-700 dark:bg-blue-900 dark:text-blue-300">
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4" />
+                      <span>Netrukus</span>
+                    </div>
+                  </div>
+                  <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Vartotojų atsiliepimai</h2>
+                  <p className="max-w-[700px] text-muted-foreground md:text-xl">
+                    Šis skyrius bus atnaujintas netrukus su tikrais vartotojų atsiliepimais apie mano10 platformą.
+                  </p>
+                </div>
+              </FadeIn>
+
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 opacity-60">
+                {/* Placeholder Testimonial Cards */}
+                {[1, 2, 3].map((i) => (
+                  <Card key={i} className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                    <CardHeader>
+                      <div className="flex items-center gap-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star key={star} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        ))}
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
+                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full mb-2"></div>
+                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6 mb-2"></div>
+                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4/5"></div>
+                    </CardContent>
+                    <CardFooter>
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+                        <div>
+                          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24 mb-1"></div>
+                          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-32"></div>
+                        </div>
+                      </div>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+
+              <div className="mt-12 text-center">
+                <p className="text-muted-foreground">
+                  Norite pasidalinti savo patirtimi?{" "}
+                  <Link href="/contact" className="text-blue-600 hover:underline dark:text-blue-400">
+                    Susisiekite su mumis
+                  </Link>
+                </p>
               </div>
             </div>
           </section>
@@ -390,65 +447,6 @@ export default function Home() {
                     </CardFooter>
                   </Card>
                 </FadeIn>
-              </div>
-            </div>
-          </section>
-
-          {/* Testimonials Section (Coming Soon) */}
-          <section id="testimonials" className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900" ref={testimonialsRef}>
-            <div className="container px-4 md:px-6">
-              <FadeIn direction="up" delay={0.2}>
-                <div className="flex flex-col items-center text-center space-y-4 mb-12">
-                  <div className="inline-block rounded-lg bg-blue-100 px-3 py-1 text-sm text-blue-700 dark:bg-blue-900 dark:text-blue-300">
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4" />
-                      <span>Netrukus</span>
-                    </div>
-                  </div>
-                  <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Vartotojų atsiliepimai</h2>
-                  <p className="max-w-[700px] text-muted-foreground md:text-xl">
-                    Šis skyrius bus atnaujintas netrukus su tikrais vartotojų atsiliepimais apie mano10 platformą.
-                  </p>
-                </div>
-              </FadeIn>
-
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 opacity-60">
-                {/* Placeholder Testimonial Cards */}
-                {[1, 2, 3].map((i) => (
-                  <Card key={i} className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-                    <CardHeader>
-                      <div className="flex items-center gap-2">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <Star key={star} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        ))}
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
-                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full mb-2"></div>
-                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6 mb-2"></div>
-                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4/5"></div>
-                    </CardContent>
-                    <CardFooter>
-                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-                        <div>
-                          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24 mb-1"></div>
-                          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-32"></div>
-                        </div>
-                      </div>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
-
-              <div className="mt-12 text-center">
-                <p className="text-muted-foreground">
-                  Norite pasidalinti savo patirtimi?{" "}
-                  <Link href="/contact" className="text-blue-600 hover:underline dark:text-blue-400">
-                    Susisiekite su mumis
-                  </Link>
-                </p>
               </div>
             </div>
           </section>

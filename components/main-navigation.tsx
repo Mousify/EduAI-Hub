@@ -31,12 +31,6 @@ export function MainNavigation() {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/#path" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>Pasirinkite savo kelią</NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
             <Link href="/#pricing" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>Kainos</NavigationMenuLink>
             </Link>
