@@ -1,23 +1,17 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { Mail, MapPin, MessageSquare, Phone } from "lucide-react";
+import { useState } from "react"
+import { Mail, MapPin, MessageSquare, Phone } from "lucide-react"
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/use-toast";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
+import { toast } from "@/components/ui/use-toast"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -27,34 +21,34 @@ export default function ContactPage() {
     message: "",
     userType: "student",
     inquiryType: "",
-  });
+  })
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
 
   const handleSelectChange = (name, value) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
 
   const handleRadioChange = (value) => {
-    setFormData((prev) => ({ ...prev, userType: value }));
-  };
+    setFormData((prev) => ({ ...prev, userType: value }))
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+    e.preventDefault()
+    setIsSubmitting(true)
 
     // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500))
 
     toast({
       title: "Message sent!",
       description: "We've received your message and will get back to you soon.",
-    });
+    })
 
     setFormData({
       name: "",
@@ -63,10 +57,10 @@ export default function ContactPage() {
       message: "",
       userType: "student",
       inquiryType: "",
-    });
+    })
 
-    setIsSubmitting(false);
-  };
+    setIsSubmitting(false)
+  }
 
   return (
     <div className="container mx-auto py-12 px-4 md:px-6">
@@ -84,13 +78,8 @@ export default function ContactPage() {
               <Mail className="h-6 w-6 text-primary" />
             </div>
             <h3 className="text-xl font-medium mb-2">Email Us</h3>
-            <p className="text-muted-foreground mb-4">
-              For general inquiries and support
-            </p>
-            <a
-              href="mailto:support@eduaihub.com"
-              className="text-primary hover:underline"
-            >
+            <p className="text-muted-foreground mb-4">For general inquiries and support</p>
+            <a href="mailto:support@eduaihub.com" className="text-primary hover:underline">
               support@eduaihub.com
             </a>
           </CardContent>
@@ -102,9 +91,7 @@ export default function ContactPage() {
               <Phone className="h-6 w-6 text-primary" />
             </div>
             <h3 className="text-xl font-medium mb-2">Call Us</h3>
-            <p className="text-muted-foreground mb-4">
-              Monday-Friday, 9am-5pm EST
-            </p>
+            <p className="text-muted-foreground mb-4">Monday-Friday, 9am-5pm EST</p>
             <a href="tel:+18005551234" className="text-primary hover:underline">
               1-800-555-1234
             </a>
@@ -158,11 +145,7 @@ export default function ContactPage() {
 
             <div className="space-y-2">
               <Label>I am a:</Label>
-              <RadioGroup
-                value={formData.userType}
-                onValueChange={handleRadioChange}
-                className="flex flex-wrap gap-4"
-              >
+              <RadioGroup value={formData.userType} onValueChange={handleRadioChange} className="flex flex-wrap gap-4">
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="student" id="student" />
                   <Label htmlFor="student">Student</Label>
@@ -184,27 +167,16 @@ export default function ContactPage() {
 
             <div className="space-y-2">
               <Label htmlFor="inquiryType">Inquiry Type</Label>
-              <Select
-                value={formData.inquiryType}
-                onValueChange={(value) =>
-                  handleSelectChange("inquiryType", value)
-                }
-              >
+              <Select value={formData.inquiryType} onValueChange={(value) => handleSelectChange("inquiryType", value)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select inquiry type" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="general">General Question</SelectItem>
                   <SelectItem value="support">Technical Support</SelectItem>
-                  <SelectItem value="billing">
-                    Billing & Subscription
-                  </SelectItem>
-                  <SelectItem value="partnership">
-                    Partnership Opportunity
-                  </SelectItem>
-                  <SelectItem value="feedback">
-                    Feedback & Suggestions
-                  </SelectItem>
+                  <SelectItem value="billing">Billing & Subscription</SelectItem>
+                  <SelectItem value="partnership">Partnership Opportunity</SelectItem>
+                  <SelectItem value="feedback">Feedback & Suggestions</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -242,9 +214,7 @@ export default function ContactPage() {
 
         <div className="space-y-8">
           <div>
-            <h2 className="text-3xl font-bold mb-6">
-              Frequently Asked Questions
-            </h2>
+            <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions</h2>
             <Tabs defaultValue="students">
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="students">Students</TabsTrigger>
@@ -254,91 +224,71 @@ export default function ContactPage() {
 
               <TabsContent value="students" className="space-y-4 mt-6">
                 <div className="space-y-2">
-                  <h3 className="text-lg font-medium">
-                    How do I get started with EduAI Hub?
-                  </h3>
+                  <h3 className="text-lg font-medium">How do I get started with EduAI Hub?</h3>
                   <p className="text-muted-foreground">
-                    Simply sign up for a free account, and you'll have immediate
-                    access to our AI tutoring tools and homework help features.
+                    Simply sign up for a free account, and you'll have immediate access to our AI tutoring tools and
+                    homework help features.
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <h3 className="text-lg font-medium">
-                    Is there a limit to how many questions I can ask?
-                  </h3>
+                  <h3 className="text-lg font-medium">Is there a limit to how many questions I can ask?</h3>
                   <p className="text-muted-foreground">
-                    Free accounts have a monthly limit. Premium subscriptions
-                    offer unlimited questions and additional features.
+                    Free accounts have a monthly limit. Premium subscriptions offer unlimited questions and additional
+                    features.
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <h3 className="text-lg font-medium">
-                    Can I use EduAI Hub for test preparation?
-                  </h3>
+                  <h3 className="text-lg font-medium">Can I use EduAI Hub for test preparation?</h3>
                   <p className="text-muted-foreground">
-                    Yes! Our platform can generate practice questions and study
-                    guides tailored to your specific exams and learning needs.
+                    Yes! Our platform can generate practice questions and study guides tailored to your specific exams
+                    and learning needs.
                   </p>
                 </div>
               </TabsContent>
 
               <TabsContent value="teachers" className="space-y-4 mt-6">
                 <div className="space-y-2">
-                  <h3 className="text-lg font-medium">
-                    How can I monitor my students' usage?
-                  </h3>
+                  <h3 className="text-lg font-medium">How can I monitor my students' usage?</h3>
                   <p className="text-muted-foreground">
-                    The teacher dashboard provides detailed analytics on student
-                    activity, including time spent, topics covered, and progress
-                    made.
+                    The teacher dashboard provides detailed analytics on student activity, including time spent, topics
+                    covered, and progress made.
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <h3 className="text-lg font-medium">
-                    Can I create custom content for my class?
-                  </h3>
+                  <h3 className="text-lg font-medium">Can I create custom content for my class?</h3>
                   <p className="text-muted-foreground">
-                    Yes! Our content generator allows you to create worksheets,
-                    quizzes, and lesson plans aligned with your curriculum.
+                    Yes! Our content generator allows you to create worksheets, quizzes, and lesson plans aligned with
+                    your curriculum.
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <h3 className="text-lg font-medium">
-                    Is there professional development available?
-                  </h3>
+                  <h3 className="text-lg font-medium">Is there professional development available?</h3>
                   <p className="text-muted-foreground">
-                    We offer regular webinars and workshops to help teachers
-                    maximize the platform's potential in their classrooms.
+                    We offer regular webinars and workshops to help teachers maximize the platform's potential in their
+                    classrooms.
                   </p>
                 </div>
               </TabsContent>
 
               <TabsContent value="schools" className="space-y-4 mt-6">
                 <div className="space-y-2">
-                  <h3 className="text-lg font-medium">
-                    Do you offer school-wide licenses?
-                  </h3>
+                  <h3 className="text-lg font-medium">Do you offer school-wide licenses?</h3>
                   <p className="text-muted-foreground">
-                    Yes, we offer bulk licensing options for schools and
-                    districts with special administrative features.
+                    Yes, we offer bulk licensing options for schools and districts with special administrative features.
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <h3 className="text-lg font-medium">
-                    How does EduAI Hub handle student data privacy?
-                  </h3>
+                  <h3 className="text-lg font-medium">How does EduAI Hub handle student data privacy?</h3>
                   <p className="text-muted-foreground">
-                    We're fully COPPA and FERPA compliant, with strict data
-                    protection policies. We never sell student data.
+                    We're fully COPPA and FERPA compliant, with strict data protection policies. We never sell student
+                    data.
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <h3 className="text-lg font-medium">
-                    Can we integrate with our existing LMS?
-                  </h3>
+                  <h3 className="text-lg font-medium">Can we integrate with our existing LMS?</h3>
                   <p className="text-muted-foreground">
-                    Yes, we offer integrations with popular learning management
-                    systems like Google Classroom, Canvas, and Schoology.
+                    Yes, we offer integrations with popular learning management systems like Google Classroom, Canvas,
+                    and Schoology.
                   </p>
                 </div>
               </TabsContent>
@@ -352,12 +302,9 @@ export default function ContactPage() {
                   <MessageSquare className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium mb-2">
-                    Live Chat Support
-                  </h3>
+                  <h3 className="text-lg font-medium mb-2">Live Chat Support</h3>
                   <p className="text-muted-foreground mb-4">
-                    Need immediate assistance? Our support team is available via
-                    live chat during business hours.
+                    Need immediate assistance? Our support team is available via live chat during business hours.
                   </p>
                   <Button variant="outline">Start Chat</Button>
                 </div>
@@ -380,5 +327,5 @@ export default function ContactPage() {
         ></iframe>
       </div>
     </div>
-  );
+  )
 }

@@ -31,8 +31,24 @@ export async function middleware(req: NextRequest) {
       const { data: userData } = await supabase.auth.getUser()
       const role = userData.user?.user_metadata?.role || "student"
 
-      const redirectUrl = role === "teacher" ? "/teacher-dashboard" : "/dashboard"
-      return NextResponse.redirect(new URL(redirectUrl, req.url))
+      // Ensure we're redirecting to the correct dashboard based on role
+      if (role === "teacher") {
+        return NextResponse.redirect(new URL("/teacher-dashboard", req.url))
+      } else {
+        return NextResponse.redirect(new URL("/dashboard", req.url))
+      }
+    }
+
+    // Prevent students from accessing teacher dashboard and vice versa
+    const { data: userData } = await supabase.auth.getUser()
+    const role = userData.user?.user_metadata?.role
+
+    if (role === "student" && req.nextUrl.pathname.startsWith("/teacher-dashboard")) {
+      return NextResponse.redirect(new URL("/dashboard", req.url))
+    }
+
+    if (role === "teacher" && req.nextUrl.pathname.startsWith("/dashboard")) {
+      return NextResponse.redirect(new URL("/teacher-dashboard", req.url))
     }
   }
 

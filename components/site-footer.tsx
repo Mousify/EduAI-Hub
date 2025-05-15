@@ -10,23 +10,11 @@ export function SiteFooter() {
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-6 w-6 text-primary"
-              >
-                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
-                <line x1="4" x2="4" y1="22" y2="15" />
-              </svg>
-              <span className="text-lg font-semibold">EduAI Hub</span>
+              <span className="text-lg font-semibold">mano10</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              AI-powered learning platform for students and teachers, making education more accessible and personalized.
+              AI-powered tools for enhancing productivity and creativity, making advanced technology accessible to
+              everyone.
             </p>
             <div className="flex space-x-4">
               <Link href="#" className="text-muted-foreground hover:text-foreground">
@@ -48,7 +36,7 @@ export function SiteFooter() {
             </div>
           </div>
           <div>
-            <h3 className="mb-3 text-sm font-medium">Main Navigation</h3>
+            <h3 className="mb-3 text-sm font-medium">Navigation</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/" className="text-muted-foreground hover:text-foreground">
@@ -56,23 +44,23 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
-                <Link href="/schools" className="text-muted-foreground hover:text-foreground">
-                  For Schools & Districts
+                <Link href="/#features" className="text-muted-foreground hover:text-foreground">
+                  Features
                 </Link>
               </li>
               <li>
-                <Link href="/pricing" className="text-muted-foreground hover:text-foreground">
+                <Link href="/#pricing" className="text-muted-foreground hover:text-foreground">
                   Pricing
+                </Link>
+              </li>
+              <li>
+                <Link href="/#testimonials" className="text-muted-foreground hover:text-foreground">
+                  Testimonials
                 </Link>
               </li>
               <li>
                 <Link href="/blog" className="text-muted-foreground hover:text-foreground">
                   Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="/events" className="text-muted-foreground hover:text-foreground">
-                  Events
                 </Link>
               </li>
               <li>
@@ -91,7 +79,7 @@ export function SiteFooter() {
             <h3 className="mb-3 text-sm font-medium">Resources</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/resources" className="text-muted-foreground hover:text-foreground">
+                <Link href="/support" className="text-muted-foreground hover:text-foreground">
                   Help Center
                 </Link>
               </li>
@@ -108,11 +96,6 @@ export function SiteFooter() {
               <li>
                 <Link href="/faq" className="text-muted-foreground hover:text-foreground">
                   FAQs
-                </Link>
-              </li>
-              <li>
-                <Link href="/support" className="text-muted-foreground hover:text-foreground">
-                  Support
                 </Link>
               </li>
             </ul>
@@ -146,7 +129,7 @@ export function SiteFooter() {
         <div className="mt-12 border-t pt-8">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <p className="text-center text-xs text-muted-foreground">
-              © {new Date().getFullYear()} EduAI Hub. All rights reserved.
+              © {new Date().getFullYear()} mano10. All rights reserved.
             </p>
             <div className="flex items-center space-x-4">
               <div className="flex space-x-2">

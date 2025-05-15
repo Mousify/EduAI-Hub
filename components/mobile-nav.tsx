@@ -85,20 +85,8 @@ export function MobileNav() {
       <SheetContent side="left" className="flex flex-col p-0">
         <div className="flex items-center justify-between border-b px-4 py-2">
           <div className="flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-6 w-6 text-primary"
-            >
-              <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
-              <line x1="4" x2="4" y1="22" y2="15" />
-            </svg>
-            <span className="text-lg font-semibold">EduAI Hub</span>
+            
+            <span className="text-lg font-semibold">mano10</span>
           </div>
           <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
             <X className="h-5 w-5" />

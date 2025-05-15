@@ -8,9 +8,11 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
+// Update the metadata to include the new domain
 export const metadata: Metadata = {
-  title: "EduAI Hub - AI-Powered Learning Platform",
-  description: "AI-powered learning platform for students and teachers",
+  title: "mano10 - AI-Powered Tools",
+  description: "AI-powered tools for enhancing productivity and creativity",
+  metadataBase: new URL("https://mano10.lt"),
   generator: "v0.dev",
 };
 
@@ -20,10 +22,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProviderMain attribute="class" defaultTheme="dark" enableSystem>
           {children}
+          <SpeedInsights />
         </ThemeProviderMain>
       </body>
     </html>
