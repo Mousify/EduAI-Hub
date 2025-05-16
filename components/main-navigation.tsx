@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import * as React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -11,14 +11,13 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
-import { cn } from "@/lib/utils"
-import { ModeToggle } from "@/components/mode-toggle"
+} from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
 
 export function MainNavigation() {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
-  const isActive = (path: string) => pathname === path
+  const isActive = (path: string) => pathname === path;
 
   return (
     <div className="flex items-center gap-4">
@@ -26,19 +25,25 @@ export function MainNavigation() {
         <NavigationMenuList>
           <NavigationMenuItem>
             <Link href="/" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>Pradžia</NavigationMenuLink>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Pradžia
+              </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
             <Link href="/#pricing" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>Kainos</NavigationMenuLink>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Kainos
+              </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
             <Link href="/#testimonials" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>Atsiliepimai</NavigationMenuLink>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Atsiliepimai
+              </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
 
@@ -47,13 +52,15 @@ export function MainNavigation() {
             <NavigationMenuContent>
               <ul className="grid w-[400px] gap-3 p-4">
                 <ListItem href="/about" title="Apie mus">
-                  Sužinokite apie mano10 misiją ir viziją dirbtinio intelekto įrankiams.
+                  Sužinokite apie mano10 misiją ir viziją dirbtinio intelekto
+                  įrankiams.
                 </ListItem>
                 <ListItem href="/contact" title="Kontaktai">
                   Susisiekite su mūsų komanda dėl pagalbos ar užklausų.
                 </ListItem>
                 <ListItem href="/privacy" title="Privatumo politika">
-                  Pilna teisinė dokumentacija, apimanti vartotojų duomenis ir privatumo teises.
+                  Pilna teisinė dokumentacija, apimanti vartotojų duomenis ir
+                  privatumo teises.
                 </ListItem>
                 <ListItem href="/terms" title="Paslaugų teikimo sąlygos">
                   Sąlygos ir nuostatos, taikomos naudojantis mano10 platforma.
@@ -63,30 +70,32 @@ export function MainNavigation() {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-      <ModeToggle />
     </div>
-  )
+  );
 }
 
-const ListItem = React.forwardRef<React.ElementRef<"a">, React.ComponentPropsWithoutRef<"a"> & { title: string }>(
-  ({ className, title, children, ...props }, ref) => {
-    return (
-      <li>
-        <NavigationMenuLink asChild>
-          <a
-            ref={ref}
-            className={cn(
-              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-              className,
-            )}
-            {...props}
-          >
-            <div className="text-sm font-medium leading-none">{title}</div>
-            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
-          </a>
-        </NavigationMenuLink>
-      </li>
-    )
-  },
-)
-ListItem.displayName = "ListItem"
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a"> & { title: string }
+>(({ className, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  );
+});
+ListItem.displayName = "ListItem";
