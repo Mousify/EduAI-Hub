@@ -1,70 +1,94 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { ArrowLeft, Loader2 } from "lucide-react"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ArrowLeft, Loader2 } from "lucide-react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
-  const supabase = createClientComponentClient()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const supabase = createClientComponentClient();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError("")
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
 
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
-      })
+      });
 
       if (error) {
-        setError(error.message)
-        setIsLoading(false)
-        return
+        setError(error.message);
+        setIsLoading(false);
+        return;
       }
 
       if (data?.user) {
         // Check user role and redirect accordingly
-        const { data: userData } = await supabase.from("profiles").select("role").eq("id", data.user.id).single()
+        const { data: userData } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", data.user.id)
+          .single();
 
         if (userData?.role === "teacher") {
-          router.push("/teacher-dashboard")
+          router.push("/teacher-dashboard");
         } else {
-          router.push("/dashboard")
+          router.push("/dashboard");
         }
       }
     } catch (error) {
-      console.error("Error during login:", error)
-      setError("Įvyko netikėta klaida. Bandykite dar kartą.")
+      console.error("Error during login:", error);
+      setError("Įvyko netikėta klaida. Bandykite dar kartą.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleGoogleSignIn = async () => {
     try {
+      // Generate a random state value for OAuth security
+      const state = Math.random().toString(36).substring(2, 15);
+
+      // Store the state in localStorage
+      if (typeof window !== "undefined") {
+        localStorage.setItem("oauthState", state);
+      }
+
       await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
+          queryParams: {
+            access_type: "offline",
+            prompt: "consent",
+            state: state,
+          },
+          // Set cookie options for better security
+          cookieOptions: {
+            name: "sb-google-auth",
+            lifetime: 60 * 60 * 8,
+            sameSite: "lax",
+            secure: true,
+          },
         },
-      })
+      });
     } catch (err: any) {
-      setError(err.message || "Įvyko klaida prisijungiant per Google")
+      setError(err.message || "Įvyko klaida prisijungiant per Google");
     }
-  }
+  };
 
   return (
     <div className="flex min-h-screen bg-white dark:bg-gray-950">
@@ -76,7 +100,9 @@ export default function LoginPage() {
               <h1 className="text-2xl font-semibold">mano10</h1>
             </div>
             <h2 className="mb-6 text-4xl font-bold">Sveiki sugrįžę</h2>
-            <p className="mb-12 text-lg">Prisijunkite prie savo paskyros ir tęskite savo kelionę.</p>
+            <p className="mb-12 text-lg">
+              Prisijunkite prie savo paskyros ir tęskite savo kelionę.
+            </p>
 
             <div className="w-full max-w-sm space-y-4">
               <div className="rounded-lg bg-white/10 p-4 backdrop-blur-sm">
@@ -84,7 +110,9 @@ export default function LoginPage() {
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-blue-700">
                     1
                   </span>
-                  <span className="text-lg">Prisijunkite prie savo paskyros</span>
+                  <span className="text-lg">
+                    Prisijunkite prie savo paskyros
+                  </span>
                 </div>
               </div>
               <div className="rounded-lg bg-white/5 p-4 backdrop-blur-sm">
@@ -122,9 +150,12 @@ export default function LoginPage() {
               </Link>
             </div>
 
-            <h2 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Prisijungimas</h2>
+            <h2 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">
+              Prisijungimas
+            </h2>
             <p className="mb-8 text-gray-500 dark:text-gray-400">
-              Įveskite savo prisijungimo duomenis, kad patektumėte į savo paskyrą.
+              Įveskite savo prisijungimo duomenis, kad patektumėte į savo
+              paskyrą.
             </p>
 
             {error && (
@@ -185,7 +216,9 @@ export default function LoginPage() {
                 <div className="w-full border-t border-gray-300 dark:border-gray-700"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="bg-white px-2 text-gray-500 dark:bg-gray-950 dark:text-gray-400">Arba</span>
+                <span className="bg-white px-2 text-gray-500 dark:bg-gray-950 dark:text-gray-400">
+                  Arba
+                </span>
               </div>
             </div>
 
@@ -228,5 +261,5 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

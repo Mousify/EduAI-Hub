@@ -49,25 +49,11 @@ export function MainNavigation() {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <NavigationMenuTrigger>Apie</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-3 p-4">
-                <ListItem href="/about" title="Apie mus">
-                  Sužinokite apie mano10 misiją ir viziją dirbtinio intelekto
-                  įrankiams.
-                </ListItem>
-                <ListItem href="/contact" title="Kontaktai">
-                  Susisiekite su mūsų komanda dėl pagalbos ar užklausų.
-                </ListItem>
-                <ListItem href="/privacy" title="Privatumo politika">
-                  Pilna teisinė dokumentacija, apimanti vartotojų duomenis ir
-                  privatumo teises.
-                </ListItem>
-                <ListItem href="/terms" title="Paslaugų teikimo sąlygos">
-                  Sąlygos ir nuostatos, taikomos naudojantis mano10 platforma.
-                </ListItem>
-              </ul>
-            </NavigationMenuContent>
+            <Link href="/about" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Apie mus
+              </NavigationMenuLink>
+            </Link>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>

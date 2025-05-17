@@ -50,7 +50,7 @@ export default function AboutPage() {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold tracking-tight mb-4">
-            Apie EduAI Hub
+            Apie mano10
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
             Mūsų misija - padaryti kokybišką išsilavinimą prieinamą visiems
@@ -69,7 +69,7 @@ export default function AboutPage() {
                   Transformuojame švietimą per AI
                 </h2>
                 <p className="text-lg max-w-2xl">
-                  Įsteigtas 2022 m., EduAI Hub yra dedikuotas užpildyti švietimo
+                  Įsteigtas 2022 m., mano10 yra dedikuotas užpildyti švietimo
                   spragas ir įgalinti tiek mokinius, tiek mokytojus moderniais
                   AI įrankiais.
                 </p>
@@ -85,7 +85,7 @@ export default function AboutPage() {
               <h2 className="text-3xl font-bold mb-6">Mūsų istorija</h2>
               <div className="space-y-4">
                 <p>
-                  EduAI Hub prasidėjo nuo paprasto pastebėjimo: nors AI
+                  mano10 prasidėjo nuo paprasto pastebėjimo: nors AI
                   transformavo pramonę visame pasaulyje, jo potencialas
                   revoliucionizuoti švietimą išliko daugiausia neišnaudotas.
                   Mūsų įkūrėjai, mokytojų ir technologų komanda, pamatė galimybę
@@ -103,7 +103,7 @@ export default function AboutPage() {
                   klasėms.
                 </p>
                 <p>
-                  Šiandien EduAI Hub yra švietimo technologijų pirmaujančioje
+                  Šiandien mano10 yra švietimo technologijų pirmaujančioje
                   vietoje, nuolat inovuoja, kad užtikrintų, jog kiekvienas
                   mokinys turėtų prieigą prie reikalingos paramos sėkmei. Mes
                   tikime, kad AI turėtų stiprinti žmogaus mokymą, o ne pakeisti
@@ -269,7 +269,7 @@ export default function AboutPage() {
                   <h3 className="text-2xl font-bold mb-4">Sėkmės istorijos</h3>
                   <div className="space-y-4">
                     <p>
-                      "EduAI Hub pakeitė, kaip aš remiu savo mokinius.
+                      "mano10 pakeitė, kaip aš remiu savo mokinius.
                       Individualizuotos praktikos medžiagos padėjo užpildyti
                       mokymosi spragas daugeliui mano besistengiančių mokinių."
                     </p>
@@ -327,7 +327,7 @@ export default function AboutPage() {
         <div className="text-center">
           <h2 className="text-3xl font-bold mb-4">Susisiekite</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
-            Turite klausimų apie EduAI Hub? Mums būtų malonu išgirsti nuo jūsų.
+            Turite klausimų apie mano10? Mums būtų malonu išgirsti nuo jūsų.
           </p>
           <Button size="lg" asChild>
             <Link href="/contact">Susisiekite su mumis</Link>

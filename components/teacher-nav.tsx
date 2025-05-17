@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   BookOpen,
   Home,
@@ -18,13 +18,13 @@ import {
   BookMarked,
   Sparkles,
   Wand2,
-} from "lucide-react"
-import { cn } from "@/lib/utils"
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface TeacherNavProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function TeacherNav({ className, ...props }: TeacherNavProps) {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const navItems = [
     {
@@ -72,7 +72,7 @@ export function TeacherNav({ className, ...props }: TeacherNavProps) {
       href: "/teacher-dashboard/analytics",
       icon: BarChart,
     },
-  ]
+  ];
 
   const aiTools = [
     {
@@ -86,7 +86,7 @@ export function TeacherNav({ className, ...props }: TeacherNavProps) {
       href: "/teacher-dashboard/tools",
       icon: Wand2,
     },
-  ]
+  ];
 
   const bottomNavItems = [
     {
@@ -94,7 +94,7 @@ export function TeacherNav({ className, ...props }: TeacherNavProps) {
       href: "/teacher-dashboard/settings",
       icon: Settings,
     },
-  ]
+  ];
 
   return (
     <div className={cn("h-full py-8", className)} {...props}>
@@ -102,12 +102,14 @@ export function TeacherNav({ className, ...props }: TeacherNavProps) {
         <div className="px-6">
           <Link href="/teacher-dashboard" className="flex items-center gap-2">
             <GraduationCap className="h-6 w-6 text-blue-600" />
-            <span className="font-semibold text-xl text-blue-600">EduAI Hub</span>
+            <span className="font-semibold text-xl text-blue-600">mano10</span>
           </Link>
         </div>
 
         <div className="px-3">
-          <h2 className="mb-2 px-4 text-xs font-semibold tracking-tight text-gray-500 uppercase">Main Navigation</h2>
+          <h2 className="mb-2 px-4 text-xs font-semibold tracking-tight text-gray-500 uppercase">
+            Main Navigation
+          </h2>
           <div className="space-y-1">
             {navItems.map((item) => (
               <Link
@@ -117,10 +119,15 @@ export function TeacherNav({ className, ...props }: TeacherNavProps) {
                   "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
                   pathname === item.href
                     ? "bg-blue-100 text-blue-600"
-                    : "text-gray-600 hover:bg-gray-100 hover:text-blue-600",
+                    : "text-gray-600 hover:bg-gray-100 hover:text-blue-600"
                 )}
               >
-                <item.icon className={cn("h-5 w-5", pathname === item.href ? "text-blue-600" : "text-gray-500")} />
+                <item.icon
+                  className={cn(
+                    "h-5 w-5",
+                    pathname === item.href ? "text-blue-600" : "text-gray-500"
+                  )}
+                />
                 <span>{item.title}</span>
               </Link>
             ))}
@@ -128,7 +135,9 @@ export function TeacherNav({ className, ...props }: TeacherNavProps) {
         </div>
 
         <div className="px-3">
-          <h2 className="mb-2 px-4 text-xs font-semibold tracking-tight text-gray-500 uppercase">AI Tools</h2>
+          <h2 className="mb-2 px-4 text-xs font-semibold tracking-tight text-gray-500 uppercase">
+            AI Tools
+          </h2>
           <div className="space-y-1">
             {aiTools.map((item) => (
               <Link
@@ -139,14 +148,18 @@ export function TeacherNav({ className, ...props }: TeacherNavProps) {
                   pathname === item.href
                     ? "bg-blue-100 text-blue-600"
                     : item.highlight
-                      ? "text-blue-600 hover:bg-blue-50"
-                      : "text-gray-600 hover:bg-gray-100 hover:text-blue-600",
+                    ? "text-blue-600 hover:bg-blue-50"
+                    : "text-gray-600 hover:bg-gray-100 hover:text-blue-600"
                 )}
               >
                 <item.icon
                   className={cn(
                     "h-5 w-5",
-                    pathname === item.href ? "text-blue-600" : item.highlight ? "text-blue-600" : "text-gray-500",
+                    pathname === item.href
+                      ? "text-blue-600"
+                      : item.highlight
+                      ? "text-blue-600"
+                      : "text-gray-500"
                   )}
                 />
                 <span>{item.title}</span>
@@ -170,10 +183,15 @@ export function TeacherNav({ className, ...props }: TeacherNavProps) {
                   "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
                   pathname === item.href
                     ? "bg-blue-100 text-blue-600"
-                    : "text-gray-600 hover:bg-gray-100 hover:text-blue-600",
+                    : "text-gray-600 hover:bg-gray-100 hover:text-blue-600"
                 )}
               >
-                <item.icon className={cn("h-5 w-5", pathname === item.href ? "text-blue-600" : "text-gray-500")} />
+                <item.icon
+                  className={cn(
+                    "h-5 w-5",
+                    pathname === item.href ? "text-blue-600" : "text-gray-500"
+                  )}
+                />
                 <span>{item.title}</span>
               </Link>
             ))}
@@ -181,5 +199,5 @@ export function TeacherNav({ className, ...props }: TeacherNavProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

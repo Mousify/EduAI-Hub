@@ -7,8 +7,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "EduAI Hub - Dashboard",
-  description: "AI-powered learning platform for students and teachers",
+  title: "mano10 - Dashboard",
+  description: "Student dashboard for accessing AI-powered learning tools",
 };
 
 export default function DashboardRootLayout({

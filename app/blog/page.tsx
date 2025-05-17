@@ -40,7 +40,7 @@ export default function BlogPage() {
 
       <div className="container mx-auto py-12 px-4 md:px-6">
         <div className="space-y-4 text-center mb-12">
-          <h1 className="text-4xl font-bold tracking-tight">EduAI Hub Blog</h1>
+          <h1 className="text-4xl font-bold tracking-tight">mano10 Blog</h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Insights, updates, and resources on AI in education, learning
             strategies, and platform features
@@ -223,13 +223,13 @@ const blogPosts = [
     slug: "interactive-study-guides",
   },
   {
-    title: "How Teachers Are Using EduAI Hub in the Classroom",
+    title: "How Teachers Are Using mano10 in the Classroom",
     excerpt:
       "Real stories from educators who have integrated our AI tools into their daily teaching practices with impressive results.",
     image: "/placeholder.svg?height=300&width=500",
     category: "Success Stories",
     date: "April 15, 2023",
-    slug: "teachers-using-eduai",
+    slug: "teachers-using-mano10",
   },
   {
     title: "The Science Behind Effective AI Tutoring",

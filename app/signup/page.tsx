@@ -1,46 +1,48 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import Link from "next/link"
-import { useRouter, useSearchParams } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { ArrowLeft, Loader2 } from "lucide-react"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ArrowLeft, Loader2 } from "lucide-react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export default function SignUpPage() {
-  const searchParams = useSearchParams()
-  const initialRole = searchParams.get("role") as "student" | "teacher" | null
+  const searchParams = useSearchParams();
+  const initialRole = searchParams.get("role") as "student" | "teacher" | null;
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [role, setRole] = useState<"student" | "teacher">(initialRole || "student")
-  const [passwordError, setPasswordError] = useState("")
-  const [error, setError] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
-  const supabase = createClientComponentClient()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState<"student" | "teacher">(
+    initialRole || "student"
+  );
+  const [passwordError, setPasswordError] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const supabase = createClientComponentClient();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError("")
-    setPasswordError("")
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+    setPasswordError("");
 
     if (password !== confirmPassword) {
-      setPasswordError("Slaptažodžiai nesutampa")
-      setIsLoading(false)
-      return
+      setPasswordError("Slaptažodžiai nesutampa");
+      setIsLoading(false);
+      return;
     }
 
     if (password.length < 8) {
-      setPasswordError("Slaptažodis turi būti bent 8 simbolių ilgio")
-      setIsLoading(false)
-      return
+      setPasswordError("Slaptažodis turi būti bent 8 simbolių ilgio");
+      setIsLoading(false);
+      return;
     }
 
     try {
@@ -52,43 +54,62 @@ export default function SignUpPage() {
             role,
           },
         },
-      })
+      });
 
       if (signUpError) {
-        setError(signUpError.message)
-        setIsLoading(false)
-        return
+        setError(signUpError.message);
+        setIsLoading(false);
+        return;
       }
 
       if (data?.user) {
         if (role === "teacher") {
-          router.push("/teacher-dashboard")
+          router.push("/teacher-dashboard");
         } else {
-          router.push("/dashboard")
+          router.push("/dashboard");
         }
       }
     } catch (err: any) {
-      setError(err.message || "Registracijos metu įvyko klaida")
+      setError(err.message || "Registracijos metu įvyko klaida");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleGoogleSignIn = async () => {
     try {
+      // Generate a random state value for OAuth security
+      const state = Math.random().toString(36).substring(2, 15);
+
+      // Store the state and role in localStorage
+      if (typeof window !== "undefined") {
+        localStorage.setItem("oauthState", state);
+        localStorage.setItem("pendingAuthRole", role);
+      }
+
       await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
           queryParams: {
-            role,
+            access_type: "offline",
+            prompt: "consent",
+            state: state,
+            role: role, // Pass role as a query param
+          },
+          // Set cookie options for better security
+          cookieOptions: {
+            name: "sb-google-auth",
+            lifetime: 60 * 60 * 8,
+            sameSite: "lax",
+            secure: true,
           },
         },
-      })
+      });
     } catch (err: any) {
-      setError(err.message || "Įvyko klaida prisijungiant per Google")
+      setError(err.message || "Įvyko klaida prisijungiant per Google");
     }
-  }
+  };
 
   return (
     <div className="flex min-h-screen bg-white dark:bg-gray-950">
@@ -100,7 +121,10 @@ export default function SignUpPage() {
               <h1 className="text-2xl font-semibold">mano10</h1>
             </div>
             <h2 className="mb-6 text-4xl font-bold">Pradėkite su mumis</h2>
-            <p className="mb-12 text-lg">Atlikite šiuos paprastus žingsnius, kad užregistruotumėte savo paskyrą.</p>
+            <p className="mb-12 text-lg">
+              Atlikite šiuos paprastus žingsnius, kad užregistruotumėte savo
+              paskyrą.
+            </p>
 
             <div className="w-full max-w-sm space-y-4">
               <div className="rounded-lg bg-white/10 p-4 backdrop-blur-sm">
@@ -146,7 +170,9 @@ export default function SignUpPage() {
               </Link>
             </div>
 
-            <h2 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Registracija</h2>
+            <h2 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">
+              Registracija
+            </h2>
             <p className="mb-8 text-gray-500 dark:text-gray-400">
               Įveskite savo asmeninius duomenis, kad sukurtumėte paskyrą.
             </p>
@@ -195,7 +221,10 @@ export default function SignUpPage() {
 
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-900 dark:text-white">
+                <Label
+                  htmlFor="email"
+                  className="text-gray-900 dark:text-white"
+                >
                   El. paštas
                 </Label>
                 <Input
@@ -209,7 +238,10 @@ export default function SignUpPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-gray-900 dark:text-white">
+                <Label
+                  htmlFor="password"
+                  className="text-gray-900 dark:text-white"
+                >
                   Slaptažodis
                 </Label>
                 <Input
@@ -223,7 +255,10 @@ export default function SignUpPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-gray-900 dark:text-white">
+                <Label
+                  htmlFor="confirmPassword"
+                  className="text-gray-900 dark:text-white"
+                >
                   Patvirtinti slaptažodį
                 </Label>
                 <Input
@@ -235,8 +270,14 @@ export default function SignUpPage() {
                   required
                   className="h-12 border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400"
                 />
-                {passwordError && <p className="text-sm text-red-600 dark:text-red-400">{passwordError}</p>}
-                <p className="text-sm text-gray-500 dark:text-gray-400">Turi būti bent 8 simbolių ilgio.</p>
+                {passwordError && (
+                  <p className="text-sm text-red-600 dark:text-red-400">
+                    {passwordError}
+                  </p>
+                )}
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Turi būti bent 8 simbolių ilgio.
+                </p>
               </div>
 
               <Button
@@ -260,7 +301,9 @@ export default function SignUpPage() {
                 <div className="w-full border-t border-gray-300 dark:border-gray-700"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="bg-white px-2 text-gray-500 dark:bg-gray-950 dark:text-gray-400">Arba</span>
+                <span className="bg-white px-2 text-gray-500 dark:bg-gray-950 dark:text-gray-400">
+                  Arba
+                </span>
               </div>
             </div>
 
@@ -303,5 +346,5 @@ export default function SignUpPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

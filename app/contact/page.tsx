@@ -116,10 +116,10 @@ export default function ContactPage() {
                 Bendriems klausimams ir pagalbai
               </p>
               <a
-                href="mailto:support@eduaihub.com"
+                href="mailto:support@mano10.com"
                 className="text-primary hover:underline"
               >
-                support@eduaihub.com
+                support@mano10.com
               </a>
             </CardContent>
           </Card>
@@ -288,7 +288,7 @@ export default function ContactPage() {
                 <TabsContent value="students" className="space-y-4 mt-6">
                   <div className="space-y-2">
                     <h3 className="text-lg font-medium">
-                      Kaip pradėti naudotis EduAI Hub?
+                      Kaip pradėti naudotis mano10?
                     </h3>
                     <p className="text-muted-foreground">
                       Tiesiog užsiregistruokite nemokamai ir iškart gausite
@@ -308,7 +308,7 @@ export default function ContactPage() {
                   </div>
                   <div className="space-y-2">
                     <h3 className="text-lg font-medium">
-                      Ar galiu naudoti EduAI Hub egzaminų ruošimuisi?
+                      Ar galiu naudoti mano10 egzaminų ruošimuisi?
                     </h3>
                     <p className="text-muted-foreground">
                       Taip! Mūsų platforma gali generuoti praktikos klausimus ir
@@ -363,7 +363,7 @@ export default function ContactPage() {
                   </div>
                   <div className="space-y-2">
                     <h3 className="text-lg font-medium">
-                      Kaip EduAI Hub tvarko mokinių duomenų privatumą?
+                      Kaip mano10 tvarko mokinių duomenų privatumą?
                     </h3>
                     <p className="text-muted-foreground">
                       Esame visiškai COPPA ir FERPA atitinkantys, su griežta
@@ -416,7 +416,7 @@ export default function ContactPage() {
             allowFullScreen={true}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="EduAI Hub vieta"
+            title="mano10 vieta"
           ></iframe>
         </div>
       </div>

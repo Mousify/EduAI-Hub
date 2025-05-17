@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { cn } from "@/lib/utils"
+import type React from "react";
+import { cn } from "@/lib/utils";
 import {
   BookOpen,
   Home,
@@ -13,14 +13,14 @@ import {
   CreditCard,
   Sparkles,
   Wand2,
-} from "lucide-react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+} from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface DashboardNavProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function DashboardNav({ className, ...props }: DashboardNavProps) {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const navItems = [
     {
@@ -58,7 +58,7 @@ export function DashboardNav({ className, ...props }: DashboardNavProps) {
       href: "/dashboard/billing",
       icon: CreditCard,
     },
-  ]
+  ];
 
   const aiTools = [
     {
@@ -77,7 +77,7 @@ export function DashboardNav({ className, ...props }: DashboardNavProps) {
       href: "/dashboard/content-explainer",
       icon: Wand2,
     },
-  ]
+  ];
 
   const bottomNavItems = [
     {
@@ -85,7 +85,7 @@ export function DashboardNav({ className, ...props }: DashboardNavProps) {
       href: "/dashboard/settings",
       icon: Settings,
     },
-  ]
+  ];
 
   return (
     <div className={cn("h-full py-8", className)} {...props}>
@@ -93,12 +93,14 @@ export function DashboardNav({ className, ...props }: DashboardNavProps) {
         <div className="px-6">
           <Link href="/dashboard" className="flex items-center gap-2">
             <BookOpen className="h-6 w-6 text-blue-600" />
-            <span className="font-semibold text-xl text-blue-600">EduAI Hub</span>
+            <span className="font-semibold text-xl text-blue-600">mano10</span>
           </Link>
         </div>
 
         <div className="px-3">
-          <h2 className="mb-2 px-4 text-xs font-semibold tracking-tight text-gray-500 uppercase">Main Navigation</h2>
+          <h2 className="mb-2 px-4 text-xs font-semibold tracking-tight text-gray-500 uppercase">
+            Main Navigation
+          </h2>
           <div className="space-y-1">
             {navItems.map((item) => (
               <Link
@@ -108,10 +110,15 @@ export function DashboardNav({ className, ...props }: DashboardNavProps) {
                   "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
                   pathname === item.href
                     ? "bg-blue-100 text-blue-600"
-                    : "text-gray-600 hover:bg-gray-100 hover:text-blue-600",
+                    : "text-gray-600 hover:bg-gray-100 hover:text-blue-600"
                 )}
               >
-                <item.icon className={cn("h-5 w-5", pathname === item.href ? "text-blue-600" : "text-gray-500")} />
+                <item.icon
+                  className={cn(
+                    "h-5 w-5",
+                    pathname === item.href ? "text-blue-600" : "text-gray-500"
+                  )}
+                />
                 <span>{item.title}</span>
               </Link>
             ))}
@@ -119,7 +126,9 @@ export function DashboardNav({ className, ...props }: DashboardNavProps) {
         </div>
 
         <div className="px-3">
-          <h2 className="mb-2 px-4 text-xs font-semibold tracking-tight text-gray-500 uppercase">AI Tools</h2>
+          <h2 className="mb-2 px-4 text-xs font-semibold tracking-tight text-gray-500 uppercase">
+            AI Tools
+          </h2>
           <div className="space-y-1">
             {aiTools.map((item) => (
               <Link
@@ -130,14 +139,18 @@ export function DashboardNav({ className, ...props }: DashboardNavProps) {
                   pathname === item.href
                     ? "bg-blue-100 text-blue-600"
                     : item.highlight
-                      ? "text-blue-600 hover:bg-blue-50"
-                      : "text-gray-600 hover:bg-gray-100 hover:text-blue-600",
+                    ? "text-blue-600 hover:bg-blue-50"
+                    : "text-gray-600 hover:bg-gray-100 hover:text-blue-600"
                 )}
               >
                 <item.icon
                   className={cn(
                     "h-5 w-5",
-                    pathname === item.href ? "text-blue-600" : item.highlight ? "text-blue-600" : "text-gray-500",
+                    pathname === item.href
+                      ? "text-blue-600"
+                      : item.highlight
+                      ? "text-blue-600"
+                      : "text-gray-500"
                   )}
                 />
                 <span>{item.title}</span>
@@ -161,10 +174,15 @@ export function DashboardNav({ className, ...props }: DashboardNavProps) {
                   "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
                   pathname === item.href
                     ? "bg-blue-100 text-blue-600"
-                    : "text-gray-600 hover:bg-gray-100 hover:text-blue-600",
+                    : "text-gray-600 hover:bg-gray-100 hover:text-blue-600"
                 )}
               >
-                <item.icon className={cn("h-5 w-5", pathname === item.href ? "text-blue-600" : "text-gray-500")} />
+                <item.icon
+                  className={cn(
+                    "h-5 w-5",
+                    pathname === item.href ? "text-blue-600" : "text-gray-500"
+                  )}
+                />
                 <span>{item.title}</span>
               </Link>
             ))}
@@ -172,5 +190,5 @@ export function DashboardNav({ className, ...props }: DashboardNavProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

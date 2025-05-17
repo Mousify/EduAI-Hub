@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from "next/link";
 
 export function Footer() {
   return (
@@ -19,7 +19,7 @@ export function Footer() {
             <line x1="4" x2="4" y1="22" y2="15" />
           </svg>
           <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-            © 2025 EduAI Hub. All rights reserved.
+            © 2025 mano10. All rights reserved.
           </p>
         </div>
         <div className="flex gap-4">
@@ -35,5 +35,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

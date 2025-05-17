@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu } from "lucide-react";
+import { Menu, Info, Shield, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
@@ -138,6 +138,30 @@ export function MobileNavigation() {
                 Atsijungti
               </Button>
             )}
+
+            <div className="grid gap-2 py-2">
+              <Link
+                href="/about"
+                className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent"
+              >
+                <Info className="h-4 w-4" />
+                Apie mus
+              </Link>
+              <Link
+                href="/privacy"
+                className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent"
+              >
+                <Shield className="h-4 w-4" />
+                Privatumo politika
+              </Link>
+              <Link
+                href="/terms"
+                className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent"
+              >
+                <FileText className="h-4 w-4" />
+                Paslaugų teikimo sąlygos
+              </Link>
+            </div>
           </div>
         </nav>
       </SheetContent>

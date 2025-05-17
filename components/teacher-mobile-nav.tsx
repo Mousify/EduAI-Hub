@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Menu,
   X,
@@ -15,14 +15,14 @@ import {
   FileText,
   MessageSquare,
   Sparkles,
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { cn } from "@/lib/utils"
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
 
 export function TeacherMobileNav() {
-  const [open, setOpen] = useState(false)
-  const pathname = usePathname()
+  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   const routes = [
     {
@@ -85,7 +85,7 @@ export function TeacherMobileNav() {
       icon: Settings,
       active: pathname === "/teacher-dashboard/settings",
     },
-  ]
+  ];
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -111,7 +111,7 @@ export function TeacherMobileNav() {
               <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
               <line x1="4" x2="4" y1="22" y2="15" />
             </svg>
-            <span className="text-lg font-semibold">EduAI Hub</span>
+            <span className="text-lg font-semibold">mano10</span>
           </div>
           <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
             <X className="h-5 w-5" />
@@ -129,7 +129,7 @@ export function TeacherMobileNav() {
                   "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all",
                   route.active
                     ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted",
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 )}
               >
                 <route.icon className="h-4 w-4" />
@@ -140,5 +140,5 @@ export function TeacherMobileNav() {
         </nav>
       </SheetContent>
     </Sheet>
-  )
+  );
 }
