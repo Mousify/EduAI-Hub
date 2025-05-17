@@ -16,17 +16,7 @@ export async function GET(request: NextRequest) {
 
   if (code) {
     const cookieStore = cookies();
-    const supabase = createRouteHandlerClient({
-      cookies: () => cookieStore,
-      options: {
-        cookieOptions: {
-          name: "sb-auth-token",
-          lifetime: 60 * 60 * 8,
-          sameSite: "lax",
-          secure: true,
-        },
-      },
-    });
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 
     try {
       // Exchange the code for a session

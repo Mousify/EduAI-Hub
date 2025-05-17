@@ -87,7 +87,7 @@ export default function SignUpPage() {
         localStorage.setItem("pendingAuthRole", role);
       }
 
-      await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
@@ -95,18 +95,19 @@ export default function SignUpPage() {
             access_type: "offline",
             prompt: "consent",
             state: state,
-            role: role, // Pass role as a query param
+            role: role,
+            scope: "email profile",
           },
-          // Set cookie options for better security
-          cookieOptions: {
-            name: "sb-google-auth",
-            lifetime: 60 * 60 * 8,
-            sameSite: "lax",
-            secure: true,
-          },
+          // Remove custom cookie options as they're handled by Supabase
         },
       });
+
+      if (error) {
+        console.error("Google sign in error:", error);
+        setError(error.message);
+      }
     } catch (err: any) {
+      console.error("Google sign in exception:", err);
       setError(err.message || "Įvyko klaida prisijungiant per Google");
     }
   };
