@@ -38,10 +38,10 @@ export default function AboutPage() {
 
         <div className="flex items-center gap-2">
           <Button variant="ghost" asChild className="hidden md:inline-flex">
-            <Link href="/login">Log In</Link>
+            <Link href="/login">Prisijungti</Link>
           </Button>
           <Button asChild>
-            <Link href="/signup">Sign Up</Link>
+            <Link href="/signup">Registruotis</Link>
           </Button>
         </div>
       </header>
@@ -50,28 +50,28 @@ export default function AboutPage() {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold tracking-tight mb-4">
-            About EduAI Hub
+            Apie EduAI Hub
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            We&apos;re on a mission to make quality education accessible to all
-            students through the power of artificial intelligence
+            Mūsų misija - padaryti kokybišką išsilavinimą prieinamą visiems
+            mokiniams naudojant dirbtinio intelekto galią
           </p>
           <div className="relative h-[400px] rounded-xl overflow-hidden">
             <Image
               src="/placeholder.svg?height=800&width=1600"
-              alt="Team working together"
+              alt="Komanda dirba kartu"
               fill
               className="object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
               <div className="p-8 text-white text-left">
                 <h2 className="text-3xl font-bold mb-2">
-                  Transforming Education Through AI
+                  Transformuojame švietimą per AI
                 </h2>
                 <p className="text-lg max-w-2xl">
-                  Founded in 2022, EduAI Hub is dedicated to bridging
-                  educational gaps and empowering both students and teachers
-                  with cutting-edge AI tools.
+                  Įsteigtas 2022 m., EduAI Hub yra dedikuotas užpildyti švietimo
+                  spragas ir įgalinti tiek mokinius, tiek mokytojus moderniais
+                  AI įrankiais.
                 </p>
               </div>
             </div>
@@ -82,39 +82,40 @@ export default function AboutPage() {
         <div className="mb-16">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl font-bold mb-6">Our Story</h2>
+              <h2 className="text-3xl font-bold mb-6">Mūsų istorija</h2>
               <div className="space-y-4">
                 <p>
-                  EduAI Hub began with a simple observation: while AI was
-                  transforming industries worldwide, its potential to
-                  revolutionize education remained largely untapped. Our
-                  founders, a team of educators and technologists, saw an
-                  opportunity to create a platform that would make personalized
-                  learning accessible to all students, regardless of background
-                  or resources.
+                  EduAI Hub prasidėjo nuo paprasto pastebėjimo: nors AI
+                  transformavo pramonę visame pasaulyje, jo potencialas
+                  revoliucionizuoti švietimą išliko daugiausia neišnaudotas.
+                  Mūsų įkūrėjai, mokytojų ir technologų komanda, pamatė galimybę
+                  sukurti platformą, kuri padarytų individualizuotą mokymąsi
+                  prieinamą visiems mokiniams, nepriklausomai nuo aplinkos ar
+                  išteklių.
                 </p>
                 <p>
-                  What started as a small project to help struggling students
-                  with homework has evolved into a comprehensive educational
-                  platform that serves thousands of students and teachers across
-                  the country. Our AI-powered tools provide personalized
-                  tutoring, generate custom study materials, and help teachers
-                  create engaging content for their classrooms.
+                  Kas prasidėjo kaip mažas projektas padėti besistengiantiems
+                  mokiniams su namų darbais, išsiplėtė į išsamų švietimo
+                  platformą, kuri tarnauja tūkstančiams mokinių ir mokytojų
+                  visoje šalyje. Mūsų AI pagrįsti įrankiai teikia
+                  individualizuotą mokymą, generuoja individualius mokymosi
+                  medžiagus ir padeda mokytojams kurti įdomų turinį savo
+                  klasėms.
                 </p>
                 <p>
-                  Today, EduAI Hub is at the forefront of educational
-                  technology, constantly innovating to ensure that every student
-                  has access to the support they need to succeed. We believe
-                  that AI should enhance human teaching, not replace it, and
-                  we&apos;re committed to developing tools that empower both
-                  students and educators.
+                  Šiandien EduAI Hub yra švietimo technologijų pirmaujančioje
+                  vietoje, nuolat inovuoja, kad užtikrintų, jog kiekvienas
+                  mokinys turėtų prieigą prie reikalingos paramos sėkmei. Mes
+                  tikime, kad AI turėtų stiprinti žmogaus mokymą, o ne pakeisti
+                  jį, ir esame įsipareigoję kurti įrankius, kurie įgalina tiek
+                  mokinius, tiek mokytojus.
                 </p>
               </div>
             </div>
             <div className="relative h-[400px] rounded-xl overflow-hidden">
               <Image
                 src="/placeholder.svg?height=800&width=800"
-                alt="Our journey"
+                alt="Mūsų kelionė"
                 fill
                 className="object-cover"
               />
@@ -125,7 +126,7 @@ export default function AboutPage() {
         {/* Mission & Values */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold mb-8 text-center">
-            Our Mission & Values
+            Mūsų misija ir vertybės
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             <Card>
@@ -133,13 +134,14 @@ export default function AboutPage() {
                 <div className="mx-auto bg-primary/10 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4">
                   <Target className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle>Our Mission</CardTitle>
+                <CardTitle>Mūsų misija</CardTitle>
               </CardHeader>
               <CardContent className="text-center">
                 <p>
-                  To democratize education by providingg AI-powered learning
-                  tools that adapt to each student&apos;s unique needs, making
-                  quality education accessible to all.
+                  Demokratizuoti švietimą teikiant AI pagrįstus mokymosi
+                  įrankius, kurie pritaikomi prie kiekvieno mokinio unikalių
+                  poreikių, todėl kokybiškas išsilavinimas tampa prieinamas
+                  visiems.
                 </p>
               </CardContent>
             </Card>
@@ -148,13 +150,13 @@ export default function AboutPage() {
                 <div className="mx-auto bg-primary/10 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4">
                   <Heart className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle>Our Vision</CardTitle>
+                <CardTitle>Mūsų vizija</CardTitle>
               </CardHeader>
               <CardContent className="text-center">
                 <p>
-                  A world where every student has access to personalized,
-                  high-quality educational support that helps them reach their
-                  full potential.
+                  Pasaulis, kuriame kiekvienas mokinys turi prieigą prie
+                  individualizuotos, aukštos kokybės švietimo paramos, kuri
+                  padeda jiems pasiekti savo pilną potencialą.
                 </p>
               </CardContent>
             </Card>
@@ -163,12 +165,12 @@ export default function AboutPage() {
                 <div className="mx-auto bg-primary/10 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4">
                   <Award className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle>Our Values</CardTitle>
+                <CardTitle>Mūsų vertybės</CardTitle>
               </CardHeader>
               <CardContent className="text-center">
                 <p>
-                  Accessibility, innovation, integrity, and a commitment to
-                  enhancing human teaching rather than replacing it.
+                  Prieinamumas, inovacijos, sąžiningumas ir įsipareigojimas
+                  stiprinti žmogaus mokymą, o ne pakeisti jį.
                 </p>
               </CardContent>
             </Card>
@@ -177,7 +179,9 @@ export default function AboutPage() {
 
         {/* Core Values */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold mb-8 text-center">Core Values</h2>
+          <h2 className="text-3xl font-bold mb-8 text-center">
+            Pagrindinės vertybės
+          </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {coreValues.map((value, index) => (
               <Card key={index} className="bg-secondary/10">
@@ -197,13 +201,15 @@ export default function AboutPage() {
 
         {/* Meet Our Team */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold mb-8 text-center">Meet Our Team</h2>
+          <h2 className="text-3xl font-bold mb-8 text-center">
+            Susipažinkite su mūsų komanda
+          </h2>
 
           <Tabs defaultValue="leadership" className="mb-8">
             <TabsList className="grid w-full grid-cols-3 mb-8">
-              <TabsTrigger value="leadership">Leadership</TabsTrigger>
-              <TabsTrigger value="educators">Educators</TabsTrigger>
-              <TabsTrigger value="tech">Tech Team</TabsTrigger>
+              <TabsTrigger value="leadership">Vadovybė</TabsTrigger>
+              <TabsTrigger value="educators">Mokytojai</TabsTrigger>
+              <TabsTrigger value="tech">Technologijų komanda</TabsTrigger>
             </TabsList>
 
             <TabsContent
@@ -234,25 +240,25 @@ export default function AboutPage() {
 
         {/* Impact */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold mb-8 text-center">Our Impact</h2>
+          <h2 className="text-3xl font-bold mb-8 text-center">Mūsų poveikis</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
             <div className="text-center p-6 bg-secondary/10 rounded-lg">
               <p className="text-4xl font-bold text-primary mb-2">50,000+</p>
-              <p className="text-muted-foreground">Students Helped</p>
+              <p className="text-muted-foreground">Padėtų mokinių</p>
             </div>
             <div className="text-center p-6 bg-secondary/10 rounded-lg">
               <p className="text-4xl font-bold text-primary mb-2">5,000+</p>
-              <p className="text-muted-foreground">Teachers Empowered</p>
+              <p className="text-muted-foreground">Įgalintų mokytojų</p>
             </div>
             <div className="text-center p-6 bg-secondary/10 rounded-lg">
               <p className="text-4xl font-bold text-primary mb-2">500+</p>
               <p className="text-muted-foreground">
-                Schools Using Our Platform
+                Mokyklų naudojančių mūsų platformą
               </p>
             </div>
             <div className="text-center p-6 bg-secondary/10 rounded-lg">
               <p className="text-4xl font-bold text-primary mb-2">2M+</p>
-              <p className="text-muted-foreground">Questions Answered</p>
+              <p className="text-muted-foreground">Atsakytų klausimų</p>
             </div>
           </div>
 
@@ -260,30 +266,30 @@ export default function AboutPage() {
             <CardContent className="p-6">
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div>
-                  <h3 className="text-2xl font-bold mb-4">Success Stories</h3>
+                  <h3 className="text-2xl font-bold mb-4">Sėkmės istorijos</h3>
                   <div className="space-y-4">
                     <p>
-                      &quot;EduAI Hub has transformed how I support my students.
-                      The personalized practice materials have helped close
-                      learning gaps for many of my struggling students.&quot;
+                      "EduAI Hub pakeitė, kaip aš remiu savo mokinius.
+                      Individualizuotos praktikos medžiagos padėjo užpildyti
+                      mokymosi spragas daugeliui mano besistengiančių mokinių."
                     </p>
                     <p className="font-medium">
-                      — Sarah Johnson, 8th Grade Math Teacher
+                      — Sarah Johnson, 8 klasės matematikos mokytoja
                     </p>
                     <Separator />
                     <p>
-                      &quot;As a student with dyslexia, I&apos;ve always
-                      struggled with reading comprehension. The AI tutoring has
-                      helped me understand complex texts in ways that work for
-                      my learning style.&quot;
+                      "Kaip mokiniui su disleksija, visada kentėjau nuo skaitymo
+                      suvokimo sunkumų. AI mokymas padėjo man suprasti
+                      sudėtingus tekstus būdais, kurie veikia mano mokymosi
+                      stiliui."
                     </p>
                     <p className="font-medium">
-                      — Miguel Rodriguez, 11th Grade Student
+                      — Miguel Rodriguez, 11 klasės mokinys
                     </p>
                   </div>
                   <Button className="mt-6" asChild>
                     <Link href="/testimonials">
-                      Read More Success Stories{" "}
+                      Skaityti daugiau sėkmės istorijų{" "}
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
@@ -291,7 +297,7 @@ export default function AboutPage() {
                 <div className="relative h-[300px] rounded-xl overflow-hidden">
                   <Image
                     src="/placeholder.svg?height=600&width=800"
-                    alt="Success stories"
+                    alt="Sėkmės istorijos"
                     fill
                     className="object-cover"
                   />
@@ -304,25 +310,27 @@ export default function AboutPage() {
         {/* Join Our Team */}
         <div className="mb-16">
           <div className="bg-secondary/20 rounded-xl p-8 text-center">
-            <h2 className="text-3xl font-bold mb-4">Join Our Team</h2>
+            <h2 className="text-3xl font-bold mb-4">
+              Prisijunkite prie mūsų komandos
+            </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
-              We&apos;re always looking for passionate educators, developers,
-              and AI specialists to help us transform education.
+              Visada ieškome aistringų mokytojų, kūrėjų ir AI specialistų, kurie
+              padėtų mums transformuoti švietimą.
             </p>
             <Button size="lg" asChild>
-              <Link href="/careers">View Open Positions</Link>
+              <Link href="/careers">Peržiūrėti atidarytas pozicijas</Link>
             </Button>
           </div>
         </div>
 
         {/* Contact */}
         <div className="text-center">
-          <h2 className="text-3xl font-bold mb-4">Get in Touch</h2>
+          <h2 className="text-3xl font-bold mb-4">Susisiekite</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
-            Have questions about EduAI Hub? We&apos;d love to hear from you.
+            Turite klausimų apie EduAI Hub? Mums būtų malonu išgirsti nuo jūsų.
           </p>
           <Button size="lg" asChild>
-            <Link href="/contact">Contact Us</Link>
+            <Link href="/contact">Susisiekite su mumis</Link>
           </Button>
         </div>
       </div>
@@ -355,27 +363,26 @@ function TeamMemberCard({ member }) {
 
 const coreValues = [
   {
-    title: "Accessibility",
+    title: "Prieinamumas",
     description:
-      "We believe quality education should be accessible to all students, regardless of background or resources.",
+      "Tikime, kad kokybiškas išsilavinimas turėtų būti prieinamas visiems mokiniams, nepriklausomai nuo aplinkos ar išteklių.",
     icon: <BookOpen className="h-6 w-6 text-primary" />,
   },
   {
-    title: "Innovation",
-    description:
-      "We continuously push the boundaries of what's possible with AI in education.",
+    title: "Inovacijos",
+    description: "Nuolat stumiamės į priekį, kas įmanoma su AI švietime.",
     icon: <GraduationCap className="h-6 w-6 text-primary" />,
   },
   {
-    title: "Integrity",
+    title: "Sąžiningumas",
     description:
-      "We're committed to ethical AI use, data privacy, and transparent practices.",
+      "Esame įsipareigoję etiniam AI naudojimui, duomenų privatumui ir skaidriai veiklai.",
     icon: <Award className="h-6 w-6 text-primary" />,
   },
   {
-    title: "Community",
+    title: "Bendruomenė",
     description:
-      "We believe in fostering a supportive community of students, educators, and parents.",
+      "Tikime, kad reikia ugdyti paramos bendruomenę, susidedančią iš mokinių, mokytojų ir tėvų.",
     icon: <Users className="h-6 w-6 text-primary" />,
   },
 ];
@@ -383,20 +390,20 @@ const coreValues = [
 const leadershipTeam = [
   {
     name: "Dr. Emily Chen",
-    role: "Co-Founder & CEO",
-    bio: "Former education professor with 15+ years of experience in EdTech. Passionate about making quality education accessible to all.",
+    role: "Bendrakūrėja ir CEO",
+    bio: "Buvusi švietimo profesorė su 15+ metų patirtimi EdTech srityje. Aistringa dėl kokybiško išsilavinimo prieinamumo visiems.",
     image: "/placeholder.svg?height=400&width=400",
   },
   {
     name: "Michael Rodriguez",
-    role: "Co-Founder & CTO",
-    bio: "AI specialist with a background in machine learning and natural language processing. Previously led AI teams at major tech companies.",
+    role: "Bendrakūrėjas ir CTO",
+    bio: "AI specialistas su patirtimi mašininiame mokymesi ir natūralios kalbos apdorojime. Anksčiau vadovavo AI komandoms didelėse technologijų įmonėse.",
     image: "/placeholder.svg?height=400&width=400",
   },
   {
     name: "Dr. James Wilson",
-    role: "Chief Education Officer",
-    bio: "Former high school principal and district superintendent with 20+ years in education administration and curriculum development.",
+    role: "Vyriausiasis švietimo vadovas",
+    bio: "Buvęs vidurinės mokyklos direktorius ir rajonų vadovas su 20+ metų patirtimi švietimo administravime ir mokymo programų kūrime.",
     image: "/placeholder.svg?height=400&width=400",
   },
 ];
@@ -404,20 +411,20 @@ const leadershipTeam = [
 const educatorTeam = [
   {
     name: "Sarah Johnson",
-    role: "Head of Curriculum",
-    bio: "Former middle school teacher with expertise in developing standards-aligned educational content across multiple subjects.",
+    role: "Mokymo programų vadovė",
+    bio: "Buvusi vidurinės mokyklos mokytoja su patirtimi kuriant standartus atitinkančią švietimo medžiagą įvairiose disciplinose.",
     image: "/placeholder.svg?height=400&width=400",
   },
   {
     name: "David Park",
-    role: "Educational Content Director",
-    bio: "Specializes in creating engaging, accessible learning materials for diverse student populations and learning styles.",
+    role: "Švietimo turinio direktorius",
+    bio: "Specializuojasi kuriant įdomią, prieinamą mokymosi medžiagą įvairioms mokinių populiacijoms ir mokymosi stiliams.",
     image: "/placeholder.svg?height=400&width=400",
   },
   {
     name: "Maria Gonzalez",
-    role: "Special Education Specialist",
-    bio: "Focuses on ensuring our platform meets the needs of students with diverse learning requirements and abilities.",
+    role: "Specialiojo ugdymo specialistė",
+    bio: "Sutelkia dėmesį į tai, kad mūsų platforma atitiktų mokinių su įvairiais mokymosi reikalavimais ir gebėjimais poreikius.",
     image: "/placeholder.svg?height=400&width=400",
   },
 ];
@@ -425,20 +432,20 @@ const educatorTeam = [
 const techTeam = [
   {
     name: "Alex Thompson",
-    role: "Lead AI Engineer",
-    bio: "Specializes in developing and fine-tuning large language models for educational applications and personalized learning.",
+    role: "Vyr. AI inžinierius",
+    bio: "Specializuojasi kuriant ir pritaikant didelius kalbos modelius švietimo programoms ir individualizuotam mokymuisi.",
     image: "/placeholder.svg?height=400&width=400",
   },
   {
     name: "Priya Patel",
-    role: "Head of Product",
-    bio: "Leads our product development with a focus on creating intuitive, accessible interfaces for students and teachers.",
+    role: "Produkto vadovė",
+    bio: "Vadovauja mūsų produkto vystymui, sutelkdama dėmesį į intuityvius, prieinamus sąsajas mokiniams ir mokytojams.",
     image: "/placeholder.svg?height=400&width=400",
   },
   {
     name: "Ryan Kim",
-    role: "Data Science Lead",
-    bio: "Analyzes learning patterns and outcomes to continuously improve our AI tutoring and content generation algorithms.",
+    role: "Duomenų mokslo vadovas",
+    bio: "Analizuoja mokymosi modelius ir rezultatus, kad nuolat tobulintų mūsų AI mokymo ir turinio generavimo algoritmus.",
     image: "/placeholder.svg?height=400&width=400",
   },
 ];

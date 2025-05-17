@@ -13,6 +13,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export function MainNavigation() {
   const pathname = usePathname();
@@ -70,6 +71,9 @@ export function MainNavigation() {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
+      <div className="hidden md:block">
+        <ModeToggle />
+      </div>
     </div>
   );
 }
